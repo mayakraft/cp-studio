@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 // import ToolPanel from "./ToolPanel";
 // import CPPanel from "./CPPanel";
 // import FoldabilityPanel from "./FoldabilityPanel";
-// import SimulatorPanel from "./SimulatorPanel";
+import SimulatorPanel from "./SimulatorPanel";
 import DiagramPanel from "./DiagramPanel";
 import FilePanel from "./FilePanel";
 import DebugPanel from "./DebugPanel";
@@ -66,10 +66,9 @@ const PanelGroup = (props) => {
 					setFoldabilityIndicators={props.setFoldabilityIndicators}
 				/>
 			</Show>
+		*/}
 			<Show when={props.views().includes("simulator")}>
 				<SimulatorPanel
-					isCollapsed={props.simulatorPanelCollapsed}
-					setIsCollapsed={props.setSimulatorPanelCollapsed}
 					tool={props.tool}
 					simulatorOn={props.simulatorOn}
 					setSimulatorOn={props.setSimulatorOn}
@@ -81,7 +80,6 @@ const PanelGroup = (props) => {
 					setSimulatorShowHighlights={props.setSimulatorShowHighlights}
 				/>
 			</Show>
-		*/}
 			<Show when={props.views().includes("diagram")}>
 				<DiagramPanel
 					// isCollapsed={props.diagramPanelCollapsed}

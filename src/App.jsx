@@ -6,6 +6,9 @@ import Toolbar from "./Toolbar";
 import PanelGroup from "./Panels/PanelGroup";
 import Terminal from "./Terminal";
 import ErrorPopup from "./Popups/ErrorPopup";
+import CP from "./CP";
+import Diagram from "./Diagram";
+import Simulator from "./Simulator";
 // I/O
 import DragAndDrop from "./FileManager/DragAndDrop";
 import {
@@ -17,14 +20,26 @@ import {
 	addKeySetTrue,
 	removeKey,
 } from "./Helpers";
+import {
+	localStorageVersion,
+	emptyPreferences,
+	getPreference,
+	setPreference,
+} from "./LocalStorage";
 
-import squareFOLD from "./Files/square.fold?raw";
-const startFOLD = JSON.parse(squareFOLD);
-
-// get user's device settings
-const deviceDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+// import squareFOLD from "./Files/square.fold?raw";
+// const startFOLD = JSON.parse(squareFOLD);
+import animalBase from "./Files/example-animal-base.fold?raw";
+const startFOLD = JSON.parse(animalBase);
 
 const App = () => {
+	// load preferences. these are used to populate the initial state of signals.
+	const preferences = getPreference();
+	if (preferences == null || preferences.version !== localStorageVersion) {
+		// todo: be smarter about replacing existing preferences if version differs.
+		setPreference([], emptyPreferences());
+	}
+
 	// the crease pattern, folded state, and array of diagram steps (sequence).
 	const [fileMeta, setFileMeta] = createSignal({});
 	const [fileFrames, setFileFrames] = createSignal([startFOLD]);
@@ -33,9 +48,9 @@ const App = () => {
 	// app state, ui, touch handlers
 	const [tool, setTool] = createSignal("inspect");
 	// windows and layout
-	const [views, setViews] = createSignal(["crease pattern", "simulator", "diagram"]);
-	const [language, setLanguage] = createSignal("en");
-	const [darkMode, setDarkMode] = createSignal(deviceDarkMode);
+	const [views, setViews] = createSignal(preferences.views);
+	const [language, setLanguage] = createSignal(preferences.language);
+	const [darkMode, setDarkMode] = createSignal(preferences.darkMode);
 	const [mobileLayout, setMobileLayout] = createSignal(window.innerWidth < window.innerHeight);
 	const [showPanels, setShowPanels] = createSignal(true);
 	const [showTerminal, setShowTerminal] = createSignal(false);
@@ -44,6 +59,13 @@ const App = () => {
 	const [errorMessage, setErrorMessage] = createSignal();
 	// ui
 	const [keyboardState, setKeyboardState] = createSignal({});
+
+	// simulator
+	const [simulatorOn, setSimulatorOn] = createSignal(true);
+	const [simulatorShowHighlights, setSimulatorShowHighlights] = createSignal(true);
+	const [simulatorStrain, setSimulatorStrain] = createSignal(false);
+	const [simulatorFoldAmount, setSimulatorFoldAmount] = createSignal(0);
+	const [simulatorTouch, setSimulatorTouch] = createSignal([]);
 
 	// file management
 	/**
@@ -71,7 +93,12 @@ const App = () => {
 		setFileFrames(newFile.file_frames);
 		setFileFrameIndex(newFile.file_frames.length - 1);
 	};
-
+	const cpOnPress = (e) => console.log(e);
+	const cpOnMove = (e) => {};
+	const cpOnRelease = (e) => console.log(e);
+	const diagramOnPress = (e) => console.log(e);
+	const diagramOnMove = (e) => {};
+	const diagramOnRelease = (e) => console.log(e);
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
 	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
 	const onkeyup = (e) => setKeyboardState(removeKey(keyboardState(), e.key));
@@ -86,6 +113,10 @@ const App = () => {
 		window.removeEventListener("keydown", onkeydown);
 		window.removeEventListener("keyup", onkeyup);
 	});
+
+	createEffect(() => setPreference(["language"], language()));
+	createEffect(() => setPreference(["views"], views()));
+	createEffect(() => setPreference(["darkMode"], darkMode()));
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -110,15 +141,43 @@ const App = () => {
 				tool={tool}
 				setTool={setTool} />
 			<div class={Style.Main}>
-				<div class={`${Style.Views} Items-${views().length}`}>
+				<div class={`${Style.Views} View-Items-${views().length} ${mobileLayout() ? Style.Column : Style.Row}`}>
 					<Show when={views().includes("crease pattern")}>
-						<svg />
+						<CP
+							onPress={cpOnPress}
+							onMove={cpOnMove}
+							onRelease={cpOnRelease}
+							cp={cp}
+							tool={tool}
+							views={views}
+							showPanels={showPanels}
+							showTerminal={showTerminal}
+						/>
 					</Show>
 					<Show when={views().includes("diagram")}>
-						<svg />
+						<Diagram
+							onPress={diagramOnPress}
+							onMove={diagramOnMove}
+							onRelease={diagramOnRelease}
+							cp={cp}
+							tool={tool}
+							views={views}
+							showPanels={showPanels}
+							showTerminal={showTerminal}
+						/>
 					</Show>
 					<Show when={views().includes("simulator")}>
-						<canvas />
+						<Simulator
+							cp={cp}
+							tool={tool}
+							darkMode={darkMode}
+							showPanels={showPanels}
+							simulatorOn={simulatorOn}
+							setSimulatorTouch={setSimulatorTouch}
+							simulatorShowHighlights={simulatorShowHighlights}
+							simulatorStrain={simulatorStrain}
+							simulatorFoldAmount={simulatorFoldAmount}
+						/>
 					</Show>
 				</div>
 
@@ -140,6 +199,15 @@ const App = () => {
 							setShowPanels={setShowPanels}
 							showDiagramInstructions={showDiagramInstructions}
 							setShowDiagramInstructions={setShowDiagramInstructions}
+							// simulator
+							simulatorOn={simulatorOn}
+							setSimulatorOn={setSimulatorOn}
+							simulatorStrain={simulatorStrain}
+							setSimulatorStrain={setSimulatorStrain}
+							simulatorFoldAmount={simulatorFoldAmount}
+							setSimulatorFoldAmount={setSimulatorFoldAmount}
+							simulatorShowHighlights={simulatorShowHighlights}
+							setSimulatorShowHighlights={setSimulatorShowHighlights}
 							// ui
 							keyboardState={keyboardState}
 						/>

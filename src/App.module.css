@@ -6,22 +6,33 @@
 	height: 100%;
 }
 
-/* Main contains all the Views (cp/diagram/sim) and the Panels */
+/* Main contains the Views (cp/diagram/sim) and the Panels */
 .Main {
 	grid-row: 2/3;
 	grid-column: 2/3;
 	display: flex;
 	flex-direction: row;
-	/*justify-content: space-between;*/
 }
 
-/* Views contains either or all cp/diagram/simulator */
+/* Views contains cp/diagram/simulator, one two or all three */
 .Views {
 	flex-grow: 1;
 	display: flex;
+	align-items: center;
 	flex-direction: row;
 }
-.Views > * { flex: 1; }
+.Views > * {
+	flex: 1;
+	height: 100%;
+}
+
+:global(.Items-0).Views > * { width: 100%; }
+:global(.Items-1).Views > * { width: 100%; }
+:global(.Items-2).Views > * { width: 50%; }
+:global(.Items-3).Views > * { width: 33.3333%; }
+
+.Row { flex-direction: row; }
+.Column { flex-direction: column; }
 
 .FloatingPanelContainer {
 	height: calc(100vh - var(--menubar-height));
@@ -38,11 +49,6 @@
 	background-color: white;
 	margin-top: 1rem;
 }
-
-:global(.Items-0).Views > * { width: 100%; }
-:global(.Items-1).Views > * { width: 100%; }
-:global(.Items-2).Views > * { width: 50%; }
-:global(.Items-3).Views > * { width: 33.3333%; }
 
 :global(.light-mode).App { background-color: #eee; }
 :global(.dark-mode).App { background-color: var(--darkmode-black); }
@@ -67,5 +73,9 @@
 	.CollapseButton {
 		display: inline;
 	}
+	:global(.View-Items-0).Views > * { width: 100%; }
+	:global(.View-Items-1).Views > * { width: 100%; }
+	:global(.View-Items-2).Views > * { width: 100%; }
+	:global(.View-Items-3).Views > * { width: 100%; }
 }
 

@@ -140,11 +140,8 @@ input[type=checkbox]:focus {
 
 button.radio {
 	border: calc(var(--app-font-size) / 10) solid;
-	/*background-color: transparent;*/
 }
-button.radio[highlighted=true] {
-	/*background-color: red;*/
-}
+button.radio[highlighted=true] {  }
 
 /* RADIO CHECKBOXES */
 

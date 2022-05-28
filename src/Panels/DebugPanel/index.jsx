@@ -1,8 +1,16 @@
 import { createSignal, createEffect } from "solid-js";
 import Panel from "../Panel";
 import { stringifyPoint } from "../../Helpers";
+import {
+	getPreference,
+	setPreference,
+} from "../../LocalStorage";
+
+const preferenceCollapseKeys = ["panels", "debugPanelCollapsed"];
 
 const DebugPanel = (props) => {
+	const [isCollapsed, setIsCollapsed] = createSignal(getPreference(preferenceCollapseKeys));
+	createEffect(() => setPreference(preferenceCollapseKeys, isCollapsed()));
 
 	const StringifyKeys = (object) => {
 		const keys = Object.keys(object);
@@ -36,8 +44,8 @@ const DebugPanel = (props) => {
 	return (
 		<Panel
 			title="Debug"
-			isCollapsed={props.isCollapsed}
-			setIsCollapsed={props.setIsCollapsed}>
+			isCollapsed={isCollapsed}
+			setIsCollapsed={setIsCollapsed}>
 			<p>tool: <b>{props.tool()}</b></p>
 			<Show when={props.keyboardState}>
 				<Keyboard keyboardState={props.keyboardState} />

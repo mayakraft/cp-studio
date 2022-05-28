@@ -19,6 +19,7 @@
 	max-height: 40vh;
 	overflow: scroll;
 	margin: 0.5rem 0.5rem 0rem 0.5rem;
+	border-bottom: 2px solid;
 }
 
 .Terminal textarea {
@@ -42,7 +43,7 @@
 }
 :global(.dark-mode) .Terminal textarea:focus {
 	outline-color: transparent;
-	background-color: var(--darkmode-gray-1);
+	background-color: var(--darkmode-gray-2);
 }
 
 :global(.light-mode) .TerminalContainer {
@@ -50,16 +51,18 @@
 	box-shadow: 0 0 1rem black;
 }
 :global(.dark-mode) .TerminalContainer {
-	background-color: var(--darkmode-gray-2);
+	background-color: var(--darkmode-gray-1);
 	box-shadow: 0 0 1rem black;
 }
 :global(.light-mode) .Terminal { background-color: #eee }
-:global(.dark-mode) .Terminal { background-color: var(--darkmode-gray-1); }
+:global(.dark-mode) .Terminal { background-color: var(--darkmode-gray-2); }
 :global(.light-mode) .Terminal pre {
 	color: black;
 	background-color: #eee;
+	border-color: #ddd;
 }
 :global(.dark-mode) .Terminal pre {
 	color: var(--darkmode-gray-10);
-	background-color: var(--darkmode-gray-1);
+	background-color: var(--darkmode-gray-2);
+	border-color: var(--darkmode-gray-3);
 }

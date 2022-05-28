@@ -1,6 +1,10 @@
 import { createSignal, createEffect } from "solid-js";
 import Panel from "../Panel";
 import { stringifyPoint } from "../../Helpers";
+import {
+	getPreference,
+	setPreference,
+} from "../../LocalStorage";
 
 // "file_spec": 1.1,
 // "file_classes": ["diagrams"],
@@ -8,9 +12,11 @@ import { stringifyPoint } from "../../Helpers";
 // "file_title": "",
 // "file_frames": [],
 
-const FilePanel = (props) => {
+const preferenceCollapseKeys = ["panels", "filePanelCollapsed"];
 
-	const [isCollapsed, setIsCollapsed] = createSignal(false);
+const FilePanel = (props) => {
+	const [isCollapsed, setIsCollapsed] = createSignal(getPreference(preferenceCollapseKeys));
+	createEffect(() => setPreference(preferenceCollapseKeys, isCollapsed()));
 
 	const getFileMetaValue = (key) => props.fileMeta()[key]
 		? props.fileMeta()[key]

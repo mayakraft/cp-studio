@@ -1,12 +1,19 @@
-import { createSignal } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 import Style from "./DiagramPanel.module.css";
 import Panel from "../Panel";
 import { stringifyPoint } from "../../Helpers";
 import Minus from "../../images/minus-solid.svg";
 import Plus from "../../images/plus-solid.svg";
+import {
+	getPreference,
+	setPreference,
+} from "../../LocalStorage";
+
+const preferenceCollapseKeys = ["panels", "diagramPanelCollapsed"];
 
 const DiagramPanel = (props) => {
-	const [isCollapsed, setIsCollapsed] = createSignal(false);
+	const [isCollapsed, setIsCollapsed] = createSignal(getPreference(preferenceCollapseKeys));
+	createEffect(() => setPreference(preferenceCollapseKeys, isCollapsed()));
 
 	const getDiagramInstructionString = (cp) => {
 		if (cp.diagram_instruction) {
@@ -115,7 +122,7 @@ const DiagramPanel = (props) => {
 						/><label for="checkbox-show-diagram-instructions">show instructions</label>
 				</div>
 				<hr />
-				<p>instruction: <b>{getDiagramInstructionString(props.cp())}</b></p>
+				<p><b>{getDiagramInstructionString(props.cp())}</b></p>
 				<hr />
 				<div class="flex-row">
 					<p>creases ({countDiagramCreases(props.cp())})</p>

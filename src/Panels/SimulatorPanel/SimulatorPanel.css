@@ -1,0 +1,12 @@
+.Panel-Simulator .PanelBody{
+	display: flex;
+	flex-direction: column;
+}
+
+.Panel-Simulator .button-row input[type=range] {
+	flex: 3;
+}
+
+.Panel-Simulator .button-row input[type=checkbox] {
+	flex: 1;
+}
