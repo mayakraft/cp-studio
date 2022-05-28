@@ -5,7 +5,7 @@ import { createSignal } from "solid-js";
 // import SimulatorPanel from "./SimulatorPanel";
 import DiagramPanel from "./DiagramPanel";
 import FilePanel from "./FilePanel";
-// import DebugPanel from "./DebugPanel";
+import DebugPanel from "./DebugPanel";
 import Style from "./PanelGroup.module.css";
 
 const PanelGroup = (props) => {
@@ -14,6 +14,15 @@ const PanelGroup = (props) => {
 
 	return (
 		<div class={Style.PanelGroup}>
+			<DebugPanel
+				isCollapsed={debugPanelCollapsed}
+				setIsCollapsed={setDebugPanelCollapsed}
+				tool={props.tool}
+				cpTouchState={props.cpTouchState}
+				diagramTouchState={props.diagramTouchState}
+				simulatorMove={props.simulatorMove}
+				keyboardState={props.keyboardState}
+			/>
 			<FilePanel
 				// isCollapsed={props.filePanelCollapsed}
 				// setIsCollapsed={props.setFilePanelCollapsed}
@@ -98,15 +107,7 @@ const PanelGroup = (props) => {
 					setFoldabilityIndicators={props.setFoldabilityIndicators}
 				/>
 			</Show>
-			<DebugPanel
-				isCollapsed={debugPanelCollapsed}
-				setIsCollapsed={setDebugPanelCollapsed}
-				tool={props.tool}
-				cpTouchState={props.cpTouchState}
-				diagramTouchState={props.diagramTouchState}
-				simulatorMove={props.simulatorMove}
-				keyboardState={props.keyboardState}
-			/>*/}
+			*/}
 		</div>
 	);
 };

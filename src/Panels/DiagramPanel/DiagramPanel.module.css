@@ -5,14 +5,6 @@
 	flex: 1;
 }
 
-.add { background-image: url("../../images/add.svg"); }
-.subtract { background-image: url("../../images/subtract.svg"); }
-.record { background-image: url("../../images/record.svg"); }
-.backwards { background-image: url("../../images/backwards.svg"); }
-.forwards { background-image: url("../../images/forwards.svg"); }
-.backwards-all { background-image: url("../../images/backwards-all.svg"); }
-.forwards-all { background-image: url("../../images/forwards-all.svg"); }
-
 .DiagramPanel .PanelBody {
 	display: flex;
 	flex-direction: column;
@@ -21,3 +13,11 @@
 .DiagramPanel input[type=range] {
 	flex: 3;
 }
+
+.add { background-image: url("../../images/add.svg"); }
+.subtract { background-image: url("../../images/subtract.svg"); }
+.record { background-image: url("../../images/record.svg"); }
+.backwards { background-image: url("../../images/backwards.svg"); }
+.forwards { background-image: url("../../images/forwards.svg"); }
+.backwards-all { background-image: url("../../images/backwards-all.svg"); }
+.forwards-all { background-image: url("../../images/forwards-all.svg"); }

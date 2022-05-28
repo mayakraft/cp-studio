@@ -33,3 +33,13 @@ export const mostRecentTouch = touchEvents => touchEvents
 	.filter(a => a && a.date !== undefined)
 	.sort((a, b) => b.date - a.date)
 	.shift();
+
+// both of these return a copy of the object. intended so that a signal will update.
+export const addKeySetTrue = (object, key) => {
+	object[key] = true;
+	return {...object};
+};
+export const removeKey = (object, key) => {
+	delete object[key];
+	return {...object};
+};

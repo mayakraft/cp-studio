@@ -1,17 +1,22 @@
 import { createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import Style from "./App.module.css";
-// I/O
-import DragAndDrop from "./FileManager/DragAndDrop";
-import {
-	makeDiagramFormatFOLD,
-	getFileMeta,
-} from "./FileManager";
 // windows
 import Menubar from "./Menubar";
 import Toolbar from "./Toolbar";
 import PanelGroup from "./Panels/PanelGroup";
 import Terminal from "./Terminal";
 import ErrorPopup from "./Popups/ErrorPopup";
+// I/O
+import DragAndDrop from "./FileManager/DragAndDrop";
+import {
+	makeDiagramFormatFOLD,
+	getFileMeta,
+} from "./FileManager";
+// general
+import {
+	addKeySetTrue,
+	removeKey,
+} from "./Helpers";
 
 import squareFOLD from "./Files/square.fold?raw";
 const startFOLD = JSON.parse(squareFOLD);
@@ -37,6 +42,8 @@ const App = () => {
 	const [showDiagramInstructions, setShowDiagramInstructions] = createSignal(true);
 	// popups
 	const [errorMessage, setErrorMessage] = createSignal();
+	// ui
+	const [keyboardState, setKeyboardState] = createSignal({});
 
 	// file management
 	/**
@@ -65,10 +72,20 @@ const App = () => {
 		setFileFrameIndex(newFile.file_frames.length - 1);
 	};
 
-	const windowDidResize = () => setMobileLayout(window.innerWidth < window.innerHeight);
+	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
+	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
+	const onkeyup = (e) => setKeyboardState(removeKey(keyboardState(), e.key));
 
-	onMount(() => { window.addEventListener("resize", windowDidResize); });
-	onCleanup(() => { window.removeEventListener("resize", windowDidResize); });
+	onMount(() => {
+		window.addEventListener("resize", onresize);
+		window.addEventListener("keydown", onkeydown);
+		window.addEventListener("keyup", onkeyup);
+	});
+	onCleanup(() => {
+		window.removeEventListener("resize", onresize);
+		window.removeEventListener("keydown", onkeydown);
+		window.removeEventListener("keyup", onkeyup);
+	});
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -123,6 +140,8 @@ const App = () => {
 							setShowPanels={setShowPanels}
 							showDiagramInstructions={showDiagramInstructions}
 							setShowDiagramInstructions={setShowDiagramInstructions}
+							// ui
+							keyboardState={keyboardState}
 						/>
 					</Show>
 					<div
