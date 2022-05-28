@@ -1,0 +1,20 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" stroke-width="1.5" stroke="white" fill="none">
+	<defs>
+		<code>
+			<![CDATA[
+// var svg = ear.svg();
+svg.size(20, 20)
+  .strokeWidth(1.5)
+  .stroke("white")
+  .fill("none");
+  
+svg.rect(2,2,16,16).strokeDasharray("1.5 0.8");
+
+svg.rect(2,7,11,11);
+
+]]>
+		</code>
+	</defs>
+	<rect x="2" y="2" width="16" height="16" stroke-dasharray="1.5 0.8"/>
+	<rect x="2" y="7" width="11" height="11"/>
+</svg>

@@ -1,0 +1,89 @@
+.PanelGroup {
+	overflow-y: scroll;
+	height: 100%;
+	flex-shrink: 0;
+}
+
+.CollapseButton {
+	display: none;
+	position: absolute;
+	width: var(--menubar-height);
+	height: var(--menubar-height);
+	left: calc(-1 * var(--menubar-height));
+	top: 1rem;
+	cursor: pointer;
+}
+
+/* COLORS */
+
+:global(.light-mode) .PanelGroup {
+	background-color: #158;
+}
+:global(.dark-mode) .PanelGroup {
+	background-color: var(--darkmode-gray-1);
+}
+
+:global(.light-mode) .PanelGroup .button {
+	background-color: #269;
+}
+:global(.dark-mode) .PanelGroup .button {
+	color: var(--darkmode-gray-8);
+	background-color: var(--darkmode-gray-4);
+	opacity: 1;
+}
+:global(.light-mode) .PanelGroup .button[highlighted="true"] {
+	background-color: #e53;
+}
+:global(.dark-mode) .PanelGroup .button[highlighted="true"] {
+	background-color: var(--darkmode-pink);
+	color: black;
+}
+:global(.light-mode) .PanelGroup .button:hover {
+	background-color: #fb4;
+}
+:global(.dark-mode) .PanelGroup .button:hover {
+	background-color: var(--darkmode-pink-light);
+	color: black;
+}
+:global(.light-mode) .CollapseButton { background-color: #eee; }
+:global(.dark-mode) .CollapseButton { background-color: var(--darkmode-pink); }
+
+
+@media not all and (hover), (max-aspect-ratio: 1/1) {
+	.PanelGroup {
+		display: inline;
+		float: right;
+	}
+/*	.PanelGroup {
+		height: 100vh;
+		z-index: 2;
+		position: absolute;
+		right: 0;
+	}*/
+	.CollapseButton {
+		display: initial;
+	}
+	/*.PanelGroup {
+		min-width: 0;
+		flex: 0 1 30vh;
+		display: flex;
+		min-width: 0;
+		max-width: calc(100vw - var(--toolbar-button-width));
+		display: flex;
+		flex-direction: row;
+		overflow-x: scroll;
+		max-height: initial;
+		overflow-y: initial;
+	}*/
+
+	/*.PanelBody {
+		overflow-y: scroll;
+	}
+	.PanelTitlebar p {
+		order: 2;
+	}
+	.Panel.collapsed .PanelTitlebar p {
+		display: none;
+	}*/
+}
+

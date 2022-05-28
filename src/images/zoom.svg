@@ -1,0 +1,23 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" stroke-width="1.5" stroke="white">
+	<defs>
+		<code>
+			<![CDATA[
+// var svg = ear.svg();
+var color = "white";
+
+svg.size(20, 20)
+  // .background('red')
+  .strokeWidth(1.5)
+  .stroke(color);
+
+svg.circle(7, 7, 6).fill("none")
+svg.line(7+6*0.707, 7+6*0.707, 18, 18).strokeWidth(2);
+svg.line(13, 13, 18.5, 18.5).strokeWidth(3);
+
+]]>
+		</code>
+	</defs>
+	<circle cx="7" cy="7" r="6" fill="none"/>
+	<line x1="11.242" y1="11.242" x2="18" y2="18" stroke-width="2"/>
+	<line x1="13" y1="13" x2="18.5" y2="18.5" stroke-width="3"/>
+</svg>

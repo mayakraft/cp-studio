@@ -1,0 +1,65 @@
+.TerminalContainer {
+	z-index: 3;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+}
+
+.Terminal {
+	flex-grow: 1;
+	margin: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.Terminal pre {
+	max-height: 40vh;
+	overflow: scroll;
+	margin: 0.5rem 0.5rem 0rem 0.5rem;
+}
+
+.Terminal textarea {
+	margin: 0 0.5rem 0rem 0.5rem;
+	resize: none;
+	border-radius: 0;
+}
+
+:global(.light-mode) .Terminal textarea {
+	outline-color: transparent;
+	background-color: #e4e4e4;
+}
+:global(.dark-mode) .Terminal textarea {
+	color: var(--darkmode-gray-10);
+	outline-color: transparent;
+	background-color: var(--darkmode-gray-3);
+}
+:global(.light-mode) .Terminal textarea:focus {
+	outline-color: transparent;
+	background-color: #eee;
+}
+:global(.dark-mode) .Terminal textarea:focus {
+	outline-color: transparent;
+	background-color: var(--darkmode-gray-1);
+}
+
+:global(.light-mode) .TerminalContainer {
+	background-color: #ddd;
+	box-shadow: 0 0 1rem black;
+}
+:global(.dark-mode) .TerminalContainer {
+	background-color: var(--darkmode-gray-2);
+	box-shadow: 0 0 1rem black;
+}
+:global(.light-mode) .Terminal { background-color: #eee }
+:global(.dark-mode) .Terminal { background-color: var(--darkmode-gray-1); }
+:global(.light-mode) .Terminal pre {
+	color: black;
+	background-color: #eee;
+}
+:global(.dark-mode) .Terminal pre {
+	color: var(--darkmode-gray-10);
+	background-color: var(--darkmode-gray-1);
+}

@@ -1,0 +1,16 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 28 28" stroke="none">
+	<defs>
+		<code>
+			<![CDATA[
+// var svg = ear.svg();
+svg.size(20, 20).stroke("none");
+
+svg.polygon(17, 10, 3, 18, 3, 2);
+svg.rect(14, 2, 3.5, 16);
+
+]]>
+		</code>
+	</defs>
+	<polygon points="17,10 3,18 3,2" fill="white"/>
+	<rect x="14" y="2" width="3.5" height="16" fill="white"/>
+</svg>

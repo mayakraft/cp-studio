@@ -1,0 +1,153 @@
+/* BUTTON */
+
+button {
+	display: inline-block;
+	margin: calc(var(--app-font-size) * 0.2);
+	padding: calc(var(--app-font-size) * 0.4);
+	border: 0px solid;
+	border-radius: 0.25rem;
+	outline-offset: 0.125rem;
+	font-weight: bold;
+	font-size: var(--app-font-size);
+	line-height: var(--app-font-size);
+	text-align: center;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: pointer;
+}
+button:focus {
+	outline: 3px solid;
+}
+
+/* replace this "square" with something better... "image-square" ? */
+button.square,
+button.image-square {
+	width: var(--menubar-height);
+	height: var(--menubar-height);
+}
+
+/* TEXT AREA */
+
+textarea {
+	border: 0;
+	border-radius: calc(var(--app-font-size) / 4);
+	outline: 3px solid;
+	outline-offset: 0.125rem;
+	font-size: var(--app-font-size);
+	outline-color: transparent; 
+}
+/*
+textarea:focus {
+	outline: 3px solid;
+	outline-offset: 0.125rem;
+}
+*/
+
+
+/* TEXT BOX */
+
+input[type=text] {
+	border-width: 0;
+	border-radius: calc(var(--app-font-size) / 4);
+	font-size: var(--app-font-size);
+	font-weight: bold;
+	padding: 0 calc(var(--app-font-size) * 0.25);
+	width: calc(var(--app-font-size) * 3);
+}
+input[type=text]:focus {
+	outline: 3px solid;
+	outline-offset: 0.125rem;
+}
+
+/* SLIDER */
+
+input[type=range] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+	width: 100%;
+	margin: 0.85rem 0;
+}
+/*slider track*/
+input[type=range]::-webkit-slider-runnable-track {
+	height: 0.5rem;
+}
+input[type=range]::-moz-range-track {
+	height: 0.5rem;
+}
+/*slider dot*/
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	margin-top: -12px; /* Centers thumb on the track */
+	width: 1.5rem;
+	height: 2rem;
+	border-radius: calc(var(--app-font-size) / 4);
+}
+input[type=range]::-moz-range-thumb {
+	width: 1.5rem;
+	height: 2rem;
+	border: none; /*Removes extra border that FF applies*/
+	border-radius: calc(var(--app-font-size) / 4);
+}
+/*accessibility focus indicator*/
+input[type=range]:focus {
+	outline: none;
+}
+input[type=range]:focus::-webkit-slider-thumb {
+	outline: 3px solid;
+	outline-offset: 0.125rem;
+}
+input[type=range]:focus::-moz-range-thumb {
+	outline: 3px solid;
+	outline-offset: 0.125rem;
+}
+
+
+/*CHECKBOX*/
+
+input[type=checkbox] {
+	-webkit-appearance: none;
+	appearance: none;
+	font: inherit;
+	/*width: calc(var(--app-font-size) * 1.25);*/
+	/*height: calc(var(--app-font-size) * 1.25);*/
+	max-width: calc(var(--toolbar-button-width) * 0.75);
+	width: calc(var(--toolbar-button-width) * 0.75);
+	height: calc(var(--toolbar-button-width) * 0.75);
+	border: calc(var(--app-font-size) / 10) solid;
+	border-radius: calc(var(--app-font-size) / 4);
+	cursor: pointer;
+	margin: 0.125rem;
+}
+input[type=checkbox] + label {
+	line-height: calc(var(--toolbar-button-width) * 0.75);
+	vertical-align: calc(var(--toolbar-button-width)*0.75 - var(--app-font-size) - 2px);
+	cursor: pointer;
+	padding: 0 0.25rem;
+}
+input[type=checkbox]:focus {
+	outline: 3px solid;
+	outline-offset: 0.125rem;
+}
+
+/* RADIO BUTTONS */
+
+button.radio {
+	border: calc(var(--app-font-size) / 10) solid;
+	/*background-color: transparent;*/
+}
+button.radio[highlighted=true] {
+	/*background-color: red;*/
+}
+
+/* RADIO CHECKBOXES */
+
+input[type=checkbox].radio {
+	border-radius: calc(var(--toolbar-button-width) * 0.75 * 0.5);
+}

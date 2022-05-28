@@ -1,0 +1,24 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" stroke-width="2" stroke="white">
+	<defs>
+		<code>
+			<![CDATA[
+// var svg = ear.svg();
+svg.size(20, 20)
+  .strokeWidth(2)
+  .stroke("white");
+
+let step = 4;
+let x = 2.5;
+let y = 18.5;
+const p = svg.path().fill("none").Move(x, y);
+for (let i = 0; i < 4; i++) {
+  y -= step;
+  p.Line(x, y);
+  x += step;
+  p.Line(x, y);
+}
+]]>
+		</code>
+	</defs>
+	<path fill="none" d="M2.5 18.5L2.5 14.5L6.5 14.5L6.5 10.5L10.5 10.5L10.5 6.5L14.5 6.5L14.5 2.5L18.5 2.5"/>
+</svg>

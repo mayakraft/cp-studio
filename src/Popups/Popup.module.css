@@ -1,0 +1,65 @@
+.ScreenCover {
+	background-color: #0008;
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: auto;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.Popup {
+	z-index: 21;
+	max-width: 85vw;
+	max-height: 85vh;
+}
+
+.TitleBar {
+	padding: 0.5rem 1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15rem;;
+}
+
+.Body {
+	padding: 0.5rem 1rem;
+}
+
+.Body h1,
+.Body h2,
+.Body h3,
+.Body h4,
+.Body h5,
+.Body h6,
+.Body p {
+	margin: 0.5rem 0;
+}
+
+
+/* COLORS */
+
+:global(.light-mode) .TitleBar {
+	color: white;
+	background-color: #e53;
+}
+:global(.dark-mode) .TitleBar {
+	color: var(--darkmode-gray-11);
+	background-color: var(--darkmode-blue);
+}
+
+:global(.light-mode) .Body {
+	background-color: white;
+}
+:global(.dark-mode) .Body {
+	color: var(--darkmode-gray-8);
+	background-color: var(--darkmode-gray-2);
+}
+
+@media only screen and (min-width: 600px) { .Popup { max-width: 400px; max-height: 75vh; } }
+@media only screen and (min-width: 768px) { .Popup { max-width: 450px; max-height: 75vh; } }
+@media only screen and (min-width: 992px) { .Popup { max-width: 500px; max-height: 75vh; } }
+@media only screen and (min-width: 1200px) { .Popup { max-width: 550px; max-height: 75vh; } }
+
