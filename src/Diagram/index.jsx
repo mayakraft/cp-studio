@@ -1,3 +1,4 @@
+import "./Diagram.css";
 import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./Diagram.module.css";
@@ -13,9 +14,9 @@ const Diagram = (props) => {
 	let parentDiv;
 
 	const svg = ear.svg();
-	svg.onPress = (e) => props.onPress(e);
-	svg.onMove = (e) => props.onMove(e);
-	svg.onRelease = (e) => props.onRelease(e);
+	svg.onPress = props.onPress;
+	svg.onMove = props.onMove;
+	svg.onRelease = props.onRelease;
 
 	const origamiLayer = svg.g();
 	// const toolLayer = ToolLayer(svg);

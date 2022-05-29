@@ -3,101 +3,10 @@
 	justify-content: center;
 	flex-grow: 1;
 }
-
 .Top { align-items: flex-start; }
 .Center { align-items: center; }
 
-.Diagram svg {
-	max-height: calc(100vh - var(--menubar-height));
-}
-
-.Diagram svg.origami {
-	stroke-width: 0.005;
-}
-
-:global(.light-mode) .Diagram svg .faces .front { fill: white; }
-:global(.light-mode) .Diagram svg .faces .back { fill: #e53; }
-:global(.dark-mode) .Diagram svg .faces .front { fill: var(--darkmode-4-gray); }
-:global(.dark-mode) .Diagram svg .faces .back { fill: var(--darkmode-blue); }
-
-:global(.light-mode) .Diagram svg .highlight { stroke: black; }
-:global(.dark-mode) .Diagram svg .highlight { stroke: var(--darkmode-2-lightgray); }
-
-:global(.light-mode) .Diagram svg polygon.highlight { fill: #fb4; stroke: none; }
-:global(.dark-mode) .Diagram svg polygon.highlight { fill: var(--darkmode-pink); stroke: none; }
-:global(.light-mode) .Diagram svg circle.highlight { fill: black; stroke: none; }
-:global(.dark-mode) .Diagram svg circle.highlight { fill: #fb4; stroke: none; }
-
-:global(.light-mode) .Diagram svg .crease-line {
-	stroke: black;
-	stroke-dasharray: 0.02 0.03;
-	stroke-linecap: round;
-	fill: none;
-}
-:global(.dark-mode) .Diagram svg .crease-line {
-	stroke: #fb4;
-	stroke-dasharray: 0.02 0.03;
-	stroke-linecap: round;
-	fill: none;
-}
-
-.Diagram svg .diagram-instructions { stroke-linecap: round; }
-.Diagram svg .diagram-instructions .mountain { stroke-dasharray: 0.02 0.035 0.001 0.035; }
-.Diagram svg .diagram-instructions .valley { stroke-dasharray: 0.02 0.035; }
-.Diagram svg .diagram-instructions .flat { stroke-dasharray: 0.02 0.035; }
-
-:global(.light-mode) .Diagram svg .diagram-instructions { stroke: #666; }
-:global(.light-mode) .Diagram svg .diagram-instructions .mountain { stroke: #666; }
-:global(.light-mode) .Diagram svg .diagram-instructions .valley { stroke: #666; }
-:global(.light-mode) .Diagram svg .diagram-instructions .flat { stroke: #666; }
-
-:global(.dark-mode) .Diagram svg .diagram-instructions { stroke: var(--darkmode-3-lightgray); }
-:global(.dark-mode) .Diagram svg .diagram-instructions .mountain { stroke: var(--darkmode-3-lightgray); }
-:global(.dark-mode) .Diagram svg .diagram-instructions .valley { stroke: var(--darkmode-3-lightgray); }
-:global(.dark-mode) .Diagram svg .diagram-instructions .flat { stroke: var(--darkmode-3-lightgray); }
-
-:global(.light-mode) .Diagram svg .diagram-instructions .arrow {
-	stroke: black;
-	fill: black;
-}
-:global(.dark-mode) .Diagram svg .diagram-instructions .arrow {
-	stroke: var(--darkmode-1-lightgray);
-	fill: var(--darkmode-1-lightgray);
-}
-
-
-
-
-/*.Diagram svg .faces polygon { stroke: none }
-
-:global(.light-mode) .Diagram svg .boundaries polygon {
-	fill: white;
-	stroke: black;
-}
-:global(.dark-mode) .Diagram svg .boundaries polygon {
-	fill: var(--darkmode-1-gray);
-	stroke: var(--darkmode-0-lightgray);
-}
-
-:global(.light-mode) .Diagram svg { stroke: black; }
-:global(.light-mode) .Diagram svg .mountain { stroke: #e53; }
-:global(.light-mode) .Diagram svg .valley { stroke: #38b; }
-:global(.light-mode) .Diagram svg .flat { stroke: #ddd; }
-:global(.light-mode) .Diagram svg .boundary { stroke: black; }
-
-:global(.dark-mode) .Diagram svg { stroke: var(--darkmode-2-lightgray); }
-:global(.dark-mode) .Diagram svg .mountain { stroke: var(--darkmode-pink); }
-:global(.dark-mode) .Diagram svg .valley { stroke: var(--darkmode-blue); }
-:global(.dark-mode) .Diagram svg .flat { stroke: var(--darkmode-4-gray); }
-:global(.dark-mode) .Diagram svg .boundary { stroke: var(--darkmode-0-lightgray); }
-
-:global(.light-mode) .Diagram svg polygon.highlight { fill: #fb4; stroke: none; }
-:global(.dark-mode) .Diagram svg polygon.highlight { fill: var(--darkmode-pink-dark); stroke: none; }
-:global(.light-mode) .Diagram svg circle.highlight { fill: black; stroke: none; }
-:global(.dark-mode) .Diagram svg circle.highlight { fill: #fb4; stroke: none; }
-*/
-
-
+.Diagram svg { max-height: calc(100vh - var(--menubar-height)); }
 
 @media not all and (hover), (max-aspect-ratio: 1/1) {
 	:global(.View-Items-0) .Diagram svg { max-height: 100vh; }

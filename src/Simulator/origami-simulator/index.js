@@ -63,6 +63,7 @@ const OrigamiSimulator = function ({ renderer, scene, camera }) {
   };
   let creasePercent = 0.0;
   let axialStrain = false;
+  let shadows = true;
 
   // carryovers from global
   let nodePositionHasChanged = false;
@@ -163,6 +164,29 @@ const OrigamiSimulator = function ({ renderer, scene, camera }) {
     solver.dealloc();
   };
 
+  const setFoldAmount = (value) => {
+    creasePercent = value;
+    solver.setCreasePercent(creasePercent);
+  };
+
+  const setStrain = (value) => {
+    const boolean = !!value;
+    axialStrain = boolean;
+    // solverOptions.materialHasChanged = true;
+    // solverOptions.fixedHasChanged = true;
+    // solverOptions.nodePositionHasChanged = true;
+    // solverOptions.creaseMaterialHasChanged = true;
+    model.setAxialStrain(axialStrain);
+  };
+
+  const setShadows = (value) => {
+    shadows = value;
+    model.frontside.castShadow = shadows;
+    model.frontside.receiveShadow = shadows;
+    // model.backside.castShadow = shadows;
+    model.backside.receiveShadow = shadows;
+  };
+
   const app = {};
   Object.defineProperty(app, "dealloc", { value: dealloc });
   Object.defineProperty(app, "stop", { value: stopLoop });
@@ -173,24 +197,20 @@ const OrigamiSimulator = function ({ renderer, scene, camera }) {
   Object.defineProperty(app, "loadSVGString", { value: loadSVGString });
   Object.defineProperty(app, "modelDidChange", { value: modelDidChange });
   Object.defineProperty(app, "model", { get: () => model });
+  Object.defineProperty(app, "setFoldAmount", { value: setFoldAmount });
   Object.defineProperty(app, "foldAmount", {
-    set: (value) => {
-      creasePercent = value;
-      solver.setCreasePercent(creasePercent);
-    },
+    set: setFoldAmount,
     get: () => creasePercent
   });
+  Object.defineProperty(app, "setStrain", { value: setStrain });
   Object.defineProperty(app, "strain", {
-    set: (value) => {
-      const boolean = !!value;
-      axialStrain = boolean;
-      // solverOptions.materialHasChanged = true;
-      // solverOptions.fixedHasChanged = true;
-      // solverOptions.nodePositionHasChanged = true;
-      // solverOptions.creaseMaterialHasChanged = true;
-      model.setAxialStrain(axialStrain);
-    },
+    set: setStrain,
     get: () => axialStrain
+  });
+  Object.defineProperty(app, "setShadows", { value: setShadows });
+  Object.defineProperty(app, "shadows", {
+    set: setShadows,
+    get: () => shadows
   });
   // Object.defineProperty(app, "getEdgesFoldAngle", {
   //   get: () => getEdgesFoldAngle

@@ -9,6 +9,7 @@ import ErrorPopup from "./Popups/ErrorPopup";
 import CP from "./CP";
 import Diagram from "./Diagram";
 import Simulator from "./Simulator";
+// import Simulator from "./Simulator/ThreeCanvas";
 // I/O
 import DragAndDrop from "./FileManager/DragAndDrop";
 import {
@@ -32,6 +33,31 @@ import {
 import animalBase from "./Files/example-animal-base.fold?raw";
 const startFOLD = JSON.parse(animalBase);
 
+import ear from "rabbit-ear";
+
+const appendNearest = (event, origami) => {
+	const arrayForm = event && event.x != null ? [event.x, event.y] : [0,0];
+	const vertex = ear.graph.nearest_vertex(origami, arrayForm);
+	const edge = ear.graph.nearest_edge(origami, arrayForm);
+	const face = ear.graph.nearest_face(origami, arrayForm);
+	event.nearest = {
+		vertex,
+		edge,
+		face,
+		vertex_coords: origami.vertices_coords[vertex],
+		edge_coords: edge != null
+			? origami.edges_vertices[edge].map(v => origami.vertices_coords[v])
+			: undefined,
+		face_coords: face != null
+			? origami.faces_vertices[face].map(v => origami.vertices_coords[v])
+			: undefined,
+		edge_assignment: edge != null
+			? origami.edges_assignment[edge]
+			: undefined,
+	};
+	return event;
+};
+
 const App = () => {
 	// load preferences. these are used to populate the initial state of signals.
 	const preferences = getPreference();
@@ -54,18 +80,26 @@ const App = () => {
 	const [mobileLayout, setMobileLayout] = createSignal(window.innerWidth < window.innerHeight);
 	const [showPanels, setShowPanels] = createSignal(true);
 	const [showTerminal, setShowTerminal] = createSignal(false);
-	const [showDiagramInstructions, setShowDiagramInstructions] = createSignal(true);
+	const [showDiagramInstructions, setShowDiagramInstructions] = createSignal(preferences.showDiagramInstructions);
 	// popups
 	const [errorMessage, setErrorMessage] = createSignal();
+	const [showNewPopup, setShowNewPopup] = createSignal(false);
 	// ui
 	const [keyboardState, setKeyboardState] = createSignal({});
-
 	// simulator
-	const [simulatorOn, setSimulatorOn] = createSignal(true);
-	const [simulatorShowHighlights, setSimulatorShowHighlights] = createSignal(true);
-	const [simulatorStrain, setSimulatorStrain] = createSignal(false);
+	const [simulatorOn, setSimulatorOn] = createSignal(preferences.simulator.on);
+	const [simulatorShowTouches, setSimulatorShowTouches] = createSignal(preferences.simulator.showTouches);
+	const [simulatorStrain, setSimulatorStrain] = createSignal(preferences.simulator.strain);
 	const [simulatorFoldAmount, setSimulatorFoldAmount] = createSignal(0);
-	const [simulatorTouch, setSimulatorTouch] = createSignal([]);
+	const [simulatorShowShadows, setSimulatorShowShadows] = createSignal(preferences.simulator.shadows);
+	// touch events
+	const [cpPresses, setCPPresses] = createSignal([]);
+	const [cpDrags, setCPDrags] = createSignal([]);
+	const [cpReleases, setCPReleases] = createSignal([]);
+	const [diagramPresses, setDiagramPresses] = createSignal([]);
+	const [diagramDrags, setDiagramDrags] = createSignal([]);
+	const [diagramReleases, setDiagramReleases] = createSignal([]);
+	const [simulatorMoves, setSimulatorMoves] = createSignal([]);
 
 	// file management
 	/**
@@ -93,12 +127,12 @@ const App = () => {
 		setFileFrames(newFile.file_frames);
 		setFileFrameIndex(newFile.file_frames.length - 1);
 	};
-	const cpOnPress = (e) => console.log(e);
-	const cpOnMove = (e) => {};
-	const cpOnRelease = (e) => console.log(e);
-	const diagramOnPress = (e) => console.log(e);
-	const diagramOnMove = (e) => {};
-	const diagramOnRelease = (e) => console.log(e);
+	const cpOnPress = (e) => setCPPresses([...cpPresses(), appendNearest(e, cp())]);
+	const cpOnMove = (e) => { if (e.buttons) { setCPDrags([...cpDrags(), appendNearest(e, cp())]); }};
+	const cpOnRelease = (e) => setCPReleases([...cpReleases(), appendNearest(e, cp())]);
+	const diagramOnPress = (e) => setDiagramPresses([...diagramPresses(), appendNearest(e, cp())]);
+	const diagramOnMove = (e) => { if (e.buttons) { setDiagramDrags([...diagramDrags(), appendNearest(e, cp())]); }};
+	const diagramOnRelease = (e) => setDiagramReleases([...diagramReleases(), appendNearest(e, cp())]);
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
 	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
 	const onkeyup = (e) => setKeyboardState(removeKey(keyboardState(), e.key));
@@ -114,9 +148,24 @@ const App = () => {
 		window.removeEventListener("keyup", onkeyup);
 	});
 
-	createEffect(() => setPreference(["language"], language()));
 	createEffect(() => setPreference(["views"], views()));
+	createEffect(() => setPreference(["language"], language()));
 	createEffect(() => setPreference(["darkMode"], darkMode()));
+	createEffect(() => setPreference(["simulator", "on"], simulatorOn()));
+	createEffect(() => setPreference(["simulator", "showTouches"], simulatorShowTouches()));
+	createEffect(() => setPreference(["simulator", "strain"], simulatorStrain()));
+	createEffect(() => setPreference(["simulator", "shadows"], simulatorShowShadows()));
+
+	createEffect(() => {
+		tool();
+		setCPPresses([]);
+		setCPDrags([]);
+		setCPReleases([]);
+		setDiagramPresses([]);
+		setDiagramDrags([]);
+		setDiagramReleases([]);
+		// setSimulatorMoves([]);
+	})
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -170,13 +219,17 @@ const App = () => {
 						<Simulator
 							cp={cp}
 							tool={tool}
+							views={views}
 							darkMode={darkMode}
 							showPanels={showPanels}
+							// simulator
 							simulatorOn={simulatorOn}
-							setSimulatorTouch={setSimulatorTouch}
-							simulatorShowHighlights={simulatorShowHighlights}
+							simulatorShowTouches={simulatorShowTouches}
 							simulatorStrain={simulatorStrain}
 							simulatorFoldAmount={simulatorFoldAmount}
+							simulatorShowShadows={simulatorShowShadows}
+							// events
+							setSimulatorMoves={setSimulatorMoves}
 						/>
 					</Show>
 				</div>
@@ -206,9 +259,18 @@ const App = () => {
 							setSimulatorStrain={setSimulatorStrain}
 							simulatorFoldAmount={simulatorFoldAmount}
 							setSimulatorFoldAmount={setSimulatorFoldAmount}
-							simulatorShowHighlights={simulatorShowHighlights}
-							setSimulatorShowHighlights={setSimulatorShowHighlights}
-							// ui
+							simulatorShowTouches={simulatorShowTouches}
+							setSimulatorShowTouches={setSimulatorShowTouches}
+							simulatorShowShadows={simulatorShowShadows}
+							setSimulatorShowShadows={setSimulatorShowShadows}
+							// events
+							cpPresses={cpPresses}
+							cpDrags={cpDrags}
+							cpReleases={cpReleases}
+							diagramPresses={diagramPresses}
+							diagramDrags={diagramDrags}
+							diagramReleases={diagramReleases}
+							simulatorMoves={simulatorMoves}
 							keyboardState={keyboardState}
 						/>
 					</Show>
@@ -236,6 +298,9 @@ const App = () => {
 					body={errorMessage().body}
 					clickOff={() => setErrorMessage(undefined)}
 				/>
+			</Show>
+			<Show when={showNewPopup()}>
+				<div></div>
 			</Show>
 			<DragAndDrop
 				loadFile={loadFile}

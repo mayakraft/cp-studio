@@ -3,67 +3,10 @@
 	justify-content: center;
 	flex-grow: 1;
 }
-
 .Top { align-items: flex-start; }
 .Center { align-items: center; }
 
-.CP svg {
-	max-height: calc(100vh - var(--menubar-height));
-}
-
-.CP svg.origami {
-	stroke-width: 0.005;
-}
-.CP svg .faces polygon { stroke: none }
-
-:global(.light-mode) .CP svg .boundaries polygon {
-	fill: white;
-	stroke: black;
-}
-:global(.dark-mode) .CP svg .boundaries polygon {
-	fill: var(--darkmode-1-gray);
-	stroke: var(--darkmode-0-lightgray);
-}
-
-:global(.light-mode) .CP svg { stroke: black; }
-:global(.light-mode) .CP svg .mountain { stroke: #e53; }
-:global(.light-mode) .CP svg .valley { stroke: #38b; }
-:global(.light-mode) .CP svg .flat { stroke: #ddd; }
-:global(.light-mode) .CP svg .boundary { stroke: black; }
-
-:global(.dark-mode) .CP svg { stroke: var(--darkmode-2-lightgray); }
-:global(.dark-mode) .CP svg .mountain { stroke: var(--darkmode-pink); }
-:global(.dark-mode) .CP svg .valley { stroke: var(--darkmode-blue); }
-:global(.dark-mode) .CP svg .flat { stroke: var(--darkmode-4-gray); }
-:global(.dark-mode) .CP svg .boundary { stroke: var(--darkmode-0-lightgray); }
-
-:global(.light-mode) .CP svg polygon.highlight { fill: #fb4; stroke: none; }
-:global(.dark-mode) .CP svg polygon.highlight { fill: var(--darkmode-pink-dark); stroke: none; }
-:global(.light-mode) .CP svg circle.highlight { fill: black; stroke: none; }
-:global(.dark-mode) .CP svg circle.highlight { fill: #fb4; stroke: none; }
-
-
-
-:global(.light-mode) .CP svg .crease-line {
-	stroke: black;
-	stroke-dasharray: 0.02 0.03;
-	stroke-linecap: round;
-	fill: none;
-}
-:global(.dark-mode) .CP svg .crease-line {
-	stroke: #fb4;
-	stroke-dasharray: 0.02 0.03;
-	stroke-linecap: round;
-	fill: none;
-}
-
-:global(.light-mode) .CP svg .crease-line.disabled {
-	stroke: #888;
-}
-:global(.dark-mode) .CP svg .crease-line.disabled {
-	stroke: #666;
-}
-
+.CP svg { max-height: calc(100vh - var(--menubar-height)); }
 
 @media not all and (hover), (max-aspect-ratio: 1/1) {
 	:global(.View-Items-0) .CP svg { max-height: 100vh; }
@@ -73,4 +16,3 @@
 	/* mobile layout overwrites this feature - move up when terminal opens */
 	.Top { align-items: center; }
 }
-

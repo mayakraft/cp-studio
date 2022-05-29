@@ -1,0 +1,14 @@
+/*
+.PanelSimulator {
+	display: flex;
+	flex-direction: column;
+}
+*/
+
+.PanelSimulator :global(.flex-row) input[type=range] {
+	flex: 3;
+}
+
+.PanelSimulator :global(.flex-row) input[type=checkbox] {
+	flex: 1;
+}

@@ -1,11 +1,12 @@
+import "./CP.css";
 import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./CP.module.css";
-// import CPLayer from "./CPLayer";
-// import ToolLayer from "./ToolLayer";
-// import RulerLayer from "./RulerLayer";
-// import DebugLayer from "./DebugLayer";
-// import SimulatorLayer from "./SimulatorLayer";
+// import CPLayer from "./Layer/CPLayer";
+// import ToolLayer from "./Layer/ToolLayer";
+// import RulerLayer from "./Layer/RulerLayer";
+// import DebugLayer from "./Layer/DebugLayer";
+// import SimulatorLayer from "./Layer/SimulatorLayer";
 
 const cpStyle = {
 	vertices: { fill: "none", stroke: "none" },
@@ -15,9 +16,9 @@ const CP = (props) => {
 	let parentDiv;
 
 	const svg = ear.svg();
-	svg.onPress = (e) => props.onPress(e);
-	svg.onMove = (e) => props.onMove(e);
-	svg.onRelease = (e) => props.onRelease(e);
+	svg.onPress = props.onPress;
+	svg.onMove = props.onMove;
+	svg.onRelease = props.onRelease;
 
 	// const origamiLayer = CPLayer(svg);
 	const origamiLayer = svg.g().strokeWidth(0.01);

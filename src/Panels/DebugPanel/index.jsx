@@ -24,22 +24,15 @@ const DebugPanel = (props) => {
 		</div>);
 	};
 
-	const SVGTouch = (props) => (<div>
-		<p>hover: {stringifyPoint(touch.hover)}</p>
-		<p>presses: {touch.presses.length}</p>
-		<p>moves: {touch.moves.length}</p>
-		<p>releases: {touch.releases.length}</p>
-		<p>params: {touch.params ? touch.params.length : "0"}</p>
-	</div>);
-
-	const SimulatorTouch = (props) => (<div>
-		<p>hover: {touch.length}</p>
-		<ol>
-			<For each={touch}>
-				{(el) => <li>v: {el.vertex} f: {el.face}</li>}
-			</For>
-		</ol>
-	</div>);
+	const SimulatorTouch = (props) => {
+		return (<>
+			<h5>({stringifyPoint(props.touch.point, 2, ", ")})</h5>
+			<ul>
+				<li>vert {props.touch.vertex}, face {props.touch.face}</li>
+				<li>({stringifyPoint(props.touch.vertex_coords, 3, ", ")})</li>
+			</ul>
+		</>);
+	};
 
 	return (
 		<Panel
@@ -51,21 +44,25 @@ const DebugPanel = (props) => {
 				<Keyboard keyboardState={props.keyboardState} />
 				<hr />
 			</Show>
-			<Show when={props.cpTouchState}>
-				<h4>crease pattern</h4>
-				<SVGTouch touch={props.cpTouchState()} />
-				<hr />
-			</Show>
-			<Show when={props.diagramTouchState}>
-				<h4>diagram</h4>
-				<SVGTouch touch={props.diagramTouchState()} />
-				<hr />
-			</Show>
-			<Show when={props.simulatorTouchState}>
-				<h4>simulator</h4>
-				<SimulatorTouch touch={props.simulatorTouchState()} />
-				<hr />
-			</Show>
+			
+			<h4>crease pattern</h4>
+			<p>presses: <b>{props.cpPresses().length}</b></p>
+			<p>drags: <b>{props.cpDrags().length}</b></p>
+			<p>releases: <b>{props.cpReleases().length}</b></p>
+			<hr />
+			
+			<h4>diagram</h4>
+			<p>presses: <b>{props.diagramPresses().length}</b></p>
+			<p>drags: <b>{props.diagramDrags().length}</b></p>
+			<p>releases: <b>{props.diagramReleases().length}</b></p>
+			<hr />
+
+			<h4>simulator (<b>{props.simulatorMoves().length}</b>)</h4>
+			<For each={props.simulatorMoves()}>{(touch) =>
+				<SimulatorTouch touch={touch}/>
+			}</For>
+			<hr />
+
 			<button>repair cp</button>
 		</Panel>
 	);

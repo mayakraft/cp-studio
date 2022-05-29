@@ -88,7 +88,8 @@ export const materialDarkFront = new THREE.MeshStandardMaterial({
   polygonOffset: true,
   polygonOffsetFactor, // positive value pushes polygon further away
   polygonOffsetUnits: 1,
-  color: 0x3E3F43,
+  // color: 0x3E3F43,
+  color: 0x28292B,
   emissive: 0x000000,
   roughness: 1,
 });

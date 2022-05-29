@@ -1,0 +1,48 @@
+svg.creasePattern { stroke-width: 0.005; }
+
+svg.creasePattern .faces polygon { stroke: none }
+
+.light-mode svg.creasePattern .boundaries polygon {
+	fill: white;
+	stroke: black;
+}
+.dark-mode svg.creasePattern .boundaries polygon {
+	fill: var(--darkmode-gray-1);
+	stroke: var(--darkmode-gray-5);
+}
+
+.light-mode svg.creasePattern { stroke: black; }
+.light-mode svg.creasePattern .mountain { stroke: #e53; }
+.light-mode svg.creasePattern .valley { stroke: #38b; }
+.light-mode svg.creasePattern .flat { stroke: #ddd; }
+.light-mode svg.creasePattern .boundary { stroke: black; }
+.light-mode svg.creasePattern polygon.highlight { fill: #fb4; stroke: none; }
+.light-mode svg.creasePattern circle.highlight { fill: black; stroke: none; }
+
+.dark-mode svg.creasePattern { stroke: var(--darkmode-gray-7); }
+.dark-mode svg.creasePattern .mountain { stroke: var(--darkmode-pink); }
+.dark-mode svg.creasePattern .valley { stroke: var(--darkmode-blue); }
+.dark-mode svg.creasePattern .flat { stroke: var(--darkmode-gray-4); }
+.dark-mode svg.creasePattern .boundary { stroke: var(--darkmode-gray-5); }
+.dark-mode svg.creasePattern polygon.highlight { fill: var(--darkmode-pink-dark); stroke: none; }
+.dark-mode svg.creasePattern circle.highlight { fill: #fb4; stroke: none; }
+
+.light-mode svg.creasePattern .crease-line {
+	stroke: black;
+	stroke-dasharray: 0.02 0.03;
+	stroke-linecap: round;
+	fill: none;
+}
+.dark-mode svg.creasePattern .crease-line {
+	stroke: #fb4;
+	stroke-dasharray: 0.02 0.03;
+	stroke-linecap: round;
+	fill: none;
+}
+
+.light-mode svg.creasePattern .crease-line.disabled {
+	stroke: #888;
+}
+.dark-mode svg.creasePattern .crease-line.disabled {
+	stroke: #666;
+}

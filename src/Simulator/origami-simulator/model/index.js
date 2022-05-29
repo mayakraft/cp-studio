@@ -40,7 +40,7 @@ function Model({ scene, visible, axialStrain }) {
   this.frontside.castShadow = true;
   this.frontside.receiveShadow = true;
   // this.backside.castShadow = true;
-  // this.backside.receiveShadow = true;
+  this.backside.receiveShadow = true;
 
   scene.add(this.frontside);
   scene.add(this.backside);

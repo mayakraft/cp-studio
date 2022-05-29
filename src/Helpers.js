@@ -43,3 +43,30 @@ export const removeKey = (object, key) => {
 	delete object[key];
 	return {...object};
 };
+
+const getBoundingBox = (graph) => {
+	const mins = Array.from(Array(graph.vertices_coords[0].length)).map(() => Infinity);
+	const maxs = Array.from(Array(graph.vertices_coords[0].length)).map(() => -Infinity);
+	graph.vertices_coords.forEach(pt => {
+		mins.forEach((min, i) => { if (pt[i] < min) { mins[i] = pt[i]; }});
+		maxs.forEach((max, i) => { if (pt[i] > max) { maxs[i] = pt[i]; }});
+	});
+	return { mins, maxs };
+};
+
+// calculate the size of the crease pattern
+export const getVmin = (graph) => {
+	const { mins, maxs } = getBoundingBox(graph);
+	return maxs
+		.map((_, i) => maxs[i] - mins[i])
+		.sort((a, b) => a - b)
+		.shift();
+};
+
+export const getVMax = (graph) => {
+	const { mins, maxs } = getBoundingBox(graph);
+	return maxs
+		.map((_, i) => maxs[i] - mins[i])
+		.sort((a, b) => b - a)
+		.shift();
+};

@@ -22,6 +22,13 @@ const PanelGroup = (props) => {
 				diagramTouchState={props.diagramTouchState}
 				simulatorMove={props.simulatorMove}
 				keyboardState={props.keyboardState}
+				cpPresses={props.cpPresses}
+				cpDrags={props.cpDrags}
+				cpReleases={props.cpReleases}
+				diagramPresses={props.diagramPresses}
+				diagramDrags={props.diagramDrags}
+				diagramReleases={props.diagramReleases}
+				simulatorMoves={props.simulatorMoves}
 			/>
 			<FilePanel
 				// isCollapsed={props.filePanelCollapsed}
@@ -76,8 +83,10 @@ const PanelGroup = (props) => {
 					setSimulatorStrain={props.setSimulatorStrain}
 					simulatorFoldAmount={props.simulatorFoldAmount}
 					setSimulatorFoldAmount={props.setSimulatorFoldAmount}
-					simulatorShowHighlights={props.simulatorShowHighlights}
-					setSimulatorShowHighlights={props.setSimulatorShowHighlights}
+					simulatorShowTouches={props.simulatorShowTouches}
+					setSimulatorShowTouches={props.setSimulatorShowTouches}
+					simulatorShowShadows={props.simulatorShowShadows}
+					setSimulatorShowShadows={props.setSimulatorShowShadows}
 				/>
 			</Show>
 			<Show when={props.views().includes("diagram")}>

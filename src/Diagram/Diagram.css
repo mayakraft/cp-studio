@@ -1,0 +1,79 @@
+svg.foldedForm { stroke-width: 0.005; }
+
+.light-mode svg.foldedForm .faces .front { fill: white; }
+.light-mode svg.foldedForm .faces .back { fill: #e53; }
+.light-mode svg.foldedForm .highlight { stroke: black; }
+.light-mode svg.foldedForm polygon.highlight { fill: #fb4; stroke: none; }
+.light-mode svg.foldedForm circle.highlight { fill: black; stroke: none; }
+
+.dark-mode svg.foldedForm .faces .front { fill: var(--darkmode-gray-4); }
+.dark-mode svg.foldedForm .faces .back { fill: var(--darkmode-blue); }
+.dark-mode svg.foldedForm .highlight { stroke: var(--darkmode-gray-7); }
+.dark-mode svg.foldedForm polygon.highlight { fill: var(--darkmode-pink); stroke: none; }
+.dark-mode svg.foldedForm circle.highlight { fill: #fb4; stroke: none; }
+
+.light-mode svg.foldedForm .crease-line {
+	stroke: black;
+	stroke-dasharray: 0.02 0.03;
+	stroke-linecap: round;
+	fill: none;
+}
+.dark-mode svg.foldedForm .crease-line {
+	stroke: #fb4;
+	stroke-dasharray: 0.02 0.03;
+	stroke-linecap: round;
+	fill: none;
+}
+
+svg.foldedForm .diagram-instructions { stroke-linecap: round; }
+svg.foldedForm .diagram-instructions .mountain { stroke-dasharray: 0.02 0.035 0.001 0.035; }
+svg.foldedForm .diagram-instructions .valley { stroke-dasharray: 0.02 0.035; }
+svg.foldedForm .diagram-instructions .flat { stroke-dasharray: 0.02 0.035; }
+
+.light-mode svg.foldedForm .diagram-instructions { stroke: #666; }
+.light-mode svg.foldedForm .diagram-instructions .mountain { stroke: #666; }
+.light-mode svg.foldedForm .diagram-instructions .valley { stroke: #666; }
+.light-mode svg.foldedForm .diagram-instructions .flat { stroke: #666; }
+
+.dark-mode svg.foldedForm .diagram-instructions { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-instructions .mountain { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-instructions .valley { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-instructions .flat { stroke: var(--darkmode-gray-8); }
+
+.light-mode svg.foldedForm .diagram-instructions .arrow {
+	stroke: black;
+	fill: black;
+}
+.dark-mode svg.foldedForm .diagram-instructions .arrow {
+	stroke: var(--darkmode-gray-6);
+	fill: var(--darkmode-gray-6);
+}
+
+/*svg.foldedForm .faces polygon { stroke: none }
+
+.light-mode svg.foldedForm .boundaries polygon {
+	fill: white;
+	stroke: black;
+}
+.dark-mode svg.foldedForm .boundaries polygon {
+	fill: var(--darkmode-1-gray);
+	stroke: var(--darkmode-0-lightgray);
+}
+
+.light-mode svg.foldedForm { stroke: black; }
+.light-mode svg.foldedForm .mountain { stroke: #e53; }
+.light-mode svg.foldedForm .valley { stroke: #38b; }
+.light-mode svg.foldedForm .flat { stroke: #ddd; }
+.light-mode svg.foldedForm .boundary { stroke: black; }
+
+.dark-mode svg.foldedForm { stroke: var(--darkmode-2-lightgray); }
+.dark-mode svg.foldedForm .mountain { stroke: var(--darkmode-pink); }
+.dark-mode svg.foldedForm .valley { stroke: var(--darkmode-blue); }
+.dark-mode svg.foldedForm .flat { stroke: var(--darkmode-4-gray); }
+.dark-mode svg.foldedForm .boundary { stroke: var(--darkmode-0-lightgray); }
+
+.light-mode svg.foldedForm polygon.highlight { fill: #fb4; stroke: none; }
+.dark-mode svg.foldedForm polygon.highlight { fill: var(--darkmode-pink-dark); stroke: none; }
+.light-mode svg.foldedForm circle.highlight { fill: black; stroke: none; }
+.dark-mode svg.foldedForm circle.highlight { fill: #fb4; stroke: none; }
+*/
