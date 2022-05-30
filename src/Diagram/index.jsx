@@ -33,13 +33,13 @@ const Diagram = (props) => {
 		const origami = props.origami();
 		const box = ear.math.bounding_box(origami.vertices_coords);
 		const vmin = Math.min(box.span[0], box.span[1]);
-
+		origamiLayer.strokeWidth(vmin / 100);
 		// svg.size(-box.min[0], -box.min[1], box.span[0], box.span[1])
 		svg.size(box.span[0], box.span[1])
 			.clearTransform()
 			.scale(1, -1)
 			.padding(vmin / 20)
-			.strokeWidth(vmin / 200);
+			.strokeWidth(vmin / 100);
 
 		origamiLayer.removeChildren();
 		origamiLayer.origami(origami, diagramStyle);

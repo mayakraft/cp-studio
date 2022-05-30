@@ -78,7 +78,7 @@ const ThreeCanvas = (props) => {
 	const handleResize = () => {
 		parentDiv.removeChild(renderer.domElement);
 		setupSize();
-		setupCamera(1, false);
+		setupCamera(props.cameraRadius(), false);
 		parentDiv.appendChild(renderer.domElement);
 	};
 
@@ -90,6 +90,10 @@ const ThreeCanvas = (props) => {
 		createEffect(() => {
 			props.requestResize();
 			handleResize();
+		});
+
+		createEffect(() => {
+			setupCamera(props.cameraRadius(), false);
 		});
 
 		if (props.didMount) {

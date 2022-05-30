@@ -39,11 +39,14 @@ const CP = (props) => {
 		const origami = props.origami();
 		const box = ear.math.bounding_box(origami.vertices_coords);
 		const vmin = Math.min(box.span[0], box.span[1]);
+
+		origamiLayer.strokeWidth(vmin / 100);
+
 		svg.size(box.min[0], box.min[1], box.span[0], box.span[1])
 			.clearTransform()
 			.scale(1, -1)
 			.padding(vmin / 50)
-			.strokeWidth(vmin / 200);
+			.strokeWidth(vmin / 100);
 		// origamiLayer.onChange({ origami });
 		origamiLayer.removeChildren();
 		const origamiGroup = origamiLayer.origami(origami, cpStyle);

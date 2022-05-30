@@ -6,12 +6,12 @@
 .dark-mode .tool-layer .press-circle { stroke: none; fill: #3c7; }
 .light-mode .tool-layer .release-circle { stroke: none; fill: #e53; }
 .dark-mode .tool-layer .release-circle { stroke: none; fill: #e53; }
-.light-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
-.dark-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
-.light-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
-.dark-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
-.light-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
-.dark-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.light-mode .tool-layer line { stroke-linecap: round; }
+.dark-mode .tool-layer line { stroke-linecap: round; }
+.light-mode .tool-layer line { stroke-linecap: round; }
+.dark-mode .tool-layer line { stroke-linecap: round; }
+.light-mode .tool-layer line { stroke-linecap: round; }
+.dark-mode .tool-layer line { stroke-linecap: round; }
 .light-mode .tool-layer polygon { stroke: none; fill: #fb4; }
 .dark-mode .tool-layer polygon { stroke: none; fill: #fb4; }
 */
@@ -29,11 +29,11 @@
 
 /* param layer */
 .light-mode .param-layer circle { stroke: none; fill: #fb4; }
-.light-mode .param-layer line { stroke-width: 0.03; stroke-linecap: round; stroke: #fb4; fill: none; }
+.light-mode .param-layer line { stroke-linecap: round; stroke: #fb4; fill: none; }
 .light-mode .param-layer polygon { stroke: none; fill: #fb4; }
 
 .dark-mode .param-layer circle { stroke: none; fill: var(--darkmode-red); }
-.dark-mode .param-layer line { stroke-width: 0.03; stroke-linecap: round; stroke: #fb4; fill: none; }
+.dark-mode .param-layer line { stroke-linecap: round; stroke: #fb4; fill: none; }
 .dark-mode .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); }
 
 /* ruler layer */

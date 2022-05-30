@@ -29,6 +29,7 @@ const Simulator = (props) => {
 	const [foldAmount, setFoldAmount] = createSignal(0.5);
 	const [strain, setStrain] = createSignal(false);
 	const [isActive, setIsActive] = createSignal(true);
+	const [cameraRadius, setCameraRadius] = createSignal(1);
 
 	const [requestResize, setRequestResize] = createSignal();
 
@@ -64,7 +65,9 @@ const Simulator = (props) => {
 
 		createEffect(() => {
 			simulator.load(props.cp());
-			lightsRadius = getVMax(props.cp()) * Math.SQRT1_2 * 1;
+			const vmax = getVMax(props.cp());
+			setCameraRadius(vmax);
+			lightsRadius = vmax * Math.SQRT1_2;
 			updateLightsPosition();
 		});
 		createEffect(() => updateStyle(props.darkMode()));
@@ -251,6 +254,7 @@ const Simulator = (props) => {
 				didMount={onMount}
 				requestResize={requestResize}
 				animate={animate}
+				cameraRadius={cameraRadius}
 			/>
 		</div>
 	</>);

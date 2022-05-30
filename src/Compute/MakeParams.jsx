@@ -10,8 +10,8 @@ const Inspect = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	return !pointer || !pointer.nearest ? [] : [
 		toVector(pointer, true),
 		toSegment(pointer.nearest.edge_coords), // pointer.nearest.edge_assignment
-		ear.polygon(pointer.nearest.face_coords),
-	];
+		pointer.nearest.face_coords ? ear.polygon(pointer.nearest.face_coords) : undefined
+	].filter(a => a !== undefined);
 };
 
 const SingleLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
