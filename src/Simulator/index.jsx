@@ -34,8 +34,10 @@ const Simulator = (props) => {
 
 	// three js
 	let renderer, scene, camera;
+	// lighting
+	let lights, lightsRadius = 1;
 	// origami simulator
-	let simulator, lights, raycaster, raycasterPlane;
+	let simulator, raycaster, raycasterPlane;
 	// visualizations due to raycaster
 	let raycasterPoint, raycasterVertex, raycasterFace;
 	// todo: idea- duplicate highlighted vertex, one obeys depthTest with full
@@ -51,6 +53,7 @@ const Simulator = (props) => {
 
 		lights = lightVertices.map(() => new THREE.PointLight());
 		lights.forEach(light => scene.add(light));
+
 		updateLightsPosition();
 		initializeRaycaster();
 		simulator = OrigamiSimulator({
@@ -61,7 +64,8 @@ const Simulator = (props) => {
 
 		createEffect(() => {
 			simulator.load(props.cp());
-			updateLightsPosition(getVMax(props.cp()));
+			lightsRadius = getVMax(props.cp()) * Math.SQRT1_2 * 1;
+			updateLightsPosition();
 		});
 		createEffect(() => updateStyle(props.darkMode()));
 		createEffect(() => props.simulatorOn() ? simulator.start() : simulator.stop());
@@ -77,7 +81,10 @@ const Simulator = (props) => {
 			const shadows = props.simulatorShowShadows();
 			// renderer.shadowMap.enabled = shadows;
 			simulator.shadows = shadows;
-			// renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+			lights[0].castShadow = shadows;
+			lights[7].castShadow = shadows;
+			lights[3].castShadow = shadows;
+			lights[4].castShadow = shadows;
 		});
 	};
 
@@ -91,6 +98,7 @@ const Simulator = (props) => {
 		if (simulator && simulator.isOn) {
 			highlightTouch(calculateTouches(simulator.model, raycaster)[0]);
 		}
+		// if (camera) { updateLightsPosition(); }
 		// dragControls.nodePositionsDidChange = () => {
 		// 	simulator.modelDidChange();
 		// };
@@ -148,26 +156,27 @@ const Simulator = (props) => {
 		raycaster.setFromCamera(mouse, camera);
 		const touches = calculateTouches(simulator.model, raycaster);
 		highlightTouch(touches[0]);
-		props.setSimulatorMoves(touches);
+		props.setSimulatorPointers(touches);
 	};
 
-	const updateLightsPosition = (vmax = 1) => {
-		const radius = vmax * Math.SQRT1_2 * 1;
+	const updateLightsPosition = () => {
+		let matrix = new THREE.Matrix4();
+		if (camera) {
+			matrix = camera.matrixWorldInverse.clone();
+			matrix.setPosition(0,0,0);
+		}
 		lights.forEach((light, i) => {
 			light.position.set(...lightVertices[i % lightVertices.length]);
-			light.position.setLength(radius);
+			light.position.setLength(lightsRadius);
+			// light.position.applyMatrix4(matrix);
 			light.distance = 0;
 			light.decay = 2;
 			light.castShadow = false;
 			light.shadow.mapSize.width = 512; // default
 			light.shadow.mapSize.height = 512; // default
-			light.shadow.camera.near = vmax / 10; // 0.5 default
-			light.shadow.camera.far = vmax * 10; // 500 default
+			light.shadow.camera.near = lightsRadius / 10; // 0.5 default
+			light.shadow.camera.far = lightsRadius * 10; // 500 default
 		});
-		lights[0].castShadow = true;
-		lights[7].castShadow = true;
-		lights[3].castShadow = true;
-		lights[4].castShadow = true;
 	};
 
 	// setup (or re-apply) all mesh materials, like when switching to dark mode.

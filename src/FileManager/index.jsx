@@ -55,6 +55,7 @@ const makeDiagramFromSingleModel = (fold) => {
 	const diagrams = emptyDiagramFOLD();
 	getAllFileKeys(fold).forEach(key => diagrams[key] = fold[key]);
 	diagrams.file_frames = [fold];
+	if (!fold.frame_classes) { fold.frame_classes = ["creasePattern"]; }
 	Object.assign(diagrams, requiredDiagramKeys());
 	return diagrams;
 };

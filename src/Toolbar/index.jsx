@@ -1,24 +1,9 @@
 import Style from "./Toolbar.module.css";
-
-const buttonNames = [
-	"inspect",
-	"remove",
-	"line",
-	"ray",
-	"segment",
-	"point-to-point",
-	"line-to-line",
-	"perpendicular",
-	"scribble",
-	"pleat",
-	"assignment",
-	"transform",
-	"zoom",
-];
+import { toolNamesFilteredByViews } from "../Tools";
 
 const Toolbar = (props) => (
 	<div class={Style.Toolbar}>
-		<For each={buttonNames}>{(name) =>
+		<For each={toolNamesFilteredByViews(props.views())}>{(name) =>
 			<button
 				class={`${Style[name]}`}
 				highlighted={props.tool() === name}

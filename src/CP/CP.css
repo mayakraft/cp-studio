@@ -46,3 +46,10 @@ svg.creasePattern .faces polygon { stroke: none }
 .dark-mode svg.creasePattern .crease-line.disabled {
 	stroke: #666;
 }
+
+/* ruler layer */
+
+.light-mode .ruler-layer .ruler-225 { stroke: #999; }
+.light-mode .ruler-layer .ruler-axes { stroke: black; }
+.dark-mode .ruler-layer .ruler-225 { stroke: #666; }
+.dark-mode .ruler-layer .ruler-axes { stroke: #888; }

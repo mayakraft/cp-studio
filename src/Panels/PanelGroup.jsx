@@ -10,37 +10,31 @@ import Style from "./PanelGroup.module.css";
 
 const PanelGroup = (props) => {
 
-	const [debugPanelCollapsed, setDebugPanelCollapsed] = createSignal(false);
-
 	return (
 		<div class={Style.PanelGroup}>
 			<DebugPanel
-				isCollapsed={debugPanelCollapsed}
-				setIsCollapsed={setDebugPanelCollapsed}
 				tool={props.tool}
 				cpTouchState={props.cpTouchState}
 				diagramTouchState={props.diagramTouchState}
 				simulatorMove={props.simulatorMove}
 				keyboardState={props.keyboardState}
+				cpPointer={props.cpPointer}
 				cpPresses={props.cpPresses}
 				cpDrags={props.cpDrags}
 				cpReleases={props.cpReleases}
+				diagramPointer={props.diagramPointer}
 				diagramPresses={props.diagramPresses}
 				diagramDrags={props.diagramDrags}
 				diagramReleases={props.diagramReleases}
-				simulatorMoves={props.simulatorMoves}
+				simulatorPointers={props.simulatorPointers}
 			/>
 			<FilePanel
-				// isCollapsed={props.filePanelCollapsed}
-				// setIsCollapsed={props.setFilePanelCollapsed}
 				fileMeta={props.fileMeta}
 				setFileMeta={props.setFileMeta}
 				fileFrames={props.fileFrames}
 			/>
 			{/*<Show when={props.views().includes("crease pattern")}>
 				<ToolPanel
-					isCollapsed={props.toolPanelCollapsed}
-					setIsCollapsed={props.setToolPanelCollapsed}
 					language={props.language}
 					tool={props.tool}
 					cpTouchState={props.cpTouchState}
@@ -67,8 +61,6 @@ const PanelGroup = (props) => {
 			</Show>
 			<Show when={props.views().includes("crease pattern")}>
 				<CPPanel
-					isCollapsed={props.cpPanelCollapsed}
-					setIsCollapsed={props.setCPPanelCollapsed}
 					foldabilityIndicators={props.foldabilityIndicators}
 					setFoldabilityIndicators={props.setFoldabilityIndicators}
 				/>
@@ -107,8 +99,6 @@ const PanelGroup = (props) => {
 		{/*
 			<Show when={props.views().includes("diagram")}>
 				<FoldabilityPanel
-					isCollapsed={props.foldabilityPanelCollapsed}
-					setIsCollapsed={props.setFoldabilityPanelCollapsed}
 					tool={props.tool}
 					foldabilityIndicators={props.foldabilityIndicators}
 					setFoldabilityIndicators={props.setFoldabilityIndicators}

@@ -46,19 +46,21 @@ const DebugPanel = (props) => {
 			</Show>
 			
 			<h4>crease pattern</h4>
+			<p>pointer: <b>({stringifyPoint(props.cpPointer(), 3, ",")})</b></p>
 			<p>presses: <b>{props.cpPresses().length}</b></p>
 			<p>drags: <b>{props.cpDrags().length}</b></p>
 			<p>releases: <b>{props.cpReleases().length}</b></p>
 			<hr />
 			
 			<h4>diagram</h4>
+			<p>pointer: <b>({stringifyPoint(props.diagramPointer(), 3, ",")})</b></p>
 			<p>presses: <b>{props.diagramPresses().length}</b></p>
 			<p>drags: <b>{props.diagramDrags().length}</b></p>
 			<p>releases: <b>{props.diagramReleases().length}</b></p>
 			<hr />
 
-			<h4>simulator (<b>{props.simulatorMoves().length}</b>)</h4>
-			<For each={props.simulatorMoves()}>{(touch) =>
+			<h4>simulator (<b>{props.simulatorPointers().length}</b>)</h4>
+			<For each={props.simulatorPointers()}>{(touch) =>
 				<SimulatorTouch touch={touch}/>
 			}</For>
 			<hr />

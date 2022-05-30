@@ -94,13 +94,15 @@ const App = () => {
 	const [simulatorFoldAmount, setSimulatorFoldAmount] = createSignal(0);
 	const [simulatorShowShadows, setSimulatorShowShadows] = createSignal(preferences.simulator.shadows);
 	// touch events
+	const [cpPointer, setCPPointer] = createSignal();
 	const [cpPresses, setCPPresses] = createSignal([]);
 	const [cpDrags, setCPDrags] = createSignal([]);
 	const [cpReleases, setCPReleases] = createSignal([]);
+	const [diagramPointer, setDiagramPointer] = createSignal();
 	const [diagramPresses, setDiagramPresses] = createSignal([]);
 	const [diagramDrags, setDiagramDrags] = createSignal([]);
 	const [diagramReleases, setDiagramReleases] = createSignal([]);
-	const [simulatorMoves, setSimulatorMoves] = createSignal([]);
+	const [simulatorPointers, setSimulatorPointers] = createSignal([]);
 
 	// file management
 	/**
@@ -128,12 +130,36 @@ const App = () => {
 		setFileFrames(newFile.file_frames);
 		setFileFrameIndex(newFile.file_frames.length - 1);
 	};
-	const cpOnPress = (e) => setCPPresses([...cpPresses(), appendNearest(e, cp())]);
-	const cpOnMove = (e) => { if (e.buttons) { setCPDrags([...cpDrags(), appendNearest(e, cp())]); }};
-	const cpOnRelease = (e) => setCPReleases([...cpReleases(), appendNearest(e, cp())]);
-	const diagramOnPress = (e) => setDiagramPresses([...diagramPresses(), appendNearest(e, cp())]);
-	const diagramOnMove = (e) => { if (e.buttons) { setDiagramDrags([...diagramDrags(), appendNearest(e, cp())]); }};
-	const diagramOnRelease = (e) => setDiagramReleases([...diagramReleases(), appendNearest(e, cp())]);
+	// load a file_frames, automatically set the cp
+	createEffect(() => {
+		const frames = fileFrames();
+		if (frames.length) { setCP(frames[0]); }
+	});
+
+	const cpOnPress = (e) => {
+		setCPPointer(e);
+		setCPPresses([...cpPresses(), appendNearest(e, cp())]);
+	};
+	const cpOnMove = (e) => {
+		setCPPointer(e);
+		{ if (e.buttons) { setCPDrags([...cpDrags(), appendNearest(e, cp())]); }};
+	};
+	const cpOnRelease = (e) => {
+		setCPPointer(e);
+		setCPReleases([...cpReleases(), appendNearest(e, cp())]);
+	};
+	const diagramOnPress = (e) => {
+		setDiagramPointer(e);
+		setDiagramPresses([...diagramPresses(), appendNearest(e, cp())]);
+	};
+	const diagramOnMove = (e) => {
+		setDiagramPointer(e);
+		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), appendNearest(e, cp())]); }};
+	};
+	const diagramOnRelease = (e) => {
+		setDiagramPointer(e);
+		setDiagramReleases([...diagramReleases(), appendNearest(e, cp())]);
+	};
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
 	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
 	const onkeyup = (e) => setKeyboardState(removeKey(keyboardState(), e.key));
@@ -165,7 +191,7 @@ const App = () => {
 		setDiagramPresses([]);
 		setDiagramDrags([]);
 		setDiagramReleases([]);
-		// setSimulatorMoves([]);
+		// setSimulatorPointers([]);
 	})
 
 	return (
@@ -189,7 +215,9 @@ const App = () => {
 			/>
 			<Toolbar
 				tool={tool}
-				setTool={setTool} />
+				setTool={setTool}
+				views={views}
+			/>
 			<div class={Style.Main}>
 				<div class={`${Style.Views} View-Items-${views().length} ${mobileLayout() ? Style.Column : Style.Row}`}>
 					<Show when={views().includes("crease pattern")}>
@@ -202,9 +230,11 @@ const App = () => {
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							cpPointer={cpPointer}
 							cpPresses={cpPresses}
 							cpDrags={cpDrags}
 							cpReleases={cpReleases}
+							keyboardState={keyboardState}
 						/>
 					</Show>
 					<Show when={views().includes("diagram")}>
@@ -217,9 +247,11 @@ const App = () => {
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							diagramPointer={diagramPointer}
 							diagramPresses={diagramPresses}
 							diagramDrags={diagramDrags}
 							diagramReleases={diagramReleases}
+							keyboardState={keyboardState}
 						/>
 					</Show>
 					<Show when={views().includes("simulator")}>
@@ -236,7 +268,7 @@ const App = () => {
 							simulatorFoldAmount={simulatorFoldAmount}
 							simulatorShowShadows={simulatorShowShadows}
 							// events
-							setSimulatorMoves={setSimulatorMoves}
+							setSimulatorPointers={setSimulatorPointers}
 						/>
 					</Show>
 				</div>
@@ -271,13 +303,15 @@ const App = () => {
 							simulatorShowShadows={simulatorShowShadows}
 							setSimulatorShowShadows={setSimulatorShowShadows}
 							// events
+							cpPointer={cpPointer}
 							cpPresses={cpPresses}
 							cpDrags={cpDrags}
 							cpReleases={cpReleases}
+							diagramPointer={diagramPointer}
 							diagramPresses={diagramPresses}
 							diagramDrags={diagramDrags}
 							diagramReleases={diagramReleases}
-							simulatorMoves={simulatorMoves}
+							simulatorPointers={simulatorPointers}
 							keyboardState={keyboardState}
 						/>
 					</Show>

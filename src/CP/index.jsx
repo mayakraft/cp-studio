@@ -4,7 +4,7 @@ import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./CP.module.css";
 // import CPLayer from "./Layers/CPLayer";
 // import ToolLayer from "./Layers/ToolLayer";
-// import RulerLayer from "./Layers/RulerLayer";
+import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import SimulatorLayer from "./Layers/SimulatorLayer";
 
@@ -25,7 +25,7 @@ const CP = (props) => {
 
 	// const simulatorLayer = SimulatorLayer(svg);
 	// const toolLayer = ToolLayer(svg);
-	// const rulerLayer = RulerLayer(svg);
+	const rulerLayer = RulerLayer(svg);
 	const debugLayer = DebugLayer(svg);
 
 	createEffect(() => svg.size(1,1));
@@ -86,13 +86,12 @@ const CP = (props) => {
 		debugLayer.onChange({ presses, drags, releases });
 	});
 
-	// // ruler layer
-	// createEffect(() => {
-	// 	const darkMode = props.darkMode();
-	// 	const { Shift } = props.keyboardState();
-	// 	const cpTouchState = props.cpTouchState();
-	// 	rulerLayer.onChange({ darkMode, Shift, cpTouchState });
-	// });
+	// ruler layer
+	createEffect(() => {
+		const { Shift } = props.keyboardState();
+		const cpPointer = props.cpPointer();
+		rulerLayer.onChange({ Shift, cpPointer });
+	});
 
 	// // simulator layer
 	// createEffect(() => {

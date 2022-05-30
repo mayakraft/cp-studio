@@ -1,0 +1,53 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" stroke-width="0.2" stroke="white">
+	<defs>
+		<code>
+			<![CDATA[
+// var svg = ear.svg();
+const color = "white";
+
+svg.size(20, 20)
+  .background('transparent')
+  .strokeWidth(svg.getWidth() / 100)
+  .stroke(color);
+
+const arrowhead = { height: 7, width: 7 };
+
+const coords = [1,5,15,19];
+
+svg.arrow(...coords)
+  .strokeWidth(2.5)
+  .stroke("none")
+  .fill(color)
+  .bend(0.6)
+  .head(arrowhead)
+  // .tail(arrowhead)
+
+svg.arrow(...coords)
+  .strokeWidth(2.5)
+  .stroke("none")
+  .fill(color)
+  .bend(0.6)
+  // .head(arrowhead)
+  .tail(arrowhead)
+
+svg.curve(7,4.5, 15.5,13)
+  .strokeWidth(3)
+  .bend(0.7)
+  .fill("none")
+  .stroke(color)
+]]>
+		</code>
+	</defs>
+	<rect x="0" y="0" width="20" height="20" class="svg-background-rectangle" stroke="none" fill="transparent"/>
+	<g class="arrow" stroke-width="2.5" stroke="none" fill="white">
+		<path class="arrow-line" style="fill:none;" d="M1,5C8.128088411982395,1.7456884119823965,13.718180996900088,4.430669977887757,15.633750222297628,12.028747554726074"/>
+		<path class="arrow-tail" stroke="none" d="M-8.958932064677038,5.9053574604251855L1.3621429841700743,8.983572825870816L0.6378570158299257,1.016427174129185Z" visibility="hidden"/>
+		<path class="arrow-head" stroke="none" d="M15,19L19.11937644493459,12.345622665874888L12.148123999660665,11.71187244357726Z" visibility="visible"/>
+	</g>
+	<g class="arrow" stroke-width="2.5" stroke="none" fill="white">
+		<path class="arrow-line" style="fill:none;" d="M7.971252445273926,4.36624977770237C15.569330022112243,6.28181900309991,18.254311588017604,11.871911588017605,15,19"/>
+		<path class="arrow-tail" stroke="none" d="M1,5L8.28812755642274,7.851876000339333L7.654377334125111,0.8806235550654069Z" visibility="visible"/>
+		<path class="arrow-head" stroke="none" d="M14.094642539574815,28.958932064677036L18.983572825870816,19.362142984170074L11.016427174129184,18.637857015829926Z" visibility="hidden"/>
+	</g>
+	<path d="M7,4.5C12.1,3.6500000000000004 16.35,7.9 15.5,13" stroke-width="2.5" fill="none" stroke="white"/>
+</svg>
