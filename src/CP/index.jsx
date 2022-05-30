@@ -20,6 +20,8 @@ const CP = (props) => {
 	svg.onPress = props.onPress;
 	svg.onMove = props.onMove;
 	svg.onRelease = props.onRelease;
+	const onmouseleave = props.onLeave;
+	// "mouseenter", "mouseout", "mouseover"
 
 	// const origamiLayer = CPLayer(svg);
 	const origamiLayer = svg.g().strokeWidth(0.01);
@@ -30,31 +32,31 @@ const CP = (props) => {
 	const rulerLayer = RulerLayer(svg);
 	const debugLayer = DebugLayer(svg);
 
-	createEffect(() => svg.size(1,1));
+	createEffect(() => svg.size(1, 1));
 
 	// crease pattern layer
 	createEffect(() => {
-		const cp = props.cp();
-		const box = ear.math.bounding_box(cp.vertices_coords);
+		const origami = props.origami();
+		const box = ear.math.bounding_box(origami.vertices_coords);
 		const vmin = Math.min(box.span[0], box.span[1]);
 		svg.size(box.min[0], box.min[1], box.span[0], box.span[1])
 			.clearTransform()
 			.scale(1, -1)
 			.padding(vmin / 50)
 			.strokeWidth(vmin / 200);
-		// origamiLayer.onChange({ cp });
+		// origamiLayer.onChange({ origami });
 		origamiLayer.removeChildren();
-		const origami = origamiLayer.origami(cp, cpStyle);
-		origami.removeAttribute("stroke-width");
-		if (origami.edges) {
-			Array.from(origami.edges.childNodes)
+		const origamiGroup = origamiLayer.origami(origami, cpStyle);
+		origamiGroup.removeAttribute("stroke-width");
+		if (origamiGroup.edges) {
+			Array.from(origamiGroup.edges.childNodes)
 				.forEach(el => el.removeAttribute("stroke"));
 		}
 	});
 
 	// // tool layer and crease pattern modification
 	// createEffect(() => {
-	// 	const cp = props.cp();
+	// 	const origami = props.origami();
 	// 	const tool = props.tool();
 	// 	const pointer = props.cpPointer();
 	// 	const presses = props.cpPresses();
@@ -67,7 +69,7 @@ const CP = (props) => {
 	// 	// const transformRotate = props.transformRotate();
 	// 	// const transformScale = props.transformScale();
 	// 	toolLayer.onChange({
-	// 		cp,
+	// 		origami,
 	// 		tool,
 	// 		pointer,
 	// 		presses,
@@ -100,7 +102,7 @@ const CP = (props) => {
 
 	// // simulator layer
 	// createEffect(() => {
-	// 	const cp = props.cp();
+	// 	const origami = props.origami();
 	// 	const darkMode = props.darkMode();
 	// 	const simulatorMove = props.simulatorMove();
 	// 	const cpTouchState = props.cpTouchState();
@@ -108,7 +110,7 @@ const CP = (props) => {
 	// 	// debugLayer.clear();
 	// 	rulerLayer.clear();
 	// 	// toolLayer.clear();
-	// 	simulatorLayer.onChange({ cp, darkMode, simulatorMove, cpTouchState, highlight });
+	// 	simulatorLayer.onChange({ origami, darkMode, simulatorMove, cpTouchState, highlight });
 	// });
 
 	const handleResize = () => {
@@ -119,6 +121,7 @@ const CP = (props) => {
 	onMount(() => {
 		parentDiv.appendChild(svg);
 		window.addEventListener("resize", handleResize);
+		svg.addEventListener("mouseleave", onmouseleave);
 		createEffect(() => {
 			props.tool();
 			props.views();
@@ -129,6 +132,7 @@ const CP = (props) => {
 
 	onCleanup(() => {
 		window.removeEventListener("resize", handleResize);
+		svg.removeEventListener("mouseleave", onmouseleave);
 		parentDiv.removeChild(svg);
 	});
 

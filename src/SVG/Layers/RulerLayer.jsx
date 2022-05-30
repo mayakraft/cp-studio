@@ -1,3 +1,5 @@
+import { stringifyPoint } from "../../Helpers";
+
 const RulerLayer = (svg) => {
 	const manager = {};
 	const layer = svg.g().setClass("ruler-layer")
@@ -34,23 +36,19 @@ const RulerLayer = (svg) => {
 		setup();
 	};
 
-	manager.clear = () => {
-		layer225.setAttribute("display", "none");
-		layerCross.setAttribute("display", "none");
-	};
-
 	manager.onChange = ({ Shift, cpPointer }) => {
-		if (cpPointer === undefined) { return; }
-
-		layer225.setAttribute("transform", `translate(${cpPointer.x.toFixed(3)} ${cpPointer.y.toFixed(3)})`);
-		layerCross.setAttribute("transform", `translate(${cpPointer.x.toFixed(3)} ${cpPointer.y.toFixed(3)})`);
-
-		layerCross.removeAttribute("display");
-		if (Shift) {
-			layer225.removeAttribute("display");
-		} else {
+		if (cpPointer === undefined) {
 			layer225.setAttribute("display", "none");
+			layerCross.setAttribute("display", "none");
+			return;
 		}
+
+		const coords = stringifyPoint(cpPointer);
+		layer225.setAttribute("transform", `translate(${coords})`);
+		layerCross.setAttribute("transform", `translate(${coords})`);
+		layerCross.removeAttribute("display");
+		if (Shift) { layer225.removeAttribute("display"); }
+		else { layer225.setAttribute("display", "none"); }
 	};
 
 	return manager;

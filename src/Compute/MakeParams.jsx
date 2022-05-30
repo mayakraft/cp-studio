@@ -16,7 +16,7 @@ const Inspect = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 
 const SingleLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return [toSegment(pointer.nearest.edge_coords)];
+		case "0 0": return pointer ? [toSegment(pointer.nearest.edge_coords)] : [];
 		case "1 0": return [toSegment(presses[0].nearest.edge_coords)];
 		case "1 1": return [toSegment(releases[0].nearest.edge_coords)];
 		default: return [];
@@ -25,7 +25,7 @@ const SingleLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 
 const PointToPoint = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return [toVector(pointer, vertexSnapping)];
+		case "0 0": return pointer ? [toVector(pointer, vertexSnapping)] : [];
 		case "1 0": return [toVector(presses[0], vertexSnapping), toVector(pointer, vertexSnapping)];
 		case "1 1": return [toVector(presses[0], vertexSnapping), toVector(releases[0], vertexSnapping)];
 		default: return [];
@@ -34,7 +34,7 @@ const PointToPoint = ({ pointer, presses, drags, releases, vertexSnapping }) => 
 
 const LineToLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return [toSegment(pointer.nearest.edge_coords)];
+		case "0 0": return pointer ? [toSegment(pointer.nearest.edge_coords)] : [];
 		case "1 0": return [toSegment(presses[0].nearest.edge_coords), toSegment(pointer.nearest.edge_coords)];
 		case "1 1": return [toSegment(presses[0].nearest.edge_coords), toSegment(releases[0].nearest.edge_coords)];
 		default: return [];
@@ -43,7 +43,7 @@ const LineToLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 
 const Perpendicular = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return [toSegment(pointer.nearest.edge_coords)];
+		case "0 0": return pointer ? [toSegment(pointer.nearest.edge_coords)] : [];
 		case "1 0": return [toSegment(presses[0].nearest.edge_coords), toVector(pointer, vertexSnapping)];
 		case "1 1": return [toSegment(presses[0].nearest.edge_coords), toVector(releases[0], vertexSnapping)];
 		default: return [];

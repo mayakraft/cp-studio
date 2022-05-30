@@ -6,7 +6,6 @@ import Style from "./Diagram.module.css";
 import ParamLayer from "../SVG/Layers/ParamLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import DiagramLayer from "./DiagramLayer";
-import MakeFoldedForm from "../FOLD/MakeFoldedForm";
 
 const diagramStyle = {
 	vertices: { fill:"none", stroke:"none" },
@@ -19,6 +18,7 @@ const Diagram = (props) => {
 	svg.onPress = props.onPress;
 	svg.onMove = props.onMove;
 	svg.onRelease = props.onRelease;
+	const onmouseleave = props.onLeave;
 
 	const origamiLayer = svg.g();
 	const paramLayer = ParamLayer(svg);
@@ -30,7 +30,7 @@ const Diagram = (props) => {
 
 	// crease pattern layer
 	createEffect(() => {
-		const origami = MakeFoldedForm(props.cp());
+		const origami = props.origami();
 		const box = ear.math.bounding_box(origami.vertices_coords);
 		const vmin = Math.min(box.span[0], box.span[1]);
 
@@ -61,7 +61,7 @@ const Diagram = (props) => {
 
 	// // tool layer and crease pattern modification
 	// createEffect(() => {
-	// 	const origami = MakeFoldedForm(props.cp());
+	// 	const origami = props.origami();
 	// 	const tool = props.tool();
 	// 	const vertexSnapping = props.vertexSnapping();
 	// 	const cpTouchState = props.cpTouchState();
@@ -79,8 +79,8 @@ const Diagram = (props) => {
 
 	// // diagram layer and diagram instructions
 	// createEffect(() => {
-	// 	// const origami = MakeFoldedForm(props.cp());
-	// 	const origami = props.cp();
+	// 	// const origami = props.origami();
+	// 	const origami = props.origami();
 	// 	const tool = props.tool();
 	// 	const cpTouchState = props.cpTouchState();
 	// 	const diagramTouchState = props.diagramTouchState();
@@ -106,6 +106,7 @@ const Diagram = (props) => {
 	onMount(() => {
 		parentDiv.appendChild(svg);
 		window.addEventListener("resize", handleResize);
+		svg.addEventListener("mouseleave", onmouseleave);
 		createEffect(() => {
 			props.tool();
 			props.views();
@@ -116,6 +117,7 @@ const Diagram = (props) => {
 
 	onCleanup(() => {
 		window.removeEventListener("resize", handleResize);
+		svg.removeEventListener("mouseleave", onmouseleave);
 		parentDiv.removeChild(svg);
 	});
 

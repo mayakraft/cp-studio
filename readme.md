@@ -9,7 +9,7 @@ a tool for designing origami which features:
 
 ## developers
 
-> this current development version is using a nightly build of Rabbit Ear. notice the package.json references a local file. for now, you will have to download and place this dependency locally.
+> this current development version is using a nightly build of Rabbit Ear. notice the package.json references a local file. for now, you will have to download and place [this file](https://github.com/robbykraft/Origami/blob/master/rabbit-ear.js) locally.
 
 This app is made using solid-js/vite. To install and run, clone this repo, run in terminal:
 

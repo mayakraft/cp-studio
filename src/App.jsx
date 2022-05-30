@@ -10,13 +10,13 @@ import ErrorPopup from "./Popups/ErrorPopup";
 import CP from "./CP";
 import Diagram from "./Diagram";
 import Simulator from "./Simulator";
-// import Simulator from "./Simulator/ThreeCanvas";
 // I/O
 import DragAndDrop from "./FileManager/DragAndDrop";
 import {
 	makeDiagramFormatFOLD,
 	getFileMeta,
 } from "./FileManager";
+import MakeFoldedForm from "./FOLD/MakeFoldedForm";
 // general
 import {
 	addKeySetTrue,
@@ -74,6 +74,7 @@ const App = () => {
 	const [fileFrames, setFileFrames] = createSignal([startFOLD]);
 	const [fileFrameIndex, setFileFrameIndex] = createSignal(0);
 	const [cp, setCP] = createSignal(startFOLD);
+	const [foldedForm, setFoldedForm] = createSignal(MakeFoldedForm(startFOLD));
 	// app state, ui, touch handlers
 	const [tool, setTool] = createSignal("inspect");
 	// windows and layout
@@ -140,7 +141,11 @@ const App = () => {
 	// load a file_frames, automatically set the cp
 	createEffect(() => {
 		const frames = fileFrames();
-		if (frames.length) { setCP(frames[0]); }
+		if (frames.length) {
+			setCP(frames[0]);
+			// todo: errors if something goes wrong
+			setFoldedForm(MakeFoldedForm(frames[0]));
+		}
 	});
 
 	const cpOnPress = (e) => {
@@ -158,20 +163,28 @@ const App = () => {
 		setCPPointer(event);
 		setCPReleases([...cpReleases(), event]);
 	};
+	const cpOnLeave = (e) => {
+		setCPPointer(undefined);
+		{ if (e.buttons) { setCPDrags([...cpDrags(), appendNearest(e, cp())]); }};
+	};
 	const diagramOnPress = (e) => {
-		const event = appendNearest(e, cp());
+		const event = appendNearest(e, foldedForm());
 		setDiagramPointer(event);
 		setDiagramPresses([...diagramPresses(), event]);
 	};
 	const diagramOnMove = (e) => {
-		const event = appendNearest(e, cp());
+		const event = appendNearest(e, foldedForm());
 		setDiagramPointer(event);
 		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), event]); }};
 	};
 	const diagramOnRelease = (e) => {
-		const event = appendNearest(e, cp());
+		const event = appendNearest(e, foldedForm());
 		setDiagramPointer(event);
 		setDiagramReleases([...diagramReleases(), event]);
+	};
+	const diagramOnLeave = (e) => {
+		setDiagramPointer(undefined);
+		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), appendNearest(e, foldedForm())]); }};
 	};
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
 	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
@@ -254,7 +267,8 @@ const App = () => {
 							onPress={cpOnPress}
 							onMove={cpOnMove}
 							onRelease={cpOnRelease}
-							cp={cp}
+							onLeave={cpOnLeave}
+							origami={cp}
 							tool={tool}
 							views={views}
 							showPanels={showPanels}
@@ -276,7 +290,8 @@ const App = () => {
 							onPress={diagramOnPress}
 							onMove={diagramOnMove}
 							onRelease={diagramOnRelease}
-							cp={cp}
+							onLeave={diagramOnLeave}
+							origami={foldedForm}
 							tool={tool}
 							views={views}
 							showPanels={showPanels}
