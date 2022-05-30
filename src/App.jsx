@@ -22,6 +22,8 @@ import {
 	addKeySetTrue,
 	removeKey,
 } from "./Helpers";
+// modify
+import MakeParams from "./Compute/MakeParams";
 import {
 	localStorageVersion,
 	emptyPreferences,
@@ -103,6 +105,11 @@ const App = () => {
 	const [diagramDrags, setDiagramDrags] = createSignal([]);
 	const [diagramReleases, setDiagramReleases] = createSignal([]);
 	const [simulatorPointers, setSimulatorPointers] = createSignal([]);
+	// operations
+	const [cpParams, setCPParams] = createSignal([]);
+	const [diagramParams, setDiagramParams] = createSignal([]);
+	// tool settings
+	const [vertexSnapping, setVertexSnapping] = createSignal(true);
 
 	// file management
 	/**
@@ -137,28 +144,34 @@ const App = () => {
 	});
 
 	const cpOnPress = (e) => {
-		setCPPointer(e);
-		setCPPresses([...cpPresses(), appendNearest(e, cp())]);
+		const event = appendNearest(e, cp());
+		setCPPointer(event);
+		setCPPresses([...cpPresses(), event]);
 	};
 	const cpOnMove = (e) => {
-		setCPPointer(e);
-		{ if (e.buttons) { setCPDrags([...cpDrags(), appendNearest(e, cp())]); }};
+		const event = appendNearest(e, cp());
+		setCPPointer(event);
+		{ if (e.buttons) { setCPDrags([...cpDrags(), event]); }};
 	};
 	const cpOnRelease = (e) => {
-		setCPPointer(e);
-		setCPReleases([...cpReleases(), appendNearest(e, cp())]);
+		const event = appendNearest(e, cp());
+		setCPPointer(event);
+		setCPReleases([...cpReleases(), event]);
 	};
 	const diagramOnPress = (e) => {
-		setDiagramPointer(e);
-		setDiagramPresses([...diagramPresses(), appendNearest(e, cp())]);
+		const event = appendNearest(e, cp());
+		setDiagramPointer(event);
+		setDiagramPresses([...diagramPresses(), event]);
 	};
 	const diagramOnMove = (e) => {
-		setDiagramPointer(e);
-		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), appendNearest(e, cp())]); }};
+		const event = appendNearest(e, cp());
+		setDiagramPointer(event);
+		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), event]); }};
 	};
 	const diagramOnRelease = (e) => {
-		setDiagramPointer(e);
-		setDiagramReleases([...diagramReleases(), appendNearest(e, cp())]);
+		const event = appendNearest(e, cp());
+		setDiagramPointer(event);
+		setDiagramReleases([...diagramReleases(), event]);
 	};
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
 	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
@@ -193,6 +206,22 @@ const App = () => {
 		setDiagramReleases([]);
 		// setSimulatorPointers([]);
 	})
+	createEffect(() => setCPParams(MakeParams({
+		tool: tool(),
+		pointer: cpPointer(),
+		presses: cpPresses(),
+		drags: cpDrags(),
+		releases: cpReleases(),
+		vertexSnapping: vertexSnapping(),
+	})));
+	createEffect(() => setDiagramParams(MakeParams({
+		tool: tool(),
+		pointer: diagramPointer(),
+		presses: diagramPresses(),
+		drags: diagramDrags(),
+		releases: diagramReleases(),
+		vertexSnapping: vertexSnapping(),
+	})));
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -230,11 +259,16 @@ const App = () => {
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							// events
 							cpPointer={cpPointer}
 							cpPresses={cpPresses}
 							cpDrags={cpDrags}
 							cpReleases={cpReleases}
 							keyboardState={keyboardState}
+							// calculations
+							cpParams={cpParams}
+							// tool settings
+							vertexSnapping={vertexSnapping}
 						/>
 					</Show>
 					<Show when={views().includes("diagram")}>
@@ -247,11 +281,14 @@ const App = () => {
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							// events
 							diagramPointer={diagramPointer}
 							diagramPresses={diagramPresses}
 							diagramDrags={diagramDrags}
 							diagramReleases={diagramReleases}
 							keyboardState={keyboardState}
+							// calculations
+							diagramParams={diagramParams}
 						/>
 					</Show>
 					<Show when={views().includes("simulator")}>

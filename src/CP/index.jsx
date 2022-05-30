@@ -3,7 +3,8 @@ import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./CP.module.css";
 // import CPLayer from "./Layers/CPLayer";
-// import ToolLayer from "./Layers/ToolLayer";
+// import ToolLayer from "../SVG/Layers/ToolLayer";
+import ParamLayer from "../SVG/Layers/ParamLayer";
 import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import SimulatorLayer from "./Layers/SimulatorLayer";
@@ -25,6 +26,7 @@ const CP = (props) => {
 
 	// const simulatorLayer = SimulatorLayer(svg);
 	// const toolLayer = ToolLayer(svg);
+	const paramLayer = ParamLayer(svg);
 	const rulerLayer = RulerLayer(svg);
 	const debugLayer = DebugLayer(svg);
 
@@ -54,29 +56,32 @@ const CP = (props) => {
 	// createEffect(() => {
 	// 	const cp = props.cp();
 	// 	const tool = props.tool();
-	// 	const cpSolutions = props.cpSolutions();
+	// 	const pointer = props.cpPointer();
+	// 	const presses = props.cpPresses();
+	// 	const drags = props.cpDrags();
+	// 	const releases = props.cpReleases();
 	// 	const vertexSnapping = props.vertexSnapping();
-	// 	const transformOrigin = props.transformOrigin();
-	// 	const transformTranslate = props.transformTranslate();
-	// 	const transformRotate = props.transformRotate();
-	// 	const transformScale = props.transformScale();
-	// 	const cpTouchState = props.cpTouchState();
-	// 	const diagramTouchState = props.diagramTouchState();
-	// 	const simulatorMove = props.simulatorMove();
+	// 	// const cpSolutions = props.cpSolutions();
+	// 	// const transformOrigin = props.transformOrigin();
+	// 	// const transformTranslate = props.transformTranslate();
+	// 	// const transformRotate = props.transformRotate();
+	// 	// const transformScale = props.transformScale();
 	// 	toolLayer.onChange({
 	// 		cp,
 	// 		tool,
-	// 		cpTouchState,
-	// 		diagramTouchState,
-	// 		simulatorMove,
-	// 		cpSolutions,
+	// 		pointer,
+	// 		presses,
+	// 		drags,
+	// 		releases,
 	// 		vertexSnapping,
-	// 		transformOrigin,
-	// 		transformTranslate,
-	// 		transformRotate,
-	// 		transformScale,
 	// 	});
 	// });
+
+	// param layer
+	createEffect(() => {
+		const params = props.cpParams();
+		paramLayer.onChange({ params });
+	});
 
 	// debug layer
 	createEffect(() => {

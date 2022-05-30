@@ -2,8 +2,9 @@ import "./Diagram.css";
 import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./Diagram.module.css";
-import DebugLayer from "../SVG/Layers/DebugLayer";
 // import ToolLayer from "./ToolLayer";
+import ParamLayer from "../SVG/Layers/ParamLayer";
+import DebugLayer from "../SVG/Layers/DebugLayer";
 // import DiagramLayer from "./DiagramLayer";
 import MakeFoldedForm from "../FOLD/MakeFoldedForm";
 
@@ -20,6 +21,7 @@ const Diagram = (props) => {
 	svg.onRelease = props.onRelease;
 
 	const origamiLayer = svg.g();
+	const paramLayer = ParamLayer(svg);
 	const debugLayer = DebugLayer(svg);
 	// const toolLayer = ToolLayer(svg);
 	// const diagramLayer = DiagramLayer(svg);
@@ -41,6 +43,12 @@ const Diagram = (props) => {
 
 		origamiLayer.removeChildren();
 		origamiLayer.origami(origami, diagramStyle);
+	});
+
+	// param layer
+	createEffect(() => {
+		const params = props.diagramParams();
+		paramLayer.onChange({ params });
 	});
 
 	// debug layer

@@ -21,7 +21,7 @@ svg.creasePattern .faces polygon { stroke: none }
 
 .dark-mode svg.creasePattern { stroke: var(--darkmode-gray-7); }
 .dark-mode svg.creasePattern .mountain { stroke: var(--darkmode-pink); }
-.dark-mode svg.creasePattern .valley { stroke: var(--darkmode-blue); }
+.dark-mode svg.creasePattern .valley { stroke: var(--darkmode-blue-dark); }
 .dark-mode svg.creasePattern .flat { stroke: var(--darkmode-gray-4); }
 .dark-mode svg.creasePattern .boundary { stroke: var(--darkmode-gray-5); }
 .dark-mode svg.creasePattern polygon.highlight { fill: var(--darkmode-pink-dark); stroke: none; }
@@ -46,10 +46,3 @@ svg.creasePattern .faces polygon { stroke: none }
 .dark-mode svg.creasePattern .crease-line.disabled {
 	stroke: #666;
 }
-
-/* ruler layer */
-
-.light-mode .ruler-layer .ruler-225 { stroke: #999; }
-.light-mode .ruler-layer .ruler-axes { stroke: black; }
-.dark-mode .ruler-layer .ruler-225 { stroke: #666; }
-.dark-mode .ruler-layer .ruler-axes { stroke: #888; }

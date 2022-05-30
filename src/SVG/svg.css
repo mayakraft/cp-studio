@@ -1,3 +1,51 @@
+/* tool layer */
+/*
+.light-mode .tool-layer .pointer-circle { stroke: none; fill: #fb4; }
+.dark-mode .tool-layer .pointer-circle { stroke: none; fill: #fb4; }
+.light-mode .tool-layer .press-circle { stroke: none; fill: #3c7; }
+.dark-mode .tool-layer .press-circle { stroke: none; fill: #3c7; }
+.light-mode .tool-layer .release-circle { stroke: none; fill: #e53; }
+.dark-mode .tool-layer .release-circle { stroke: none; fill: #e53; }
+.light-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.dark-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.light-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.dark-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.light-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.dark-mode .tool-layer line { stroke-width: 0.05; stroke-linecap: round; }
+.light-mode .tool-layer polygon { stroke: none; fill: #fb4; }
+.dark-mode .tool-layer polygon { stroke: none; fill: #fb4; }
+*/
+/*
+.light-mode .tool-layer { stroke: black; }
+.light-mode .tool-layer .mountain { stroke: #e53; }
+.light-mode .tool-layer .valley { stroke: #38b; }
+.light-mode .tool-layer .flat { stroke: #ddd; }
+.light-mode .tool-layer .boundary { stroke: black; }
+.dark-mode .tool-layer { stroke: var(--darkmode-gray-7); }
+.dark-mode .tool-layer .mountain { stroke: var(--darkmode-pink); }
+.dark-mode .tool-layer .valley { stroke: var(--darkmode-blue); }
+.dark-mode .tool-layer .flat { stroke: var(--darkmode-gray-4); }
+.dark-mode .tool-layer .boundary { stroke: var(--darkmode-gray-5); }*/
+
+/* param layer */
+.light-mode .param-layer circle { stroke: none; fill: #fb4; }
+.light-mode .param-layer line { stroke-width: 0.03; stroke-linecap: round; stroke: #fb4; fill: none; }
+.light-mode .param-layer polygon { stroke: none; fill: #fb4; }
+
+.dark-mode .param-layer circle { stroke: none; fill: var(--darkmode-red); }
+.dark-mode .param-layer line { stroke-width: 0.03; stroke-linecap: round; stroke: #fb4; fill: none; }
+.dark-mode .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); }
+
+/* ruler layer */
+.light-mode .ruler-layer .ruler-225 { stroke: #999; }
+.light-mode .ruler-layer .ruler-axes { stroke: black; }
+.dark-mode .ruler-layer .ruler-225 { stroke: #666; }
+.dark-mode .ruler-layer .ruler-axes { stroke: #888; }
+
 /* debug layer */
-.light-mode .debug-line { stroke: black; fill: none; }
-.dark-mode .debug-line { stroke: #ccc; fill: none; }
+.light-mode .debug-layer .drag-line { stroke: black; fill: none; }
+.dark-mode .debug-layer .drag-line { stroke: #ccc; fill: none; }
+.light-mode .debug-layer .press-circle { stroke: none; fill: #3c7; }
+.dark-mode .debug-layer .press-circle { stroke: none; fill: #3c7; }
+.light-mode .debug-layer .release-circle { stroke: none; fill: #e53; }
+.dark-mode .debug-layer .release-circle { stroke: none; fill: #e53; }
