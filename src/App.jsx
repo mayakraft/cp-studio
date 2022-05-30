@@ -1,5 +1,6 @@
 import { createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import Style from "./App.module.css";
+import "./SVG/svg.css";
 // windows
 import Menubar from "./Menubar";
 import Toolbar from "./Toolbar";
@@ -201,6 +202,9 @@ const App = () => {
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							cpPresses={cpPresses}
+							cpDrags={cpDrags}
+							cpReleases={cpReleases}
 						/>
 					</Show>
 					<Show when={views().includes("diagram")}>
@@ -213,6 +217,9 @@ const App = () => {
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							diagramPresses={diagramPresses}
+							diagramDrags={diagramDrags}
+							diagramReleases={diagramReleases}
 						/>
 					</Show>
 					<Show when={views().includes("simulator")}>

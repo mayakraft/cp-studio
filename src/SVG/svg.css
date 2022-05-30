@@ -1,0 +1,3 @@
+/* debug layer */
+.light-mode .debug-line { stroke: black; fill: none; }
+.dark-mode .debug-line { stroke: #ccc; fill: none; }

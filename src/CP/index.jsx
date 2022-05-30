@@ -2,11 +2,11 @@ import "./CP.css";
 import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./CP.module.css";
-// import CPLayer from "./Layer/CPLayer";
-// import ToolLayer from "./Layer/ToolLayer";
-// import RulerLayer from "./Layer/RulerLayer";
-// import DebugLayer from "./Layer/DebugLayer";
-// import SimulatorLayer from "./Layer/SimulatorLayer";
+// import CPLayer from "./Layers/CPLayer";
+// import ToolLayer from "./Layers/ToolLayer";
+// import RulerLayer from "./Layers/RulerLayer";
+import DebugLayer from "../SVG/Layers/DebugLayer";
+// import SimulatorLayer from "./Layers/SimulatorLayer";
 
 const cpStyle = {
 	vertices: { fill: "none", stroke: "none" },
@@ -26,7 +26,7 @@ const CP = (props) => {
 	// const simulatorLayer = SimulatorLayer(svg);
 	// const toolLayer = ToolLayer(svg);
 	// const rulerLayer = RulerLayer(svg);
-	// // const debugLayer = DebugLayer(svg);
+	const debugLayer = DebugLayer(svg);
 
 	createEffect(() => svg.size(1,1));
 
@@ -79,12 +79,12 @@ const CP = (props) => {
 	// });
 
 	// debug layer
-	// createEffect(() => {
-	// 	const cpTouchState = props.cpTouchState();
-	// 	const darkMode = props.darkMode();
-	// 	simulatorLayer.clear();
-	// 	debugLayer.onChange({ cpTouchState, darkMode });
-	// });
+	createEffect(() => {
+		const presses = props.cpPresses();
+		const drags = props.cpDrags();
+		const releases = props.cpReleases();
+		debugLayer.onChange({ presses, drags, releases });
+	});
 
 	// // ruler layer
 	// createEffect(() => {
