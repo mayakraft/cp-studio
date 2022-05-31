@@ -1,7 +1,6 @@
 import { stringifyPoint } from "../../Helpers";
 
 const RulerLayer = (svg) => {
-	const manager = {};
 	const layer = svg.g().setClass("ruler-layer")
 	const layer225 = layer.g();
 	const layerCross = layer.g();
@@ -32,11 +31,11 @@ const RulerLayer = (svg) => {
 	};
 	setup();
 
-	manager.onChangeCP = () => {
+	layer.onChangeCP = () => {
 		setup();
 	};
 
-	manager.onChange = ({ Shift, cpPointer }) => {
+	layer.onChange = ({ Shift, cpPointer }) => {
 		if (cpPointer === undefined) {
 			layer225.setAttribute("display", "none");
 			layerCross.setAttribute("display", "none");
@@ -51,7 +50,7 @@ const RulerLayer = (svg) => {
 		else { layer225.setAttribute("display", "none"); }
 	};
 
-	return manager;
+	return layer;
 };
 
 export default RulerLayer;

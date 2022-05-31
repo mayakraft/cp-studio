@@ -34,13 +34,19 @@
 
 .dark-mode .param-layer circle { stroke: none; fill: var(--darkmode-red); }
 .dark-mode .param-layer line { stroke-linecap: round; stroke: #fb4; fill: none; }
-.dark-mode .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); }
+.dark-mode .creasePattern .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); }
+.dark-mode .foldedForm .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); opacity: 0.75; }
+
+/* solution layer */
+.solution-layer { stroke-linecap: round; fill: none; }
+.light-mode .solution-layer { stroke: #fb4; }
+.dark-mode .solution-layer { stroke: #fb4; }
 
 /* ruler layer */
-.light-mode .ruler-layer .ruler-225 { stroke: #999; }
-.light-mode .ruler-layer .ruler-axes { stroke: black; }
-.dark-mode .ruler-layer .ruler-225 { stroke: #666; }
-.dark-mode .ruler-layer .ruler-axes { stroke: #888; }
+.light-mode .ruler-layer .ruler-225 { stroke: #ccc; }
+.light-mode .ruler-layer .ruler-axes { stroke: #888; }
+.dark-mode .ruler-layer .ruler-225 { stroke: #333; }
+.dark-mode .ruler-layer .ruler-axes { stroke: #555; }
 
 /* debug layer */
 .light-mode .debug-layer .drag-line { stroke: black; fill: none; }

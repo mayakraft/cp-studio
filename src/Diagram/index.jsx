@@ -4,6 +4,7 @@ import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./Diagram.module.css";
 // import ToolLayer from "./ToolLayer";
 import ParamLayer from "../SVG/Layers/ParamLayer";
+import SolutionLayer from "../SVG/Layers/SolutionLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import DiagramLayer from "./DiagramLayer";
 
@@ -14,7 +15,7 @@ const diagramStyle = {
 const Diagram = (props) => {
 	let parentDiv;
 
-	const svg = ear.svg();
+	const svg = ear.svg().setClass("foldedForm");
 	svg.onPress = props.onPress;
 	svg.onMove = props.onMove;
 	svg.onRelease = props.onRelease;
@@ -22,6 +23,7 @@ const Diagram = (props) => {
 
 	const origamiLayer = svg.g();
 	const paramLayer = ParamLayer(svg);
+	const solutionLayer = SolutionLayer(svg);
 	const debugLayer = DebugLayer(svg);
 	// const toolLayer = ToolLayer(svg);
 	// const diagramLayer = DiagramLayer(svg);
@@ -34,6 +36,7 @@ const Diagram = (props) => {
 		const box = ear.math.bounding_box(origami.vertices_coords);
 		const vmin = Math.min(box.span[0], box.span[1]);
 		origamiLayer.strokeWidth(vmin / 100);
+		solutionLayer.strokeDasharray(`${vmin/80} ${vmin/40}`);
 		// svg.size(-box.min[0], -box.min[1], box.span[0], box.span[1])
 		svg.size(box.span[0], box.span[1])
 			.clearTransform()
@@ -51,12 +54,24 @@ const Diagram = (props) => {
 		paramLayer.onChange({ params });
 	});
 
+	// solution layer
+	createEffect(() => {
+		const solutions = props.diagramSolutions();
+		const rect = props.rect();
+		solutionLayer.onChange({ solutions, rect });
+	});
+
 	// debug layer
 	createEffect(() => {
 		const presses = props.diagramPresses();
 		const drags = props.diagramDrags();
 		const releases = props.diagramReleases();
 		debugLayer.onChange({ presses, drags, releases });
+	});
+	createEffect(() => {
+		const showDebug = props.showDebugLayer();
+		if (showDebug) { debugLayer.removeAttribute("display"); }
+		else { debugLayer.setAttribute("display", "none"); }
 	});
 
 	// // tool layer and crease pattern modification

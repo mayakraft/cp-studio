@@ -24,6 +24,7 @@ import {
 } from "./Helpers";
 // modify
 import MakeParams from "./Compute/MakeParams";
+import RunParams from "./Compute/RunParams";
 import {
 	localStorageVersion,
 	emptyPreferences,
@@ -63,10 +64,11 @@ const appendNearest = (event, origami) => {
 
 const App = () => {
 	// load preferences. these are used to populate the initial state of signals.
-	const preferences = getPreference();
+	let preferences = getPreference();
 	if (preferences == null || preferences.version !== localStorageVersion) {
 		// todo: be smarter about replacing existing preferences if version differs.
-		setPreference([], emptyPreferences());
+		preferences = emptyPreferences();
+		setPreference([], preferences);
 	}
 
 	// the crease pattern, folded state, and array of diagram steps (sequence).
@@ -75,6 +77,10 @@ const App = () => {
 	const [fileFrameIndex, setFileFrameIndex] = createSignal(0);
 	const [cp, setCP] = createSignal(startFOLD);
 	const [foldedForm, setFoldedForm] = createSignal(MakeFoldedForm(startFOLD));
+	const [cpRect, setCPRect] = createSignal();
+	const [foldedFormRect, setFoldedFormRect] = createSignal();
+	// const [cpConvexHull, setCPConvexHull] = createSignal();
+	// const [foldedFormConvexHull, setFoldedFormConvexHull] = createSignal();
 	// app state, ui, touch handlers
 	const [tool, setTool] = createSignal("inspect");
 	// windows and layout
@@ -108,9 +114,14 @@ const App = () => {
 	const [simulatorPointers, setSimulatorPointers] = createSignal([]);
 	// operations
 	const [cpParams, setCPParams] = createSignal([]);
+	const [cpSolutions, setCPSolutions] = createSignal([]);
 	const [diagramParams, setDiagramParams] = createSignal([]);
+	const [diagramSolutions, setDiagramSolutions] = createSignal([]);
 	// tool settings
 	const [vertexSnapping, setVertexSnapping] = createSignal(true);
+
+	// get rid of eventually:
+	const [showDebugLayer, setShowDebugLayer] = createSignal(true);
 
 	// file management
 	/**
@@ -142,9 +153,13 @@ const App = () => {
 	createEffect(() => {
 		const frames = fileFrames();
 		if (frames.length) {
-			setCP(frames[0]);
+			const cp = frames[0];
+			const foldedForm = MakeFoldedForm(cp);
+			setCP(cp);
 			// todo: errors if something goes wrong
-			setFoldedForm(MakeFoldedForm(frames[0]));
+			setFoldedForm(foldedForm);
+			setCPRect(ear.rect.fromPoints(cp.vertices_coords));
+			setFoldedFormRect(ear.rect.fromPoints(foldedForm.vertices_coords));
 		}
 	});
 
@@ -235,6 +250,16 @@ const App = () => {
 		releases: diagramReleases(),
 		vertexSnapping: vertexSnapping(),
 	})));
+	createEffect(() => setCPSolutions(RunParams({
+		tool: tool(),
+		params: cpParams(),
+		// rect: cpRect(),
+	})));
+	createEffect(() => setDiagramSolutions(RunParams({
+		tool: tool(),
+		params: diagramParams(),
+		// rect: foldedFormRect(),
+	})));
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -268,11 +293,13 @@ const App = () => {
 							onMove={cpOnMove}
 							onRelease={cpOnRelease}
 							onLeave={cpOnLeave}
-							origami={cp}
 							tool={tool}
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							// data
+							origami={cp}
+							rect={cpRect}
 							// events
 							cpPointer={cpPointer}
 							cpPresses={cpPresses}
@@ -281,8 +308,11 @@ const App = () => {
 							keyboardState={keyboardState}
 							// calculations
 							cpParams={cpParams}
+							cpSolutions={cpSolutions}
 							// tool settings
 							vertexSnapping={vertexSnapping}
+							// remove
+							showDebugLayer={showDebugLayer}
 						/>
 					</Show>
 					<Show when={views().includes("diagram")}>
@@ -291,11 +321,13 @@ const App = () => {
 							onMove={diagramOnMove}
 							onRelease={diagramOnRelease}
 							onLeave={diagramOnLeave}
-							origami={foldedForm}
 							tool={tool}
 							views={views}
 							showPanels={showPanels}
 							showTerminal={showTerminal}
+							// data
+							origami={foldedForm}
+							rect={foldedFormRect}
 							// events
 							diagramPointer={diagramPointer}
 							diagramPresses={diagramPresses}
@@ -304,6 +336,11 @@ const App = () => {
 							keyboardState={keyboardState}
 							// calculations
 							diagramParams={diagramParams}
+							diagramSolutions={diagramSolutions}
+							// tool settings
+							vertexSnapping={vertexSnapping}
+							// remove
+							showDebugLayer={showDebugLayer}
 						/>
 					</Show>
 					<Show when={views().includes("simulator")}>
@@ -365,6 +402,9 @@ const App = () => {
 							diagramReleases={diagramReleases}
 							simulatorPointers={simulatorPointers}
 							keyboardState={keyboardState}
+							// remove
+							showDebugLayer={showDebugLayer}
+							setShowDebugLayer={setShowDebugLayer}
 						/>
 					</Show>
 					<div

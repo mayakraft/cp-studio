@@ -1,10 +1,9 @@
 import ear from "rabbit-ear";
 
-const ToolLayer = (svg) => {
-	const manager = {};
+const ParamLayer = (svg) => {
 	const layer = svg.g().setClass("param-layer");
 
-	manager.onChange = ({ params }) => {
+	layer.onChange = ({ params }) => {
 		layer.removeChildren();
 		params
 			.filter(param => param instanceof ear.polygon)
@@ -16,7 +15,7 @@ const ToolLayer = (svg) => {
 			.filter(param => param instanceof ear.vector)
 			.forEach(point => layer.circle(point).radius(0.02).setClass("param-circle"));
 	};
-	return manager;
+	return layer;
 };
 
-export default ToolLayer;
+export default ParamLayer;

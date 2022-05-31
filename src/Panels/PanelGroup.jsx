@@ -27,6 +27,9 @@ const PanelGroup = (props) => {
 				diagramDrags={props.diagramDrags}
 				diagramReleases={props.diagramReleases}
 				simulatorPointers={props.simulatorPointers}
+				// remove
+				showDebugLayer={props.showDebugLayer}
+				setShowDebugLayer={props.setShowDebugLayer}
 			/>
 			<FilePanel
 				fileMeta={props.fileMeta}

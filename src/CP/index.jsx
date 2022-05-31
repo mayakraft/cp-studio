@@ -5,6 +5,7 @@ import Style from "./CP.module.css";
 // import CPLayer from "./Layers/CPLayer";
 // import ToolLayer from "../SVG/Layers/ToolLayer";
 import ParamLayer from "../SVG/Layers/ParamLayer";
+import SolutionLayer from "../SVG/Layers/SolutionLayer";
 import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import SimulatorLayer from "./Layers/SimulatorLayer";
@@ -16,7 +17,7 @@ const cpStyle = {
 const CP = (props) => {
 	let parentDiv;
 
-	const svg = ear.svg();
+	const svg = ear.svg().setClass("creasePattern");
 	svg.onPress = props.onPress;
 	svg.onMove = props.onMove;
 	svg.onRelease = props.onRelease;
@@ -24,11 +25,12 @@ const CP = (props) => {
 	// "mouseenter", "mouseout", "mouseover"
 
 	// const origamiLayer = CPLayer(svg);
-	const origamiLayer = svg.g().strokeWidth(0.01);
+	const origamiLayer = svg.g();
 
 	// const simulatorLayer = SimulatorLayer(svg);
 	// const toolLayer = ToolLayer(svg);
 	const paramLayer = ParamLayer(svg);
+	const solutionLayer = SolutionLayer(svg);
 	const rulerLayer = RulerLayer(svg);
 	const debugLayer = DebugLayer(svg);
 
@@ -41,6 +43,7 @@ const CP = (props) => {
 		const vmin = Math.min(box.span[0], box.span[1]);
 
 		origamiLayer.strokeWidth(vmin / 100);
+		solutionLayer.strokeDasharray(`${vmin/80} ${vmin/40}`);
 
 		svg.size(box.min[0], box.min[1], box.span[0], box.span[1])
 			.clearTransform()
@@ -88,12 +91,24 @@ const CP = (props) => {
 		paramLayer.onChange({ params });
 	});
 
+	// solution layer
+	createEffect(() => {
+		const solutions = props.cpSolutions();
+		const rect = props.rect();
+		solutionLayer.onChange({ solutions, rect });
+	});
+
 	// debug layer
 	createEffect(() => {
 		const presses = props.cpPresses();
 		const drags = props.cpDrags();
 		const releases = props.cpReleases();
 		debugLayer.onChange({ presses, drags, releases });
+	});
+	createEffect(() => {
+		const showDebug = props.showDebugLayer();
+		if (showDebug) { debugLayer.removeAttribute("display"); }
+		else { debugLayer.setAttribute("display", "none"); }
 	});
 
 	// ruler layer

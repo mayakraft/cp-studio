@@ -11,7 +11,7 @@
 // window.localStorage.clear();
 // window.localStorage.key();
 
-export const localStorageVersion = 0.12;
+export const localStorageVersion = 0.13;
 
 // get user's device settings
 const deviceDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -36,7 +36,7 @@ export const emptyPreferences = () => ({
 		on: true,
 		showTouches: true,
 		strain: false,
-		shadows: false,
+		shadows: true,
 	},
 	panels: {
 		filePanelCollapsed: false,
