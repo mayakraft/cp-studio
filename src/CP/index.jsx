@@ -155,7 +155,8 @@ const CP = (props) => {
 	});
 
 	return <div
-		class={props.showTerminal() ? `${Style.CP} ${Style.Top}` : `${Style.CP} ${Style.Center}`}
+		// class={props.showTerminal() ? `${Style.CP} ${Style.Top}` : `${Style.CP} ${Style.Center}`}
+		class={`${Style.CP} ${Style.Center}`}
 		ref={parentDiv}>
 	</div>;
 };

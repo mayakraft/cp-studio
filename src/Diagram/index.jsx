@@ -137,7 +137,8 @@ const Diagram = (props) => {
 	});
 
 	return <div
-		class={props.showTerminal() ? `${Style.Diagram} ${Style.Top}` : `${Style.Diagram} ${Style.Center}`}
+		// class={props.showTerminal() ? `${Style.Diagram} ${Style.Top}` : `${Style.Diagram} ${Style.Center}`}
+		class={`${Style.Diagram} ${Style.Center}`}
 		ref={parentDiv}>
 	</div>;
 };

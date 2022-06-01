@@ -6,6 +6,7 @@
 	width: 100vw;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 }
 
 .Terminal {
@@ -17,7 +18,7 @@
 
 .Terminal pre {
 	max-height: 40vh;
-	overflow: scroll;
+	overflow-y: auto;
 	margin: 0.5rem 0.5rem 0rem 0.5rem;
 	border-bottom: 2px solid;
 }

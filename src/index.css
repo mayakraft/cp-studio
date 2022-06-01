@@ -43,7 +43,10 @@ h3 { font-size: calc(var(--app-font-size) * 1.6); }
 h4 { font-size: calc(var(--app-font-size) * 1.4); }
 h5 { font-size: calc(var(--app-font-size) * 1.2); }
 p, ul, li, ol, label { font-size: var(--app-font-size); }
-pre, code { font-size: var(--app-font-size); }
+pre, code {
+	font-size: var(--app-font-size);
+	line-height: calc(var(--app-font-size) * 1.25);
+}
 h1, h2, h3, h4, h5, h6, b { font-weight: bold; }
 i { font-style: italic; }
 ul { list-style: disc; }

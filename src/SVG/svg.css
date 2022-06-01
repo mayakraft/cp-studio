@@ -39,7 +39,7 @@
 
 /* solution layer */
 .solution-layer { stroke-linecap: round; fill: none; }
-.light-mode .solution-layer { stroke: #fb4; }
+.light-mode .solution-layer { stroke: black; }
 .dark-mode .solution-layer { stroke: #fb4; }
 
 /* ruler layer */
