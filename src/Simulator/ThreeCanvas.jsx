@@ -40,7 +40,7 @@ const ThreeCanvas = (props) => {
 		}
 		camera.lookAt(0, 0, 0);
 		camera.far = vmax * 100;
-		camera.near = vmax / 100, 
+		camera.near = vmax / 100;
 		trackballControls.maxDistance = vmax * 30;
 		trackballControls.minDistance = vmax * 0.1;
 	};

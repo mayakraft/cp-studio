@@ -8,14 +8,16 @@ import SolutionLayer from "../SVG/Layers/SolutionLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import DiagramLayer from "./DiagramLayer";
 
-const diagramStyle = {
-	vertices: { fill:"none", stroke:"none" },
+const options = {
+	vertices: false,
+	viewBox: true,
+	strokeWidth: 1/200,
 };
 
 const Diagram = (props) => {
 	let parentDiv;
 
-	const svg = ear.svg().setClass("foldedForm");
+	const svg = ear.svg().setClass("foldedForm").scale(1, -1);
 	svg.onPress = props.onPress;
 	svg.onMove = props.onMove;
 	svg.onRelease = props.onRelease;
@@ -28,30 +30,33 @@ const Diagram = (props) => {
 	// const toolLayer = ToolLayer(svg);
 	// const diagramLayer = DiagramLayer(svg);
 
-	createEffect(() => svg.size(1,1));
-
 	// crease pattern layer
 	createEffect(() => {
 		const origami = props.origami();
-		const box = ear.math.bounding_box(origami.vertices_coords);
-		const vmin = Math.min(box.span[0], box.span[1]);
-		origamiLayer.strokeWidth(vmin / 100);
-		solutionLayer.strokeDasharray(`${vmin/80} ${vmin/40}`);
-		// svg.size(-box.min[0], -box.min[1], box.span[0], box.span[1])
-		svg.size(box.span[0], box.span[1])
-			.clearTransform()
-			.scale(1, -1)
-			.padding(vmin / 20)
-			.strokeWidth(vmin / 100);
 
+		// this will also set the SVG viewBox
 		origamiLayer.removeChildren();
-		origamiLayer.origami(origami, diagramStyle);
+		ear.graph.svg.drawInto(origamiLayer, origami, options);
+
+		// move the calculated stroke width to the top SVG element
+		// and use this value to update style on other layers too.
+		const strokeWidth = origamiLayer.getAttribute("stroke-width");
+		origamiLayer.removeAttribute("stroke-width");
+		svg.padding(strokeWidth * 5)
+			.strokeWidth(strokeWidth);
+
+		solutionLayer
+			.strokeWidth(strokeWidth * 2)
+			.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
+
+		paramLayer.strokeWidth(strokeWidth * 2);
 	});
 
 	// param layer
 	createEffect(() => {
 		const params = props.diagramParams();
-		paramLayer.onChange({ params });
+		const rect = props.rect();
+		paramLayer.onChange({ params, rect });
 	});
 
 	// solution layer

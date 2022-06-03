@@ -44,6 +44,19 @@ const Simulator = (props) => {
 	// todo: idea- duplicate highlighted vertex, one obeys depthTest with full
 	// opacity, the other is always visible with half opacity.
 
+
+	const updateViewDistance = () => {
+		const vmax = getVMax(props.cp());
+		setCameraRadius(vmax);
+		lightsRadius = vmax * Math.SQRT1_2;
+		updateLightsPosition();
+	};
+
+	createEffect(() => {
+		cameraRadius();
+		setRequestResize(Math.random());
+	});
+
 	/**
 	 * note, this is not Solid-JS's onMount function, but it functions as the same
 	 */
@@ -65,21 +78,21 @@ const Simulator = (props) => {
 
 		createEffect(() => {
 			simulator.load(props.cp());
-			const vmax = getVMax(props.cp());
-			setCameraRadius(vmax);
-			lightsRadius = vmax * Math.SQRT1_2;
-			updateLightsPosition();
+			updateViewDistance();
+		});
+		createEffect(() => {
+			props.views();
+			updateViewDistance();
+		});
+		createEffect(() => {
+			props.tool();
+			props.showPanels();
+			setRequestResize(Math.random());
 		});
 		createEffect(() => updateStyle(props.darkMode()));
 		createEffect(() => props.simulatorOn() ? simulator.start() : simulator.stop());
 		createEffect(() => simulator.setStrain(props.simulatorStrain()));
 		createEffect(() => simulator.setFoldAmount(props.simulatorFoldAmount()));
-		createEffect(() => {
-			props.tool();
-			props.views();
-			props.showPanels();
-			setRequestResize(Math.random());
-		});
 		createEffect(() => {
 			const shadows = props.simulatorShowShadows();
 			// renderer.shadowMap.enabled = shadows;

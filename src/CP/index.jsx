@@ -10,14 +10,16 @@ import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import SimulatorLayer from "./Layers/SimulatorLayer";
 
-const cpStyle = {
-	vertices: { fill: "none", stroke: "none" },
+const options = {
+	vertices: false,
+	viewBox: true,
+	strokeWidth: 1/200,
 };
 
 const CP = (props) => {
 	let parentDiv;
 
-	const svg = ear.svg().setClass("creasePattern");
+	const svg = ear.svg().setClass("creasePattern").scale(1, -1);
 	svg.onPress = props.onPress;
 	svg.onMove = props.onMove;
 	svg.onRelease = props.onRelease;
@@ -25,7 +27,7 @@ const CP = (props) => {
 	// "mouseenter", "mouseout", "mouseover"
 
 	// const origamiLayer = CPLayer(svg);
-	const origamiLayer = svg.g();
+	const origamiLayer = svg.g().setClass("origami-layer");
 
 	// const simulatorLayer = SimulatorLayer(svg);
 	// const toolLayer = ToolLayer(svg);
@@ -34,30 +36,30 @@ const CP = (props) => {
 	const rulerLayer = RulerLayer(svg);
 	const debugLayer = DebugLayer(svg);
 
-	createEffect(() => svg.size(1, 1));
-
 	// crease pattern layer
 	createEffect(() => {
 		const origami = props.origami();
-		const box = ear.math.bounding_box(origami.vertices_coords);
-		const vmin = Math.min(box.span[0], box.span[1]);
 
-		origamiLayer.strokeWidth(vmin / 100);
-		solutionLayer.strokeDasharray(`${vmin/80} ${vmin/40}`);
-
-		svg.size(box.min[0], box.min[1], box.span[0], box.span[1])
-			.clearTransform()
-			.scale(1, -1)
-			.padding(vmin / 50)
-			.strokeWidth(vmin / 100);
-		// origamiLayer.onChange({ origami });
+		// this will also set the SVG viewBox
 		origamiLayer.removeChildren();
-		const origamiGroup = origamiLayer.origami(origami, cpStyle);
-		origamiGroup.removeAttribute("stroke-width");
-		if (origamiGroup.edges) {
-			Array.from(origamiGroup.edges.childNodes)
-				.forEach(el => el.removeAttribute("stroke"));
-		}
+		ear.graph.svg.drawInto(origamiLayer, origami, options);
+
+		// move the calculated stroke width to the top SVG element
+		// and use this value to update style on other layers too.
+		const strokeWidth = origamiLayer.getAttribute("stroke-width");
+		origamiLayer.removeAttribute("stroke-width");
+		svg.padding(strokeWidth * 5)
+			.strokeWidth(strokeWidth);
+
+		solutionLayer
+			.strokeWidth(strokeWidth * 2)
+			.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
+
+		paramLayer.strokeWidth(strokeWidth * 2);
+		// if (origamiLayer.edges) {
+		// 	Array.from(origamiLayer.edges.childNodes)
+		// 		.forEach(el => el.removeAttribute("stroke"));
+		// }
 	});
 
 	// // tool layer and crease pattern modification
@@ -88,7 +90,8 @@ const CP = (props) => {
 	// param layer
 	createEffect(() => {
 		const params = props.cpParams();
-		paramLayer.onChange({ params });
+		const rect = props.rect();
+		paramLayer.onChange({ params, rect });
 	});
 
 	// solution layer
