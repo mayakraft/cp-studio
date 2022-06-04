@@ -1,0 +1,17 @@
+.PanelTool {}
+
+:global(.light-mode) .Completed { color: #ccc; }
+:global(.light-mode) .Current { color: #e53; font-weight: bold; }
+:global(.light-mode) .Todo {}
+:global(.light-mode) .Todo.Strikethrough {
+	color: #ccc;
+	text-decoration: line-through;
+}
+
+:global(.dark-mode) .Completed { color: var(--darkmode-gray-4); }
+:global(.dark-mode) .Current { color: var(--darkmode-pink); font-weight: bold; }
+:global(.dark-mode) .Todo {}
+:global(.dark-mode) .Todo.Strikethrough {
+	color: var(--darkmode-gray-4);
+	text-decoration: line-through;
+}

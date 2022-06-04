@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-// import ToolPanel from "./ToolPanel";
+import ToolPanel from "./ToolPanel";
 // import CPPanel from "./CPPanel";
 // import FoldabilityPanel from "./FoldabilityPanel";
 import SimulatorPanel from "./SimulatorPanel";
@@ -14,8 +14,6 @@ const PanelGroup = (props) => {
 		<div class={Style.PanelGroup}>
 			<DebugPanel
 				tool={props.tool}
-				cpTouchState={props.cpTouchState}
-				diagramTouchState={props.diagramTouchState}
 				simulatorMove={props.simulatorMove}
 				keyboardState={props.keyboardState}
 				cpPointer={props.cpPointer}
@@ -36,12 +34,24 @@ const PanelGroup = (props) => {
 				setFileMeta={props.setFileMeta}
 				fileFrames={props.fileFrames}
 			/>
+			<Show when={props.views().includes("crease pattern")}>
+				<ToolPanel
+					tool={props.tool}
+					cpPointer={props.cpPointer}
+					cpPresses={props.cpPresses}
+					cpReleases={props.cpReleases}
+					diagramPointer={props.diagramPointer}
+					cpSolutions={props.cpSolutions}
+					diagramSolutions={props.diagramSolutions}
+					// tool settings
+					toolAssignmentDirection={props.toolAssignmentDirection}
+					setToolAssignmentDirection={props.setToolAssignmentDirection}
+				/>
+			</Show>
 			{/*<Show when={props.views().includes("crease pattern")}>
 				<ToolPanel
 					language={props.language}
 					tool={props.tool}
-					cpTouchState={props.cpTouchState}
-					diagramTouchState={props.diagramTouchState}
 					cpSolutions={props.cpSolutions}
 					diagramSolutions={props.diagramSolutions}
 					simulatorMove={props.simulatorMove}

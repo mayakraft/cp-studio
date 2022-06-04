@@ -119,6 +119,8 @@ const App = () => {
 	const [diagramSolutions, setDiagramSolutions] = createSignal([]);
 	// tool settings
 	const [vertexSnapping, setVertexSnapping] = createSignal(true);
+	const [toolAssignmentDirection, setToolAssignmentDirection] = createSignal("mountain-valley");
+
 
 	// get rid of eventually:
 	const [showDebugLayer, setShowDebugLayer] = createSignal(true);
@@ -404,9 +406,15 @@ const App = () => {
 							diagramReleases={diagramReleases}
 							simulatorPointers={simulatorPointers}
 							keyboardState={keyboardState}
+							//
+							cpSolutions={cpSolutions}
+							diagramSolutions={diagramSolutions}
 							// remove
 							showDebugLayer={showDebugLayer}
 							setShowDebugLayer={setShowDebugLayer}
+							// tool settings
+							toolAssignmentDirection={toolAssignmentDirection}
+							setToolAssignmentDirection={setToolAssignmentDirection}
 						/>
 					</Show>
 					<div

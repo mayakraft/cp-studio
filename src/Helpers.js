@@ -30,8 +30,8 @@ export const cleanNumber = function (num, decimals = 4) {
 };
 
 export const mostRecentTouch = touchEvents => touchEvents
-	.filter(a => a && a.date !== undefined)
-	.sort((a, b) => b.date - a.date)
+	.filter(a => a && a.timeStamp !== undefined)
+	.sort((a, b) => b.timeStamp - a.timeStamp)
 	.shift();
 
 // both of these return a copy of the object. intended so that a signal will update.

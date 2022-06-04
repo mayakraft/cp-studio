@@ -5,10 +5,10 @@ export const calculateTouches = (model, raycaster) => {
 	if (!model) { return []; }
 	const intersections = raycaster
 		.intersectObjects([model.frontside, model.backside]);
-	const date = Date.now();
+	const timeStamp = Date.now();
 	// for every intersection point, calculate a few more properties
 	intersections.forEach(touch => {
-		touch.date = date;
+		touch.timeStamp = timeStamp;
 		// the face being touched
 		touch.face_vertices = [touch.face.a, touch.face.b, touch.face.c];
 		touch.material = touch.face.materialIndex;
