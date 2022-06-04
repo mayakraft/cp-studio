@@ -71,7 +71,8 @@ const Diagram = (props) => {
 		const presses = props.diagramPresses();
 		const drags = props.diagramDrags();
 		const releases = props.diagramReleases();
-		debugLayer.onChange({ presses, drags, releases });
+		const rect = props.rect();
+		debugLayer.onChange({ presses, drags, releases, rect });
 	});
 	createEffect(() => {
 		const showDebug = props.showDebugLayer();

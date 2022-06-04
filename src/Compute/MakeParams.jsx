@@ -1,6 +1,11 @@
 import ear from "rabbit-ear";
 
-const toVector = (point, vertexSnapping) => vertexSnapping
+const markDone = (arr) => {
+	arr.isCompleted = true;
+	return arr;
+}
+
+const toVector = (point, vertexSnapping = false) => vertexSnapping
 	? ear.vector(point.nearest.vertex_coords)
 	: ear.vector(point.x, point.y)
 
@@ -50,6 +55,24 @@ const Perpendicular = ({ pointer, presses, drags, releases, vertexSnapping }) =>
 	}
 };
 
+const Scribble = ({ pointer, presses, drags, releases }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "1 0": return [ear.polyline([presses[0], ...drags])];
+		// case "1 1": return [ear.polyline([presses[0], ...drags, releases[0]])];
+		case "1 1": return markDone([ear.polyline([presses[0], ...drags, releases[0]])]);
+		// case "1 1": return [];
+		default: return [];
+	}
+};
+
+const Zoom = ({ pointer, presses, drags, releases }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "1 0": return [ear.rect.fromPoints(toVector(presses[0]), toVector(pointer))]
+		case "1 1": return [ear.rect.fromPoints(toVector(presses[0]), toVector(releases[0]))]
+		default: return [];
+	}
+};
+
 const MakeParams = ({ tool, pointer, presses, drags, releases, vertexSnapping }) => {
 	const params = { pointer, presses, drags, releases, vertexSnapping };
 	switch (tool) {
@@ -61,11 +84,11 @@ const MakeParams = ({ tool, pointer, presses, drags, releases, vertexSnapping })
 		case "point-to-point": return PointToPoint(params);
 		case "line-to-line": return LineToLine(params);
 		case "perpendicular": return Perpendicular(params);
-		case "scribble": return [];
+		case "scribble": return Scribble(params);
 		case "pleat": return LineToLine(params);
 		case "assignment": return SingleLine(params);
 		// case "transform": break;
-		// case "zoom": break;
+		case "zoom": return Zoom(params);
 		default: return [];
 	}
 };

@@ -28,14 +28,18 @@
 .dark-mode .tool-layer .boundary { stroke: var(--darkmode-gray-5); }*/
 
 /* param layer */
-.light-mode .param-layer circle { stroke: none; fill: #fb4; }
-.light-mode .param-layer line { stroke-linecap: round; stroke: #fb4; fill: none; }
+.light-mode .param-layer circle { stroke: none; fill: #e53; }
+.light-mode .param-layer line { stroke-linecap: round; stroke: black; }
+/*.light-mode .param-layer polyline { stroke-linecap: round; stroke: black; fill: none; }*/
 .light-mode .param-layer polygon { stroke: none; fill: #fb4; }
+.light-mode .param-layer rect { stroke: none; fill: #fb4; opacity: 0.75; }
 
 .dark-mode .param-layer circle { stroke: none; fill: var(--darkmode-red); }
-.dark-mode .param-layer line { stroke-linecap: round; stroke: #fb4; fill: none; }
+.dark-mode .param-layer line { stroke-linecap: round; stroke: #fb4; }
+/*.dark-mode .param-layer polyline { stroke-linecap: round; stroke: #fb4; fill: none; }*/
 .dark-mode .creasePattern .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); }
 .dark-mode .foldedForm .param-layer polygon { stroke: none; fill: var(--darkmode-blue-dark); opacity: 0.75; }
+.dark-mode .param-layer rect { stroke: none; fill: var(--darkmode-red); opacity: 0.75; }
 
 /* solution layer */
 .solution-layer { stroke-linecap: round; fill: none; }

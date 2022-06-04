@@ -106,7 +106,8 @@ const CP = (props) => {
 		const presses = props.cpPresses();
 		const drags = props.cpDrags();
 		const releases = props.cpReleases();
-		debugLayer.onChange({ presses, drags, releases });
+		const rect = props.rect();
+		debugLayer.onChange({ presses, drags, releases, rect });
 	});
 	createEffect(() => {
 		const showDebug = props.showDebugLayer();

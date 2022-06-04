@@ -15,6 +15,9 @@ const SolutionLayer = (svg) => {
 		solutions
 			.filter(solution => solution instanceof ear.segment)
 			.forEach(segment => layer.line(segment).setClass("solution-line"));
+		solutions
+			.filter(solution => solution instanceof ear.polyline)
+			.forEach(polyline => layer.polyline(polyline).setClass("solution-line"));
 	};
 	return layer;
 };

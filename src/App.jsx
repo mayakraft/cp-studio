@@ -253,11 +253,13 @@ const App = () => {
 	createEffect(() => setCPSolutions(RunParams({
 		tool: tool(),
 		params: cpParams(),
+		// setParams: setCPParams,
 		// rect: cpRect(),
 	})));
 	createEffect(() => setDiagramSolutions(RunParams({
 		tool: tool(),
 		params: diagramParams(),
+		// setParams: setDiagramParams,
 		// rect: foldedFormRect(),
 	})));
 

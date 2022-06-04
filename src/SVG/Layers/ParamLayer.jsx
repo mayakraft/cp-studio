@@ -18,6 +18,12 @@ const ParamLayer = (svg) => {
 		params
 			.filter(param => param instanceof ear.vector)
 			.forEach(point => layer.circle(point).radius(vmax * radiusScale).setClass("param-circle"));
+		params
+			.filter(param => param instanceof ear.rect)
+			.forEach(r => layer.rect(r.x, r.y, r.width, r.height).setClass("param-rect"));
+		// params
+		// 	.filter(param => param instanceof ear.polyline)
+		// 	.forEach(polyline => layer.polyline(polyline).setClass("param-line"));
 	};
 	return layer;
 };

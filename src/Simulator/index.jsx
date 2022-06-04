@@ -82,11 +82,9 @@ const Simulator = (props) => {
 		});
 		createEffect(() => {
 			props.views();
-			updateViewDistance();
-		});
-		createEffect(() => {
 			props.tool();
 			props.showPanels();
+			updateViewDistance();
 			setRequestResize(Math.random());
 		});
 		createEffect(() => updateStyle(props.darkMode()));

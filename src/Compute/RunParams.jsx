@@ -36,7 +36,18 @@ const Axiom4 = (params) => {
 		default: return [];
 	}
 };
-
+const Scribble = (params) => {
+	switch (params.length) {
+		case 1: return [...params];
+		default: return [];
+	}
+};
+// const Zoom = (params) => {
+// 	switch (params.length) {
+// 		case 2: return ear.axiom(4, { points: [params[1]], lines: [ear.line.fromPoints(params[0])] });
+// 		default: return [];
+// 	}
+// };
 const RunParams = ({ tool, params }) => {
 	switch (tool) {
 		case "inspect": return undefined;
@@ -47,7 +58,7 @@ const RunParams = ({ tool, params }) => {
 		case "point-to-point": return Axiom2(params);
 		case "line-to-line": return Axiom3(params);
 		case "perpendicular": return Axiom4(params);
-		// case "scribble": return [];
+		case "scribble": return Scribble(params);
 		// case "pleat": return LineToLine(params);
 		// case "assignment": return SingleLine(params);
 		// case "transform": break;
