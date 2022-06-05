@@ -23,74 +23,68 @@
 // 	return cp;
 // };
 
-const emptyDiagramFOLD = () => ({
-	"file_spec": 1.1,
-	"file_classes": ["diagrams"],
-	"file_author": "",
-	"file_title": "",
-	"file_frames": [],
-});
+// const emptyDiagramFOLD = () => ({
+// 	"file_spec": 1.1,
+// 	"file_classes": ["diagrams"],
+// 	"file_author": "",
+// 	"file_title": "",
+// 	"file_frames": [],
+// });
 
-const requiredDiagramKeys = () => ({
-	"file_spec": 1.1,
-	"file_classes": ["diagrams"],
-});
+// 	// "file_creator": "",
+
+// const requiredDiagramKeys = () => ({
+// 	"file_spec": 1.1,
+// 	"file_classes": ["diagrams"],
+// });
 
 /**
  * @description get all keys that start with "file_", EXCEPT for "file_frames".
  */
-const getAllFileKeys = (fold) => Object.keys(fold)
+const getNonFileKeys = (fold) => Object.keys(fold)
+	.filter(a => a.substring(0, 5) !== "file_");
+/**
+ * @description get all keys that start with "file_", EXCEPT for "file_frames".
+ */
+const getAllSimpleFileKeys = (fold) => Object.keys(fold)
 	.filter(a => a.substring(0, 5) === "file_")
 	.filter(a => a !=="file_frames");
-export const getFileMeta = (fold) => {
+/**
+ *
+ */
+const getFileMetadata = (fold) => {
 	const meta = {};
-	getAllFileKeys(fold).forEach(key => meta[key] = fold[key]);
+	getAllSimpleFileKeys(fold).forEach(key => meta[key] = fold[key]);
 	return meta;
 };
 /**
  * @description given a FOLD object that is a single model,
- * create a "file_frames" array and move its data into the first element spot.
+ * give us back everything minus the file_ entries.
  */
-const makeDiagramFromSingleModel = (fold) => {
-	const diagrams = emptyDiagramFOLD();
-	getAllFileKeys(fold).forEach(key => diagrams[key] = fold[key]);
-	diagrams.file_frames = [fold];
-	if (!fold.frame_classes) { fold.frame_classes = ["creasePattern"]; }
-	Object.assign(diagrams, requiredDiagramKeys());
-	return diagrams;
+const filterFileEntries = (fold) => {
+	const graph = {};
+	getNonFileKeys(fold).forEach(key => { graph[key] = fold[key]; });
+	// if (!fold.frame_classes) { fold.frame_classes = ["creasePattern"]; }
+	return graph;
 };
+
 /**
- * @description standardize a given FOLD object by moving all data into file_frames
- * and set up the top level to be a "diagram" type.
- * if already a diagram, simply return the data.
- * @warning this will modify the input parameter.
+ * @description load both diagrams and singleModels, separate out the metadata,
+ * return both the metadata and the file where the file is given as an array
+ * of file_frames
  */
-export const makeDiagramFormatFOLD = (fold) => {
-	// if the file was built nicely, check "file_classes" for "diagrams" or "singleModel"
-	if (fold.file_classes) {
-		// done. just return the given parameter
-		if(fold.file_classes.includes("diagrams")) {
-			// nope, they lied. not a diagram. turn it into a diagram
-			if (!fold.file_frames && fold.vertices_coords) {
-				return makeDiagramFromSingleModel(fold);
-			}
-			return fold;
-		}
-		// convert a single model into a diagram
-		if(fold.file_classes.includes("singleModel")) {
-			return makeDiagramFromSingleModel(fold);
-		}
-		// warning, entering non-standardized area. gotta figure out what
-		// kind of file the user gave us.
-		return makeDiagramFromSingleModel(fold);
-	}
-	// non-standardized area continued...
+export const loadFOLDMetaAndFrames = (fold) => {
+	// if (!fold.frame_classes) { fold.frame_classes = ["creasePattern"]; }
+	const metadata = getFileMetadata(fold);
 	if (fold.file_frames && fold.file_frames.length) {
-		// yes it is probably a diagram, just missing the "file_classes"
-		fold.file_classes = ["diagrams"];
-		return fold;
+		// assuming this is probably a diagram
+		// fold.file_classes = ["diagrams"];
+		const file_frames = fold.file_frames;
+		return { metadata, file_frames };
 	}
-	return makeDiagramFromSingleModel(fold);
+	const singleModel = filterFileEntries(fold);
+	const file_frames = [singleModel];
+	return { metadata, file_frames };
 };
 /**
  * @description given a crase pattern or a sequence (FOLD format), this will
@@ -119,20 +113,37 @@ export const ParseFileString = (string) => {
 	}
 };
 
-export const makeFOLDFile = (metadata, fileFrames) => {
-	const foldFile = {};
-	if (fileFrames.length === 1) {
-		Object.assign(foldFile, fileFrames[0]);
-		Object.assign(foldFile, metadata);
-	} else {
-		Object.assign(foldFile, metadata);
-		foldFile.file_frames = fileFrames;
-	}
+const emptyDiagramFOLD = () => ({
+	"file_spec": 1.1,
+	"file_classes": ["diagrams"],
+	"file_creator": "Rabbit Ear",
+});
+
+const emptySingleModelFOLD = () => ({
+	"file_spec": 1.1,
+	"file_classes": ["singleModel"],
+	"file_creator": "Rabbit Ear",
+});
+
+const makeDiagramFOLD = (metadata, file_frames) => {
+	const foldFile = emptyDiagramFOLD();
+	Object.assign(foldFile, metadata);
+	foldFile.file_frames = file_frames;
+	Object.assign(foldFile, emptyDiagramFOLD());
 	return foldFile;
-	// console.log("makeFOLDFile", fileFrames.length);
-	// console.log(metadata);
-	// console.log(fileFrames);
 };
+
+const makeSingleModelFOLD = (metadata, graph) => {
+	const foldFile = emptySingleModelFOLD();
+	Object.assign(foldFile, metadata);
+	Object.assign(foldFile, graph);
+	Object.assign(foldFile, emptySingleModelFOLD());
+	return foldFile;
+};
+
+export const makeFOLDFile = (metadata, fileFrames) => fileFrames.length === 1
+	? makeSingleModelFOLD(metadata, fileFrames[0])
+	: makeDiagramFOLD(metadata, fileFrames);
 
 /**
  * @param {string} contents already in a string format
@@ -147,4 +158,3 @@ export const downloadFile = (contents, filename = "origami.fold") => {
 	element.click();
 	document.body.removeChild(element);
 };
-

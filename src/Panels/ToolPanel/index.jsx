@@ -37,6 +37,7 @@ const ToolPanel = (props) => {
 				<Switch fallback={<></>}>
 					<Match when={props.tool() === "inspect"}>
 						<Inspect
+							cp={props.cp}
 							cpPointer={props.cpPointer}
 							diagramPointer={props.diagramPointer}
 						/>

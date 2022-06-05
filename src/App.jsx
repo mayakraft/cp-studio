@@ -15,10 +15,9 @@ import ErrorPopup from "./Popups/ErrorPopup";
 // I/O
 import DragAndDrop from "./FileManager/DragAndDrop";
 import {
-	makeDiagramFormatFOLD,
-	getFileMeta,
 	makeFOLDFile,
 	downloadFile,
+	loadFOLDMetaAndFrames,
 } from "./FileManager";
 import MakeFoldedForm from "./FOLD/MakeFoldedForm";
 // general
@@ -40,8 +39,9 @@ import {
 
 // import squareFOLD from "./Files/square.fold?raw";
 // const startFOLD = JSON.parse(squareFOLD);
-import animalBase from "./Files/example-animal-base.fold?raw";
-const startFOLD = JSON.parse(animalBase);
+// import animalBase from "./Files/example-animal-base.fold?raw";
+// const startFOLD = JSON.parse(animalBase);
+import exampleSequence from "./Files/example-sequence.fold?raw";
 
 import ear from "rabbit-ear";
 
@@ -54,7 +54,9 @@ const appendNearest = (event, origami) => {
 		vertex,
 		edge,
 		face,
-		vertex_coords: origami.vertices_coords[vertex],
+		vertex_coords: vertex != null
+			? origami.vertices_coords[vertex]
+			: undefined,
 		edge_coords: edge != null
 			? origami.edges_vertices[edge].map(v => origami.vertices_coords[v])
 			: undefined,
@@ -79,10 +81,10 @@ const App = () => {
 
 	// the crease pattern, folded state, and array of diagram steps (sequence).
 	const [fileMeta, setFileMeta] = createSignal({});
-	const [fileFrames, setFileFrames] = createSignal([startFOLD]);
+	const [fileFrames, setFileFrames] = createSignal([{}]);
 	const [fileFrameIndex, setFileFrameIndex] = createSignal(0);
-	const [cp, setCP] = createSignal(startFOLD);
-	const [foldedForm, setFoldedForm] = createSignal(MakeFoldedForm(startFOLD));
+	const [cp, setCP] = createSignal({});
+	const [foldedForm, setFoldedForm] = createSignal(MakeFoldedForm({}));
 	const [cpRect, setCPRect] = createSignal();
 	const [foldedFormRect, setFoldedFormRect] = createSignal();
 	// history. todo: build this out into actual objects
@@ -159,10 +161,10 @@ const App = () => {
 	const loadFile = (fold) => {
 		// cpTouchManager.clearTouches();
 		// diagramTouchManager.clearTouches();
-		const newFile = makeDiagramFormatFOLD(fold);
-		setFileMeta(getFileMeta(newFile));
-		setFileFrames(newFile.file_frames);
-		setFileFrameIndex(newFile.file_frames.length - 1);
+		const { metadata, file_frames } = loadFOLDMetaAndFrames(fold);
+		setFileMeta(metadata);
+		setFileFrames(file_frames);
+		setFileFrameIndex(file_frames.length - 1);
 	};
 	// load a file_frames, automatically set the cp
 	createEffect(() => {
@@ -186,7 +188,9 @@ const App = () => {
 	const cpOnMove = (e) => {
 		const event = appendNearest(e, cp());
 		setCPPointer(event);
-		{ if (e.buttons) { setCPDrags([...cpDrags(), event]); }};
+		if (e.buttons) {
+			setCPDrags([...cpDrags(), event]);
+		}
 	};
 	const cpOnRelease = (e) => {
 		const event = appendNearest(e, cp());
@@ -195,7 +199,9 @@ const App = () => {
 	};
 	const cpOnLeave = (e) => {
 		setCPPointer(undefined);
-		{ if (e.buttons) { setCPDrags([...cpDrags(), appendNearest(e, cp())]); }};
+		if (e.buttons) {
+			setCPDrags([...cpDrags(), appendNearest(e, cp())]);
+		}
 	};
 	const diagramOnPress = (e) => {
 		const event = appendNearest(e, foldedForm());
@@ -205,7 +211,9 @@ const App = () => {
 	const diagramOnMove = (e) => {
 		const event = appendNearest(e, foldedForm());
 		setDiagramPointer(event);
-		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), event]); }};
+		if (e.buttons) {
+			setDiagramDrags([...diagramDrags(), event]);
+		}
 	};
 	const diagramOnRelease = (e) => {
 		const event = appendNearest(e, foldedForm());
@@ -214,22 +222,13 @@ const App = () => {
 	};
 	const diagramOnLeave = (e) => {
 		setDiagramPointer(undefined);
-		{ if (e.buttons) { setDiagramDrags([...diagramDrags(), appendNearest(e, foldedForm())]); }};
+		if (e.buttons) {
+			setDiagramDrags([...diagramDrags(), appendNearest(e, foldedForm())]);
+		}
 	};
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
 	const onkeydown = (e) => setKeyboardState(addKeySetTrue(keyboardState(), e.key))
 	const onkeyup = (e) => setKeyboardState(removeKey(keyboardState(), e.key));
-
-	onMount(() => {
-		window.addEventListener("resize", onresize);
-		window.addEventListener("keydown", onkeydown);
-		window.addEventListener("keyup", onkeyup);
-	});
-	onCleanup(() => {
-		window.removeEventListener("resize", onresize);
-		window.removeEventListener("keydown", onkeydown);
-		window.removeEventListener("keyup", onkeyup);
-	});
 
 	createEffect(() => setPreference(["views"], views()));
 	createEffect(() => setPreference(["language"], language()));
@@ -332,6 +331,20 @@ const App = () => {
 		setDiagramToolStep([]);
 		setDiagramParams([]);
 		setDiagramSolutions([]);
+	});
+
+	onMount(() => {
+		window.addEventListener("resize", onresize);
+		window.addEventListener("keydown", onkeydown);
+		window.addEventListener("keyup", onkeyup);
+
+		// load an example file
+		loadFile(JSON.parse(exampleSequence));
+	});
+	onCleanup(() => {
+		window.removeEventListener("resize", onresize);
+		window.removeEventListener("keydown", onkeydown);
+		window.removeEventListener("keyup", onkeyup);
 	});
 
 	return (

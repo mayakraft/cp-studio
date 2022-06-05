@@ -43,6 +43,15 @@
 	resize: vertical;
 }
 
+.Panel ul {
+	list-style: none;
+}
+
+.Panel ul li {
+	margin-left: calc(var(--app-font-size) * 0.5);
+}
+
+
 /* COLORS */
 
 :global(.light-mode) .Body {

@@ -37,6 +37,7 @@ const PanelGroup = (props) => {
 			<Show when={props.views().includes("crease pattern")}>
 				<ToolPanel
 					tool={props.tool}
+					cp={props.cp}
 					cpPointer={props.cpPointer}
 					cpPresses={props.cpPresses}
 					cpReleases={props.cpReleases}

@@ -59,6 +59,8 @@ const FilePanel = (props) => {
 			<p>description:</p>
 				<textarea
 					rows="2"
+					value={getFileMetaValue("file_description")}
+					oninput={e => modifyFileMeta("file_description", e.target.value)}
 				/>
 			<hr />
 			<div class="flex-row left">
@@ -69,9 +71,6 @@ const FilePanel = (props) => {
 					? "crease pattern"
 					: "diagrams"}</b></p>
 			</div>
-				<p>233 vertices</p>
-				<p>512 edges</p>
-				<p>192 faces</p>
 		</Panel>
 	);
 };

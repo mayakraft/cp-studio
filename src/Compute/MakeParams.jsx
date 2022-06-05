@@ -4,14 +4,16 @@ const toVector = (point, vertexSnapping = false) => vertexSnapping
 	? ear.vector(point.nearest.vertex_coords)
 	: ear.vector(point.x, point.y)
 
-const toSegment = (coords) => ear.segment(...coords);
+const toSegment = (coords) => coords ? ear.segment(...coords) : undefined;
 
 const Inspect = ({ pointer, presses, drags, releases, vertexSnapping }) => {
-	return !pointer || !pointer.nearest ? [] : [
-		toVector(pointer, true),
-		toSegment(pointer.nearest.edge_coords), // pointer.nearest.edge_assignment
-		pointer.nearest.face_coords ? ear.polygon(pointer.nearest.face_coords) : undefined
-	].filter(a => a !== undefined);
+	if (!pointer || !pointer.nearest) { return []; }
+	const vector = toVector(pointer, true);
+	const edge = toSegment(pointer.nearest.edge_coords);
+	const face = pointer.nearest.face_coords
+		? ear.polygon(pointer.nearest.face_coords)
+		: undefined;
+	return [vector, edge, face].filter(a => a !== undefined);
 };
 
 const SingleLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {

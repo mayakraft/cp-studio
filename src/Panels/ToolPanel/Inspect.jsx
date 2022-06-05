@@ -1,3 +1,4 @@
+import ear from "rabbit-ear";
 import {
 	stringifyPoint,
 	mostRecentTouch,
@@ -36,19 +37,20 @@ const HoverPointer = (props) => (<>
 const VEF = (props) => (<>
 	<Show when={props.pointer && props.pointer.nearest}>
 		<hr />
-		<Show when={props.pointer.nearest.vertex_coords}>
-			<p><b>({stringifyPoint(props.pointer.nearest.vertex_coords, 4, ", ")})</b></p>
-		</Show>
 		<Show when={props.pointer.nearest.edge_assignment}>
-			<p><b>{assignmentNames[props.pointer.nearest.edge_assignment]}</b> {creaseOrEdge(props.pointer.nearest.edge_assignment)}</p>
+			<p><b>{assignmentNames[props.pointer.nearest.edge_assignment]}</b> {creaseOrEdge(props.pointer.nearest.edge_assignment)} (<b>{props.pointer.nearest.edge}</b>/{ear.graph.count.edges(props.cp())})</p>
 		</Show>
 		<Show when={props.pointer.nearest.face_coords && props.pointer.nearest.face_coords.length}>
-			<p><b>{polygonNames[props.pointer.nearest.face_coords.length]}</b> face</p>
+			<p><b>{polygonNames[props.pointer.nearest.face_coords.length]}</b> face (<b>{props.pointer.nearest.face}</b>/{ear.graph.count.faces(props.cp())})</p>
 		</Show>
-		<hr />
-		<p>vertex <b>{props.pointer.nearest.vertex}</b></p>
-		<p>edge <b>{props.pointer.nearest.edge}</b></p>
-		<p>face <b>{props.pointer.nearest.face}</b></p>
+		<Show when={props.pointer.nearest.vertex_coords}>
+			<p>vertex (<b>{props.pointer.nearest.vertex}</b>/{ear.graph.count.vertices(props.cp())})</p>
+			<ul>
+				<li>x: <b>{props.pointer.nearest.vertex_coords[0]}</b></li>
+				<li>y: <b>{props.pointer.nearest.vertex_coords[1]}</b></li>
+			</ul>
+			{/*<p><b>({stringifyPoint(props.pointer.nearest.vertex_coords, 4, ", ")})</b></p>*/}
+		</Show>
 	</Show>
 </>);
 
@@ -56,7 +58,10 @@ const VEF = (props) => (<>
 const Inspect = (props) => {
 	return (<>
 		<HoverPointer pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])} />
-		<VEF pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])} />
+		<VEF
+			cp={props.cp}
+			pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])}
+		/>
 	</>);
 };
 
