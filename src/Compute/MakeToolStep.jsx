@@ -1,4 +1,15 @@
-const PressAndRelease = ({ tool, pointer, presses, releases, solutions }) => {
+const Inspect = ({ pointer, presses, releases, solutions }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return [0, 2];
+		case "1 0":
+		case "1 1":
+		case "2 1": return [1, 2];
+		case "2 2": return [2, 2];
+		default: return [0, 2];
+	}
+};
+
+const PressAndRelease = ({ pointer, presses, releases, solutions }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return [0, 2];
 		case "1 0": return [1, 2];
@@ -7,7 +18,7 @@ const PressAndRelease = ({ tool, pointer, presses, releases, solutions }) => {
 	}
 };
 
-const Axiom3 = ({ tool, pointer, presses, releases, solutions }) => {
+const Axiom3 = ({ pointer, presses, releases, solutions }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return [0, 3];
 		case "1 0": return solutions.length === 2 ? [1, 3] : [1, 2];
@@ -21,7 +32,7 @@ const Axiom3 = ({ tool, pointer, presses, releases, solutions }) => {
 const MakeToolStep = ({ tool, pointer, presses, releases, solutions }) => {
 	const params = { pointer, presses, releases, solutions };
 	switch (tool) {
-		case "inspect": return [];
+		case "inspect": return Inspect(params);
 		case "remove": return [];
 		case "line": return PressAndRelease(params);
 		case "ray": return PressAndRelease(params);

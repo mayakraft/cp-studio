@@ -22,6 +22,7 @@ import removeRedundantVertices from "./removeRedundantVertices";
 function prepare(inputFOLD, epsilon = 0.01) {
 	// copy input object
 	let fold = JSON.parse(JSON.stringify(inputFOLD));
+	if (!fold.vertices_coords || !fold.edges_vertices || !fold.edges_assignment) { return fold; }
 	// make 3d in the X-Y plane
 	for (let i = 0; i < fold.vertices_coords.length; i += 1) {
 		const vertex = fold.vertices_coords[i];

@@ -7,13 +7,19 @@ const toVector = (point, vertexSnapping = false) => vertexSnapping
 const toSegment = (coords) => coords ? ear.segment(...coords) : undefined;
 
 const Inspect = ({ pointer, presses, drags, releases, vertexSnapping }) => {
-	if (!pointer || !pointer.nearest) { return []; }
-	const vector = toVector(pointer, true);
-	const edge = toSegment(pointer.nearest.edge_coords);
-	const face = pointer.nearest.face_coords
-		? ear.polygon(pointer.nearest.face_coords)
-		: undefined;
-	return [vector, edge, face].filter(a => a !== undefined);
+	const buildEntry = (el) => [
+		el.nearest,
+		toVector(el, true),
+		toSegment(el.nearest.edge_coords),
+		el.nearest.face_coords ? ear.polygon(el.nearest.face_coords) : undefined,
+	].filter(a => a !== undefined);
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return (!pointer || !pointer.nearest) ? [] : buildEntry(pointer);
+		case "1 0":
+		case "1 1":
+		case "2 1": return buildEntry(presses[0]);
+		default: return (!pointer || !pointer.nearest) ? [] : buildEntry(pointer);
+	}
 };
 
 const SingleLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {

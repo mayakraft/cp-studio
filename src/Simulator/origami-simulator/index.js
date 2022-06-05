@@ -7,6 +7,7 @@ import Model from "./model/";
 import DynamicSolver from "./dynamic/dynamicSolver";
 import prepare from "./fold/prepare";
 // import VideoAnimator from "./videoAnimator"; // haven't touched yet
+const empty_square_fold = {"vertices_coords":[[0,0],[1,0],[1,1],[0,1]],"edges_vertices":[[0,1],[1,2],[2,3],[3,0]],"edges_assignment":["B","B","B","B"],"vertices_edges":[[0,3],[1,0],[2,1],[2,3]],"vertices_vertices":[[1,3],[2,0],[3,1],[2,0]],"edges_foldAngle":[0,0,0,0],"faces_vertices":[[0,1,2,3]],"faces_edges":[[1,2,3,0]]}
 
 /**
  * @description Origami Simulator by Amanda Ghassaei. refactored so that:
@@ -101,6 +102,9 @@ const OrigamiSimulator = function ({ renderer, scene, camera }) {
 
   // object methods
   const loadFOLD = function (foldObject) {
+    if (!foldObject.vertices_coords || !foldObject.edges_vertices || !foldObject.faces_vertices) {
+      foldObject = JSON.parse(JSON.stringify(empty_square_fold));
+    }
     // app.threeView.resetModel();
     const fold = prepare(foldObject);
     model.load(fold, {

@@ -40,6 +40,8 @@ const ToolPanel = (props) => {
 							cp={props.cp}
 							cpPointer={props.cpPointer}
 							diagramPointer={props.diagramPointer}
+							cpParams={props.cpParams}
+							diagramParams={props.diagramParams}
 						/>
 					</Match>
 					<Match when={props.tool() === "pleat"}>

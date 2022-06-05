@@ -36,15 +36,18 @@ export const mostRecentTouch = touchEvents => touchEvents
 
 // both of these return a copy of the object. intended so that a signal will update.
 export const addKeySetTrue = (object, key) => {
+	object.event = { type: "down", key };
 	object[key] = true;
 	return {...object};
 };
 export const removeKey = (object, key) => {
+	object.event = { type: "up", key };
 	delete object[key];
 	return {...object};
 };
 
 const getBoundingBox = (graph) => {
+	if (!graph.vertices_coords) { return { mins: [0, 0], maxs: [1, 1]}; }
 	const mins = Array.from(Array(graph.vertices_coords[0].length)).map(() => Infinity);
 	const maxs = Array.from(Array(graph.vertices_coords[0].length)).map(() => -Infinity);
 	graph.vertices_coords.forEach(pt => {

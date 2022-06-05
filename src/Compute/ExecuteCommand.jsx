@@ -33,7 +33,7 @@ const ExecuteCommand = ({ tool, params, solutions, toolStep }) => {
 		return;
 	}
 	switch (tool) {
-		case "inspect": return undefined;
+		case "inspect": return "success";
 		// case "remove": break;
 		case "line": return LineBetweenPoints(params, solutions, toolStep);
 		case "ray": return RayBetweenPoints(params, solutions, toolStep);

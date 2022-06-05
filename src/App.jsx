@@ -37,11 +37,9 @@ import {
 	setPreference,
 } from "./LocalStorage";
 
-// import squareFOLD from "./Files/square.fold?raw";
-// const startFOLD = JSON.parse(squareFOLD);
-// import animalBase from "./Files/example-animal-base.fold?raw";
-// const startFOLD = JSON.parse(animalBase);
-import exampleSequence from "./Files/example-sequence.fold?raw";
+// import example from "./Files/square.fold?raw";
+// import example from "./Files/example-animal-base.fold?raw";
+import example from "./Files/example-sequence.fold?raw";
 
 import ear from "rabbit-ear";
 
@@ -138,7 +136,7 @@ const App = () => {
 	const [diagramCommandQueue, setDiagramCommandQueue] = createSignal();
 
 	// get rid of eventually:
-	const [showDebugLayer, setShowDebugLayer] = createSignal(true);
+	const [showDebugLayer, setShowDebugLayer] = createSignal(false);
 
 	// file management
 	/**
@@ -169,8 +167,9 @@ const App = () => {
 	// load a file_frames, automatically set the cp
 	createEffect(() => {
 		const frames = fileFrames();
-		if (frames.length) {
-			const cp = frames[0];
+		const index = fileFrameIndex();
+		if (index < frames.length) {
+			const cp = frames[index];
 			const foldedForm = MakeFoldedForm(cp);
 			setCP(cp);
 			// todo: errors if something goes wrong
@@ -238,6 +237,18 @@ const App = () => {
 	createEffect(() => setPreference(["simulator", "strain"], simulatorStrain()));
 	createEffect(() => setPreference(["simulator", "shadows"], simulatorShowShadows()));
 
+	// keyboard events
+	createEffect(() => {
+		const keyboard = keyboardState();
+		if (keyboard.event && keyboard.event.type === "up") {
+			switch (keyboard.event.key) {
+				case "\`": setShowTerminal(true); break;
+				// consider also hiding any visible popups...
+				case "Escape": setShowTerminal(false); break;
+				default: break;
+			}
+		}
+	});
 	// todo: oh no, this needs to fire before the ExecuteCommand effect.
 	// running axiom 3 (non-parallel), switching to axiom 1/2/4 executes the new tool with old params.
 	createEffect(() => {
@@ -305,32 +316,37 @@ const App = () => {
 	createEffect(() => {
 		const entry = cpCommandQueue();
 		if (!entry) { return; }
-		// modify crease pattern
-		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
-		setHistoryText(newHistory);
+		// clear touches
 		setCPCommandQueue();
-		// setCPPointer();
 		setCPPresses([]);
 		setCPDrags([]);
 		setCPReleases([]);
 		setCPToolStep([]);
 		setCPParams([]);
 		setCPSolutions([]);
+		// "success" is a code for "clear touches, but don't cache the history"
+		if (entry === "success") { return; }
+		// modify crease pattern
+		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
+		setHistoryText(newHistory);
+
 	});
 	createEffect(() => {
 		const entry = diagramCommandQueue();
 		if (!entry) { return; }
-		// modify crease pattern
-		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
-		setHistoryText(newHistory);
+		// clear touches
 		setDiagramCommandQueue();
-		// setDiagramPointer();
 		setDiagramPresses([]);
 		setDiagramDrags([]);
 		setDiagramReleases([]);
 		setDiagramToolStep([]);
 		setDiagramParams([]);
 		setDiagramSolutions([]);
+		// "success" is a code for "clear touches, but don't cache the history"
+		if (entry === "success") { return; }
+		// modify crease pattern
+		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
+		setHistoryText(newHistory);
 	});
 
 	onMount(() => {
@@ -339,7 +355,7 @@ const App = () => {
 		window.addEventListener("keyup", onkeyup);
 
 		// load an example file
-		loadFile(JSON.parse(exampleSequence));
+		loadFile(JSON.parse(example));
 	});
 	onCleanup(() => {
 		window.removeEventListener("resize", onresize);
@@ -482,11 +498,13 @@ const App = () => {
 							cpPresses={cpPresses}
 							cpDrags={cpDrags}
 							cpReleases={cpReleases}
+							cpParams={cpParams}
 							cpToolStep={cpToolStep}
 							diagramPointer={diagramPointer}
 							diagramPresses={diagramPresses}
 							diagramDrags={diagramDrags}
 							diagramReleases={diagramReleases}
+							diagramParams={diagramParams}
 							diagramToolStep={diagramToolStep}
 							simulatorPointers={simulatorPointers}
 							keyboardState={keyboardState}

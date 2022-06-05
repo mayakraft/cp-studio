@@ -16,6 +16,14 @@
 	flex-direction: column;
 }
 
+.Terminal pre,
+.Terminal textarea {
+	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+	font-weight: normal;
+	font-size: calc(var(--app-font-size) * 0.75);
+	line-height: calc(var(--app-font-size) * 0.75 * 1.25);
+}
+
 .Terminal pre {
 	max-height: 40vh;
 	overflow-y: auto;
@@ -23,9 +31,16 @@
 	border-bottom: 2px solid;
 }
 
+/*wrap pre*/
+.Terminal pre {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
 .Terminal textarea {
-	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-	font-weight: normal;
 	margin: 0 0.5rem 0rem 0.5rem;
 	resize: none;
 	border-radius: 0;

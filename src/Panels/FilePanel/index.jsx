@@ -6,18 +6,18 @@ import {
 	setPreference,
 } from "../../LocalStorage";
 
-// "file_spec": 1.1,
 // "file_classes": ["diagrams"],
-// "file_author": "",
-// "file_title": "",
-// "file_frames": [],
-
-
 // file_title
 // file_author
 // file_description
 // file_spec
 // file_creator
+
+
+// <div class="flex-row left">
+// 	<p>version: <b>{getFileMetaValue("file_spec")}</b></p>
+// </div>
+
 
 const preferenceCollapseKeys = ["panels", "filePanelCollapsed"];
 
@@ -62,13 +62,9 @@ const FilePanel = (props) => {
 					value={getFileMetaValue("file_description")}
 					oninput={e => modifyFileMeta("file_description", e.target.value)}
 				/>
-			<hr />
-			<div class="flex-row left">
-				<p>version: <b>{getFileMetaValue("file_spec")}</b></p>
-			</div>
 			<div class="flex-row left">
 				<p>kind: <b>{props.fileFrames().length === 1
-					? "crease pattern"
+					? "single model"
 					: "diagrams"}</b></p>
 			</div>
 		</Panel>
