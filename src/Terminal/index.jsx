@@ -6,7 +6,7 @@ const Terminal = (props) => {
 	let preRef;
 	let textareaRef;
 
-	const [historyText, setHistoryText] = createSignal("cp.segment(0, 0, 1, 1)\ncp.segment(0.5, 0.5, 0.5, 1)\ncp.planar()");
+	// todo, do not use setHistoryText, instead call whatever method modifies the cp and adds to the history itself
 
 	const oninput = (e) => {
 		const char = e.target.value[e.target.value.length - 1];
@@ -15,7 +15,7 @@ const Terminal = (props) => {
 			case "\n":
 				// todo, check if space is pressed.
 				const newline = e.target.value.substring(0, e.target.value.length - 1);
-				setHistoryText(historyText() + "\n" + newline);
+				props.setHistoryText(props.historyText() + "\n" + newline);
 				if (preRef) { preRef.scrollTop = preRef.scrollHeight; }
 				e.target.value = "";
 			break;
@@ -29,7 +29,7 @@ const Terminal = (props) => {
 
 	return <div class={Style.TerminalContainer}>
 		<div class={Style.Terminal}>
-			<pre ref={preRef}>{historyText()}</pre>
+			<pre ref={preRef}>{props.historyText()}</pre>
 			<textarea
 				ref={textareaRef}
 				autocomplete="off"

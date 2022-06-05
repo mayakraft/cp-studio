@@ -37,7 +37,8 @@ const LineToLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 		case "0 0": return pointer && pointer.nearest ? [toSegment(pointer.nearest.edge_coords)] : [];
 		case "1 0": return [toSegment(presses[0].nearest.edge_coords), toSegment(pointer.nearest.edge_coords)];
 		case "1 1":
-		case "2 1": return [toSegment(presses[0].nearest.edge_coords), toSegment(releases[0].nearest.edge_coords)];
+		case "2 1":
+		case "2 2": return [toSegment(presses[0].nearest.edge_coords), toSegment(releases[0].nearest.edge_coords)];
 		default: return [];
 	}
 };

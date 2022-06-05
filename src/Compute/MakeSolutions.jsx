@@ -48,23 +48,23 @@ const Scribble = (params) => {
 // 		default: return [];
 // 	}
 // };
-const RunParams = ({ tool, params }) => {
+const MakeSolutions = ({ tool, params, toolStep }) => {
 	switch (tool) {
 		case "inspect": return undefined;
 		// case "remove": break;
-		case "line": return LineBetweenPoints(params);
-		case "ray": return RayBetweenPoints(params);
-		case "segment": return SegmentBetweenPoints(params);
-		case "point-to-point": return Axiom2(params);
-		case "line-to-line": return Axiom3(params);
-		case "perpendicular": return Axiom4(params);
-		case "scribble": return Scribble(params);
-		// case "pleat": return LineToLine(params);
-		// case "assignment": return SingleLine(params);
+		case "line": return LineBetweenPoints(params, toolStep);
+		case "ray": return RayBetweenPoints(params, toolStep);
+		case "segment": return SegmentBetweenPoints(params, toolStep);
+		case "point-to-point": return Axiom2(params, toolStep);
+		case "line-to-line": return Axiom3(params, toolStep);
+		case "perpendicular": return Axiom4(params, toolStep);
+		case "scribble": return Scribble(params, toolStep);
+		// case "pleat": return LineToLine(params, toolStep);
+		// case "assignment": return SingleLine(params, toolStep);
 		// case "transform": break;
 		// case "zoom": break;
 		default: return [];
 	}
 };
 
-export default RunParams;
+export default MakeSolutions;

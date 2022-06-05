@@ -1,0 +1,31 @@
+{
+	"line": [
+		"press on a point",
+		"release on a point"
+	],
+	"ray": [
+		"press on a point",
+		"release on a point"
+	],
+	"segment": [
+		"press on a point",
+		"release on a point"
+	],
+	"point-to-point": [
+		"press on a point",
+		"release on a point"
+	],
+	"line-to-line": [
+		"press on a line",
+		"release on a line",
+		"choose one"
+	],
+	"perpendicular": [
+		"press on a line",
+		"release on a point"
+	],
+	"pleat": [
+		"press on a line",
+		"release on a line"
+	]
+}

@@ -28,8 +28,9 @@ import {
 } from "./Helpers";
 // modify
 import MakeParams from "./Compute/MakeParams";
-import RunParams from "./Compute/RunParams";
+import MakeSolutions from "./Compute/MakeSolutions";
 import MakeToolStep from "./Compute/MakeToolStep";
+import ExecuteCommand from "./Compute/ExecuteCommand";
 import {
 	localStorageVersion,
 	emptyPreferences,
@@ -84,6 +85,9 @@ const App = () => {
 	const [foldedForm, setFoldedForm] = createSignal(MakeFoldedForm(startFOLD));
 	const [cpRect, setCPRect] = createSignal();
 	const [foldedFormRect, setFoldedFormRect] = createSignal();
+	// history. todo: build this out into actual objects
+	const [historyText, setHistoryText] = createSignal(); // string
+
 	// const [cpConvexHull, setCPConvexHull] = createSignal();
 	// const [foldedFormConvexHull, setFoldedFormConvexHull] = createSignal();
 	// app state, ui, touch handlers
@@ -127,6 +131,9 @@ const App = () => {
 	// tool settings
 	const [vertexSnapping, setVertexSnapping] = createSignal(true);
 	const [toolAssignmentDirection, setToolAssignmentDirection] = createSignal("mountain-valley");
+
+	const [cpCommandQueue, setCPCommandQueue] = createSignal();
+	const [diagramCommandQueue, setDiagramCommandQueue] = createSignal();
 
 	// get rid of eventually:
 	const [showDebugLayer, setShowDebugLayer] = createSignal(true);
@@ -232,6 +239,8 @@ const App = () => {
 	createEffect(() => setPreference(["simulator", "strain"], simulatorStrain()));
 	createEffect(() => setPreference(["simulator", "shadows"], simulatorShowShadows()));
 
+	// todo: oh no, this needs to fire before the ExecuteCommand effect.
+	// running axiom 3 (non-parallel), switching to axiom 1/2/4 executes the new tool with old params.
 	createEffect(() => {
 		tool();
 		setCPPresses([]);
@@ -241,7 +250,7 @@ const App = () => {
 		setDiagramDrags([]);
 		setDiagramReleases([]);
 		// setSimulatorPointers([]);
-	})
+	});
 	createEffect(() => setCPParams(MakeParams({
 		tool: tool(),
 		pointer: cpPointer(),
@@ -258,17 +267,13 @@ const App = () => {
 		releases: diagramReleases(),
 		vertexSnapping: vertexSnapping(),
 	})));
-	createEffect(() => setCPSolutions(RunParams({
+	createEffect(() => setCPSolutions(MakeSolutions({
 		tool: tool(),
 		params: cpParams(),
-		// setParams: setCPParams,
-		// rect: cpRect(),
 	})));
-	createEffect(() => setDiagramSolutions(RunParams({
+	createEffect(() => setDiagramSolutions(MakeSolutions({
 		tool: tool(),
 		params: diagramParams(),
-		// setParams: setDiagramParams,
-		// rect: foldedFormRect(),
 	})));
 	createEffect(() => setCPToolStep(MakeToolStep({
 		tool: tool(),
@@ -284,6 +289,50 @@ const App = () => {
 		releases: diagramReleases(),
 		solutions: diagramSolutions(),
 	})));
+	createEffect(() => setCPCommandQueue(ExecuteCommand({
+		which: "cp",
+		tool: tool(),
+		params: cpParams(),
+		solutions: cpSolutions(),
+		toolStep: cpToolStep(),
+	})));
+	createEffect(() => setDiagramCommandQueue(ExecuteCommand({
+		which: "diagram",
+		tool: tool(),
+		params: diagramParams(),
+		solutions: diagramSolutions(),
+		toolStep: diagramToolStep(),
+	})));
+	createEffect(() => {
+		const entry = cpCommandQueue();
+		if (!entry) { return; }
+		// modify crease pattern
+		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
+		setHistoryText(newHistory);
+		setCPCommandQueue();
+		// setCPPointer();
+		setCPPresses([]);
+		setCPDrags([]);
+		setCPReleases([]);
+		setCPToolStep([]);
+		setCPParams([]);
+		setCPSolutions([]);
+	});
+	createEffect(() => {
+		const entry = diagramCommandQueue();
+		if (!entry) { return; }
+		// modify crease pattern
+		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
+		setHistoryText(newHistory);
+		setDiagramCommandQueue();
+		// setDiagramPointer();
+		setDiagramPresses([]);
+		setDiagramDrags([]);
+		setDiagramReleases([]);
+		setDiagramToolStep([]);
+		setDiagramParams([]);
+		setDiagramSolutions([]);
+	});
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -452,7 +501,10 @@ const App = () => {
 			</div>
 
 			<Show when={showTerminal()}>
-				<Terminal />
+				<Terminal
+					historyText={historyText}
+					setHistoryText={setHistoryText}
+				/>
 			</Show>
 
 			{/* pop-ups */}
