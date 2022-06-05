@@ -6,15 +6,19 @@ import Menubar from "./Menubar";
 import Toolbar from "./Toolbar";
 import PanelGroup from "./Panels/PanelGroup";
 import Terminal from "./Terminal";
-import ErrorPopup from "./Popups/ErrorPopup";
 import CP from "./CP";
 import Diagram from "./Diagram";
 import Simulator from "./Simulator";
+// popups
+import NewFilePopup from "./Popups/NewFilePopup";
+import ErrorPopup from "./Popups/ErrorPopup";
 // I/O
 import DragAndDrop from "./FileManager/DragAndDrop";
 import {
 	makeDiagramFormatFOLD,
 	getFileMeta,
+	makeFOLDFile,
+	downloadFile,
 } from "./FileManager";
 import MakeFoldedForm from "./FOLD/MakeFoldedForm";
 // general
@@ -25,6 +29,7 @@ import {
 // modify
 import MakeParams from "./Compute/MakeParams";
 import RunParams from "./Compute/RunParams";
+import MakeToolStep from "./Compute/MakeToolStep";
 import {
 	localStorageVersion,
 	emptyPreferences,
@@ -107,10 +112,12 @@ const App = () => {
 	const [cpPresses, setCPPresses] = createSignal([]);
 	const [cpDrags, setCPDrags] = createSignal([]);
 	const [cpReleases, setCPReleases] = createSignal([]);
+	const [cpToolStep, setCPToolStep] = createSignal([]);
 	const [diagramPointer, setDiagramPointer] = createSignal();
 	const [diagramPresses, setDiagramPresses] = createSignal([]);
 	const [diagramDrags, setDiagramDrags] = createSignal([]);
 	const [diagramReleases, setDiagramReleases] = createSignal([]);
+	const [diagramToolStep, setDiagramToolStep] = createSignal([]);
 	const [simulatorPointers, setSimulatorPointers] = createSignal([]);
 	// operations
 	const [cpParams, setCPParams] = createSignal([]);
@@ -120,7 +127,6 @@ const App = () => {
 	// tool settings
 	const [vertexSnapping, setVertexSnapping] = createSignal(true);
 	const [toolAssignmentDirection, setToolAssignmentDirection] = createSignal("mountain-valley");
-
 
 	// get rid of eventually:
 	const [showDebugLayer, setShowDebugLayer] = createSignal(true);
@@ -264,6 +270,20 @@ const App = () => {
 		// setParams: setDiagramParams,
 		// rect: foldedFormRect(),
 	})));
+	createEffect(() => setCPToolStep(MakeToolStep({
+		tool: tool(),
+		pointer: cpPointer(),
+		presses: cpPresses(),
+		releases: cpReleases(),
+		solutions: cpSolutions(),
+	})));
+	createEffect(() => setDiagramToolStep(MakeToolStep({
+		tool: tool(),
+		pointer: diagramPointer(),
+		presses: diagramPresses(),
+		releases: diagramReleases(),
+		solutions: diagramSolutions(),
+	})));
 
 	return (
 		<div class={`${Style.App} ${darkMode() ? "dark-mode" : "light-mode"}`}>
@@ -400,10 +420,12 @@ const App = () => {
 							cpPresses={cpPresses}
 							cpDrags={cpDrags}
 							cpReleases={cpReleases}
+							cpToolStep={cpToolStep}
 							diagramPointer={diagramPointer}
 							diagramPresses={diagramPresses}
 							diagramDrags={diagramDrags}
 							diagramReleases={diagramReleases}
+							diagramToolStep={diagramToolStep}
 							simulatorPointers={simulatorPointers}
 							keyboardState={keyboardState}
 							//
@@ -434,6 +456,12 @@ const App = () => {
 			</Show>
 
 			{/* pop-ups */}
+			<Show when={showNewPopup()}>
+				<NewFilePopup
+					loadFile={loadFile}
+					clickOff={() => setShowNewPopup(false)}
+				/>
+			</Show>
 			<Show when={errorMessage()}>
 				<ErrorPopup
 					title={errorMessage().title}
@@ -441,9 +469,6 @@ const App = () => {
 					body={errorMessage().body}
 					clickOff={() => setErrorMessage(undefined)}
 				/>
-			</Show>
-			<Show when={showNewPopup()}>
-				<div></div>
 			</Show>
 			<DragAndDrop
 				loadFile={loadFile}

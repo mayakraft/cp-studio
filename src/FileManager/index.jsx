@@ -46,7 +46,7 @@ export const getFileMeta = (fold) => {
 	const meta = {};
 	getAllFileKeys(fold).forEach(key => meta[key] = fold[key]);
 	return meta;
-}
+};
 /**
  * @description given a FOLD object that is a single model,
  * create a "file_frames" array and move its data into the first element spot.
@@ -92,7 +92,6 @@ export const makeDiagramFormatFOLD = (fold) => {
 	}
 	return makeDiagramFromSingleModel(fold);
 };
-
 /**
  * @description given a crase pattern or a sequence (FOLD format), this will
  * return a sequence, or an error if there was an issue loading

@@ -6,10 +6,10 @@ import {
 	setPreference,
 } from "../../LocalStorage";
 import Inspect from "./Inspect";
-import Axiom2 from "./Axiom2";
-import Axiom3 from "./Axiom3";
 import Pleat from "./Pleat";
 import Assignment from "./Assignment";
+import StepsText from "./StepsText.json";
+import { ToolTouchSteps } from "./Shared";
 
 const preferenceCollapseKeys = ["panels", "toolPanelCollapsed"];
 
@@ -25,6 +25,15 @@ const ToolPanel = (props) => {
 			isCollapsed={isCollapsed}
 			setIsCollapsed={setIsCollapsed}>
 			<div class={Style.PanelTool}>
+				{/* An ordered list of instructions for your touch/releases */}
+				<Show when={StepsText[props.tool()]}>
+					<ToolTouchSteps
+						stepsText={StepsText[props.tool()]}
+						// todo, need to pick either cp or diagram here
+						toolStep={props.cpToolStep}
+					/>
+				</Show>
+				{/* custom content for each tool */}
 				<Switch fallback={<></>}>
 					<Match when={props.tool() === "inspect"}>
 						<Inspect
@@ -32,25 +41,10 @@ const ToolPanel = (props) => {
 							diagramPointer={props.diagramPointer}
 						/>
 					</Match>
-					<Match when={props.tool() === "point-to-point"}>
-						<Axiom2
-							cpPresses={props.cpPresses}
-							cpReleases={props.cpReleases}
-							cpSolutions={props.cpSolutions}
-						/>
-					</Match>
-					<Match when={props.tool() === "line-to-line"}>
-						<Axiom3
-							cpPresses={props.cpPresses}
-							cpReleases={props.cpReleases}
-							cpSolutions={props.cpSolutions}
-						/>
-					</Match>
 					<Match when={props.tool() === "pleat"}>
 						<Pleat
-							cpPresses={props.cpPresses}
-							cpReleases={props.cpReleases}
-							cpSolutions={props.cpSolutions}
+							cpToolStep={props.cpToolStep}
+							diagramToolStep={props.diagramToolStep}
 							pleatCount={pleatCount}
 							setPleatCount={setPleatCount}
 						/>

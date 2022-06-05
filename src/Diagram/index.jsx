@@ -2,17 +2,12 @@ import "./Diagram.css";
 import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./Diagram.module.css";
-// import ToolLayer from "./ToolLayer";
+import OrigamiLayer from "../SVG/Layers/OrigamiLayer";
 import ParamLayer from "../SVG/Layers/ParamLayer";
 import SolutionLayer from "../SVG/Layers/SolutionLayer";
+import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import DiagramLayer from "./DiagramLayer";
-
-const options = {
-	vertices: false,
-	viewBox: true,
-	strokeWidth: 1/200,
-};
 
 const Diagram = (props) => {
 	let parentDiv;
@@ -23,33 +18,23 @@ const Diagram = (props) => {
 	svg.onRelease = props.onRelease;
 	const onmouseleave = props.onLeave;
 
-	const origamiLayer = svg.g();
+	const origamiLayer = OrigamiLayer(svg);
 	const paramLayer = ParamLayer(svg);
 	const solutionLayer = SolutionLayer(svg);
 	const debugLayer = DebugLayer(svg);
-	// const toolLayer = ToolLayer(svg);
+	const rulerLayer = RulerLayer(svg);
 	// const diagramLayer = DiagramLayer(svg);
 
-	// crease pattern layer
+	// origami layer
 	createEffect(() => {
 		const origami = props.origami();
-
 		// this will also set the SVG viewBox
-		origamiLayer.removeChildren();
-		ear.graph.svg.drawInto(origamiLayer, origami, options);
-
-		// move the calculated stroke width to the top SVG element
-		// and use this value to update style on other layers too.
-		const strokeWidth = origamiLayer.getAttribute("stroke-width");
-		origamiLayer.removeAttribute("stroke-width");
-		svg.padding(strokeWidth * 5)
-			.strokeWidth(strokeWidth);
-
-		solutionLayer
-			.strokeWidth(strokeWidth * 2)
-			.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
-
+		origamiLayer.onChange({ origami });
+		// get the newly calculated strokeWidth, populate it to other layers
+		const strokeWidth = svg.getAttribute("stroke-width");
 		paramLayer.strokeWidth(strokeWidth * 2);
+		solutionLayer.strokeWidth(strokeWidth * 2)
+			.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
 	});
 
 	// param layer
@@ -78,6 +63,13 @@ const Diagram = (props) => {
 		const showDebug = props.showDebugLayer();
 		if (showDebug) { debugLayer.removeAttribute("display"); }
 		else { debugLayer.setAttribute("display", "none"); }
+	});
+
+	// ruler layer
+	createEffect(() => {
+		const { Shift } = props.keyboardState();
+		const pointer = props.diagramPointer();
+		rulerLayer.onChange({ Shift, pointer });
 	});
 
 	// // tool layer and crease pattern modification

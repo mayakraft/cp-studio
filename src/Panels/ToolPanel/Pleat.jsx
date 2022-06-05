@@ -5,12 +5,12 @@ const pleatDirections = [
 ];
 
 const Pleat = (props) => (<>
+	<hr />
 	<p><b>pleat count</b>: <input
 		type="text"
 		value={props.pleatCount()}
 		oninput={(e) => props.setPleatCount(parseInt(e.target.value))}
 	/></p>
-	<hr />
 	{/*<For each={pleatDirections}>{str =>
 		<div>
 			<input

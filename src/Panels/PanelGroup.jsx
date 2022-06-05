@@ -43,6 +43,8 @@ const PanelGroup = (props) => {
 					diagramPointer={props.diagramPointer}
 					cpSolutions={props.cpSolutions}
 					diagramSolutions={props.diagramSolutions}
+					cpToolStep={props.cpToolStep}
+					diagramToolStep={props.diagramToolStep}
 					// tool settings
 					toolAssignmentDirection={props.toolAssignmentDirection}
 					setToolAssignmentDirection={props.setToolAssignmentDirection}

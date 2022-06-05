@@ -36,6 +36,7 @@ textarea {
 	outline: 3px solid;
 	outline-offset: 0.125rem;
 	font-size: var(--app-font-size);
+	font-weight: bold;
 	outline-color: transparent; 
 }
 /*

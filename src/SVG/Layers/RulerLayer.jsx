@@ -35,14 +35,14 @@ const RulerLayer = (svg) => {
 		setup();
 	};
 
-	layer.onChange = ({ Shift, cpPointer }) => {
-		if (cpPointer === undefined) {
+	layer.onChange = ({ Shift, pointer }) => {
+		if (pointer === undefined) {
 			layer225.setAttribute("display", "none");
 			layerCross.setAttribute("display", "none");
 			return;
 		}
 
-		const coords = stringifyPoint(cpPointer);
+		const coords = stringifyPoint(pointer);
 		layer225.setAttribute("transform", `translate(${coords})`);
 		layerCross.setAttribute("transform", `translate(${coords})`);
 		layerCross.removeAttribute("display");

@@ -55,12 +55,8 @@ const VEF = (props) => (<>
 // edge, edge_coords, edge_assignment, face, face_coords, vertex, vertex_coords
 const Inspect = (props) => {
 	return (<>
-		<HoverPointer
-			pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])}
-		/>
-		<VEF
-			pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])}
-		/>
+		<HoverPointer pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])} />
+		<VEF pointer={mostRecentTouch([props.cpPointer(), props.diagramPointer()])} />
 	</>);
 };
 

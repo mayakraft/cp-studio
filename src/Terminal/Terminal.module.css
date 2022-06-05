@@ -24,6 +24,8 @@
 }
 
 .Terminal textarea {
+	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+	font-weight: normal;
 	margin: 0 0.5rem 0rem 0.5rem;
 	resize: none;
 	border-radius: 0;

@@ -12,6 +12,13 @@ import {
 // "file_title": "",
 // "file_frames": [],
 
+
+// file_title
+// file_author
+// file_description
+// file_spec
+// file_creator
+
 const preferenceCollapseKeys = ["panels", "filePanelCollapsed"];
 
 const FilePanel = (props) => {
@@ -34,7 +41,7 @@ const FilePanel = (props) => {
 			isCollapsed={isCollapsed}
 			setIsCollapsed={setIsCollapsed}>
 			<div class="flex-row left">
-				<p>name:</p>
+				<p>title:</p>
 				<input
 					type="text"
 					value={getFileMetaValue("file_title")}
@@ -42,13 +49,17 @@ const FilePanel = (props) => {
 				/>
 			</div>
 			<div class="flex-row left">
-				<p>designer:</p>
+				<p>author:</p>
 				<input
 					type="text"
 					value={getFileMetaValue("file_author")}
 					oninput={e => modifyFileMeta("file_author", e.target.value)}
 				/>
 			</div>
+			<p>description:</p>
+				<textarea
+					rows="2"
+				/>
 			<hr />
 			<div class="flex-row left">
 				<p>version: <b>{getFileMetaValue("file_spec")}</b></p>

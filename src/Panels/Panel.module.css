@@ -39,6 +39,10 @@
 	height: 1rem;
 }
 
+.Panel textarea {
+	resize: vertical;
+}
+
 /* COLORS */
 
 :global(.light-mode) .Body {

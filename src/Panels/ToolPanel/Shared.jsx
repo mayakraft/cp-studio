@@ -1,3 +1,5 @@
+import Style from "./ToolPanel.module.css";
+
 const assignmentButtonNames = {
 	M: "mountain",
 	V: "valley",
@@ -24,3 +26,17 @@ export const Snapping = (props) => (<>
 		oninput={e => props.setVertexSnapping(e.target.checked)}
 	/><label for="vertex-snapping-checkbox">{props.body ? props.body : "vertex snapping"}</label></p>
 </>);
+
+
+const StepStatus = (i, toolStep) => {
+	if (i < toolStep[0]) { return Style.Completed; }
+	if (i === toolStep[0]) { return Style.Current; }
+	if (i >= toolStep[1]) { return Style.Completed; }
+	return Style.Todo;
+};
+
+export const ToolTouchSteps = (props) => (<ol>
+	<For each={props.stepsText}>{(text, i) =>
+		<li class={`fold-step ${StepStatus(i(), props.toolStep())}`}>{text}</li>
+	}</For>
+</ol>);
