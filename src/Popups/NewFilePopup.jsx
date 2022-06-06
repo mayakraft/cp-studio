@@ -1,8 +1,9 @@
-import { createSignal } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 import ear from "rabbit-ear";
 import Style from "./NewFilePopup.module.css";
 import Popup from "./Popup";
 import PopupWindow from "./PopupWindow";
+import Dict from "../Localization/dictionary.json";
 /**
  *
  */
@@ -10,12 +11,19 @@ const NewFilePopup = (props) => {
 	const [showPolygon, setShowPolygon] = createSignal(false);
 	const [showRectangle, setShowRectangle] = createSignal(false);
 
+	// translation
+	const [T, setT] = createSignal(s => s);
+	createEffect(() => {
+		const newT = (s) => Dict[s] && Dict[s][props.language()] ? Dict[s][props.language()] : s;
+		setT(() => newT);
+	});
+
 	const loadCP = (cp) => {
 		props.loadFile(cp);
 		props.clickOff();
 	};
 	return (<Popup clickOff={props.clickOff}>
-		<PopupWindow title="new file">
+		<PopupWindow title={T()("new file")}>
 			<div class="flex-row">
 				<button onclick={() => loadCP(ear.cp.triangle())}>triangle</button>
 				<button onclick={() => loadCP(ear.cp.unit_square())}>square</button>

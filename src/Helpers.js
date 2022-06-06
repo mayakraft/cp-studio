@@ -28,7 +28,7 @@ export const cleanNumber = function (num, decimals = 4) {
 	// if (countPlaces(crop) === Math.min(decimals, countPlaces(num))) {
 	// 	return num;
 	// }
-	return crop;
+	// return crop;
 };
 
 export const mostRecentTouch = touchEvents => touchEvents

@@ -136,55 +136,6 @@ const App = () => {
 		setFileFrameIndex(file_frames.length - 1);
 		// todo: do we need to clear touches?
 	};
-	// the SVG touch events
-	// each event calculates the nearest VEF components, updating the current pointer
-	// location, and pushes any press/release/drag event onto their arrays.
-	const cpOnPress = (e) => {
-		const event = appendNearest(e, cp());
-		setCPPointer(event);
-		setCPPresses([...cpPresses(), event]);
-	};
-	const cpOnMove = (e) => {
-		const event = appendNearest(e, cp());
-		setCPPointer(event);
-		if (e.buttons) {
-			setCPDrags([...cpDrags(), event]);
-		}
-	};
-	const cpOnRelease = (e) => {
-		const event = appendNearest(e, cp());
-		setCPPointer(event);
-		setCPReleases([...cpReleases(), event]);
-	};
-	const cpOnLeave = (e) => {
-		setCPPointer(undefined);
-		if (e.buttons) {
-			setCPDrags([...cpDrags(), appendNearest(e, cp())]);
-		}
-	};
-	const diagramOnPress = (e) => {
-		const event = appendNearest(e, foldedForm());
-		setDiagramPointer(event);
-		setDiagramPresses([...diagramPresses(), event]);
-	};
-	const diagramOnMove = (e) => {
-		const event = appendNearest(e, foldedForm());
-		setDiagramPointer(event);
-		if (e.buttons) {
-			setDiagramDrags([...diagramDrags(), event]);
-		}
-	};
-	const diagramOnRelease = (e) => {
-		const event = appendNearest(e, foldedForm());
-		setDiagramPointer(event);
-		setDiagramReleases([...diagramReleases(), event]);
-	};
-	const diagramOnLeave = (e) => {
-		setDiagramPointer(undefined);
-		if (e.buttons) {
-			setDiagramDrags([...diagramDrags(), appendNearest(e, foldedForm())]);
-		}
-	};
 	// keyboard events
 	// maintain one keyboard object which contains a key:value of all keys pressed,
 	// and an "event" key which describes the most recent event.
@@ -384,10 +335,6 @@ const App = () => {
 				<div class={`${Style.Views} View-Items-${views().length} ${mobileLayout() ? Style.Column : Style.Row}`}>
 					<Show when={views().includes("crease pattern")}>
 						<CP
-							onPress={cpOnPress}
-							onMove={cpOnMove}
-							onRelease={cpOnRelease}
-							onLeave={cpOnLeave}
 							tool={tool}
 							views={views}
 							showPanels={showPanels}
@@ -396,10 +343,14 @@ const App = () => {
 							origami={cp}
 							rect={cpRect}
 							// events
-							cpPointer={cpPointer}
-							cpPresses={cpPresses}
-							cpDrags={cpDrags}
-							cpReleases={cpReleases}
+							pointer={cpPointer}
+							presses={cpPresses}
+							drags={cpDrags}
+							releases={cpReleases}
+							setPointer={setCPPointer}
+							setPresses={setCPPresses}
+							setDrags={setCPDrags}
+							setReleases={setCPReleases}
 							keyboardState={keyboardState}
 							// calculations
 							cpParams={cpParams}
@@ -412,10 +363,6 @@ const App = () => {
 					</Show>
 					<Show when={views().includes("diagram")}>
 						<Diagram
-							onPress={diagramOnPress}
-							onMove={diagramOnMove}
-							onRelease={diagramOnRelease}
-							onLeave={diagramOnLeave}
 							tool={tool}
 							views={views}
 							showPanels={showPanels}
@@ -424,10 +371,14 @@ const App = () => {
 							origami={foldedForm}
 							rect={foldedFormRect}
 							// events
-							diagramPointer={diagramPointer}
-							diagramPresses={diagramPresses}
-							diagramDrags={diagramDrags}
-							diagramReleases={diagramReleases}
+							pointer={diagramPointer}
+							presses={diagramPresses}
+							drags={diagramDrags}
+							releases={diagramReleases}
+							setPointer={setDiagramPointer}
+							setPresses={setDiagramPresses}
+							setDrags={setDiagramDrags}
+							setReleases={setDiagramReleases}
 							keyboardState={keyboardState}
 							// calculations
 							diagramParams={diagramParams}
@@ -463,6 +414,7 @@ const App = () => {
 						<Panels
 							tool={tool}
 							views={views}
+							language={language}
 							cp={cp}
 							darkMode={darkMode}
 							fileMeta={fileMeta}
@@ -536,12 +488,14 @@ const App = () => {
 			{/* pop-ups */}
 			<Show when={showNewPopup()}>
 				<NewFilePopup
+					language={language}
 					loadFile={loadFile}
 					clickOff={() => setShowNewPopup(false)}
 				/>
 			</Show>
 			<Show when={errorMessage()}>
 				<ErrorPopup
+					language={language}
 					title={errorMessage().title}
 					header={errorMessage().header}
 					body={errorMessage().body}

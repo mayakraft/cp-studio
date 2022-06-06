@@ -1,0 +1,264 @@
+{
+	"file": {
+		"ar": "ملف",
+		"de": "Datei",
+		"en": "file",
+		"jp": "ファイル",
+		"zh": "文件"
+	},
+	"new": {
+		"ar": "جديد",
+		"de": "Neu",
+		"en": "new",
+		"jp": "新規",
+		"zh": "新增"
+	},
+	"new file": {
+		"ar": "ملف جديد",
+		"de": "Neue Datei",
+		"en": "new file",
+		"jp": "新しいファイル",
+		"zh": "新建文件"
+	},
+	"open": {
+		"ar": "يفتح",
+		"de": "offen",
+		"en": "open",
+		"jp": "開く",
+		"zh": "打开"
+	},
+	"save": {
+		"ar": "يحفظ",
+		"de": "speichern",
+		"en": "save",
+		"jp": "保存",
+		"zh": "保存"
+	},
+	"export": {
+		"ar": "يصدّر",
+		"en": "export"
+	},
+	"data": {
+		"ar": "الكود",
+		"en": "data"
+	},
+	"on": {
+		"ar": "تشغيل",
+		"de": "Aktivieren",
+		"en": "on",
+		"jp": "オン",
+		"zh": "启用"
+	},
+	"view": {
+		"ar": "عرض",
+		"de": "Anzeigen",
+		"en": "view",
+		"jp": "表示",
+		"zh": "视图"
+	},
+	"preferences": {
+		"ar": "تفضيلات",
+		"de": "Einstellungen",
+		"en": "preferences",
+		"jp": "基本設定",
+		"zh": "偏好设置"
+	},
+	"show panels": {
+		"ar": "لوحة",
+		"de": "Werkzeugleiste anzeigen",
+		"en": "show panels",
+		"jp": "パネル",
+		"zh": "面板"
+	},
+	"dark mode": {
+		"ar": "وضع الداكن",
+		"de": "dunkler Modus",
+		"en": "dark mode",
+		"jp": "ダーク モード",
+		"zh": "深色模式"
+	},
+	"about": {
+		"ar": "مقدمة",
+		"de": "info",
+		"en": "about",
+		"jp": "詳細情報",
+		"zh": "关于"
+	},
+	"title": {
+		"ar": "العنوان",
+		"de": "Titel",
+		"en": "title",
+		"jp": "タイトル",
+		"zh": "标题"
+	},
+	"author": {
+		"ar": "كاتب",
+		"de": "Autor",
+		"en": "author",
+		"jp": "作成者",
+		"zh": "作者"
+	},
+	"class": {
+		"ar": "فصل",
+		"de": "Klasse",
+		"en": "class",
+		"jp": "種類",
+		"zh": "班级"
+	},
+	"description": {
+		"ar": "وصف",
+		"de": "Beschreibung",
+		"en": "description",
+		"jp": "説明",
+		"zh": "描述"
+	},
+	"attribution": {
+		"en": "attribution",
+		"jp": "属性"
+	},
+	"editor": {
+		"ar": "محرر",
+		"en": "editor"
+	},
+	"diagram": {
+		"ar": "مخطط",
+		"de": "Diagramm",
+		"en": "diagram",
+		"jp": "ダイアグラム",
+		"zh": "关系图"
+	},
+	"simulator": {
+		"ar": "محاكي",
+		"de": "Simulator",
+		"en": "simulator",
+		"jp": "シミュレーター",
+		"zh": "模拟器"
+	},
+	"crease": {
+		"ar": "",
+		"de": "Falte",
+		"en": "crease",
+		"jp": "折り目",
+		"zh": "折缝"
+	},
+	"creases": {
+		"ar": "",
+		"de": "Falten",
+		"en": "creases",
+		"jp": "折り目",
+		"zh": "折缝"
+	},
+	"arrow": {
+		"ar": "سهم",
+		"de": "Pfeil",
+		"en": "arrow",
+		"jp": "矢印",
+		"zh": "箭头"
+	},
+	"arrows": {
+		"ar": "أسهم",
+		"de": "Pfeile",
+		"en": "arrows",
+		"jp": "矢印",
+		"zh": "箭头"
+	},
+	"strain": {
+		"ar": "توتر",
+		"de": "Belastung",
+		"en": "strain",
+		"jp": "緊迫",
+		"zh": "应变"
+	},
+	"step": {
+		"ar": "خطوة",
+		"de": "Schritt",
+		"en": "step",
+		"jp": "手順",
+		"zh": "步骤"
+	},
+	"tool": {
+		"ar": "أداة",
+		"de": "Tool",
+		"en": "tool"
+	},
+	"select": {
+		"ar": "يحدد",
+		"en": "select"
+	},
+	"info": {
+		"ar": "معلومات",
+		"en": "info"
+	},
+	"crease pattern": {
+		"en": "crease pattern"
+	},
+	"vertex": {
+		"ar": "الذروة",
+		"en": "vertex",
+		"ru": "вершина"
+	},
+	"edge": {
+		"ar": "حافة",
+		"en": "edge"
+	},
+	"face": {
+		"ar": "وجه",
+		"en": "face"
+	},
+	"triangle": {
+		"ar": "",
+		"de": "Dreieck",
+		"en": "triangle",
+		"jp": "三角形",
+		"zh": ""
+	},
+	"quadrilateral": {
+		"ar": "",
+		"de": "",
+		"en": "quadrilateral",
+		"jp": "",
+		"zh": ""
+	},
+	"pentagon": {
+		"ar": "",
+		"de": "Pentagon",
+		"en": "pentagon",
+		"jp": "五角形",
+		"zh": ""
+	},
+	"hexagon": {
+		"ar": "",
+		"de": "Hexagon",
+		"en": "hexagon",
+		"jp": "六角形",
+		"zh": ""
+	},
+	"septagon": {
+		"ar": "",
+		"de": "Septagon",
+		"en": "septagon",
+		"jp": "七角形",
+		"zh": ""
+	},
+	"octagon": {
+		"ar": "",
+		"de": "Achteck",
+		"en": "octagon",
+		"jp": "八角形",
+		"zh": ""
+	},
+	"nonagon": {
+		"ar": "",
+		"de": "Nonagon",
+		"en": "nonagon",
+		"jp": "nonagon",
+		"zh": ""
+	},
+	"decagon": {
+		"ar": "",
+		"de": "Zehneck",
+		"en": "decagon",
+		"jp": "十角形",
+		"zh": ""
+	}
+}

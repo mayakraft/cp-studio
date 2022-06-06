@@ -5,6 +5,7 @@ import {
 	getPreference,
 	setPreference,
 } from "../../LocalStorage";
+import Dict from "../../Localization/dictionary.json";
 
 const preferenceCollapseKeys = ["panels", "simulatorPanelCollapsed"];
 
@@ -12,9 +13,16 @@ const SimulatorPanel = (props) => {
 	const [isCollapsed, setIsCollapsed] = createSignal(getPreference(preferenceCollapseKeys));
 	createEffect(() => setPreference(preferenceCollapseKeys, isCollapsed()));
 
+	// translation
+	const [T, setT] = createSignal(s => s);
+	createEffect(() => {
+		const newT = (s) => Dict[s] && Dict[s][props.language()] ? Dict[s][props.language()] : s;
+		setT(() => newT);
+	});
+
 	return (
 		<Panel
-			title="Simulator"
+			title={T()("simulator")}
 			isCollapsed={isCollapsed}
 			setIsCollapsed={setIsCollapsed}>
 			<div class={Style.PanelSimulator}>
@@ -25,7 +33,7 @@ const SimulatorPanel = (props) => {
 						id="checkbox-simulator-on"
 						checked={props.simulatorOn()}
 						oninput={e => props.setSimulatorOn(e.target.checked)}
-					/><label for="checkbox-simulator-on">on</label>
+					/><label for="checkbox-simulator-on">{T()("on")}</label>
 					<input
 						type="range"
 						min="0.0"
@@ -42,7 +50,7 @@ const SimulatorPanel = (props) => {
 						id="checkbox-simulator-strain"
 						checked={props.simulatorStrain()}
 						oninput={e => props.setSimulatorStrain(e.target.checked)}
-					/><label for="checkbox-simulator-strain">strain</label>
+					/><label for="checkbox-simulator-strain">{T()("strain")}</label>
 				</div>
 				<div>
 					<input

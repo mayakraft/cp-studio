@@ -5,6 +5,7 @@ import {
 	getPreference,
 	setPreference,
 } from "../../LocalStorage";
+import Dict from "../../Localization/dictionary.json";
 
 // "file_classes": ["diagrams"],
 // file_title
@@ -23,6 +24,14 @@ const preferenceCollapseKeys = ["panels", "filePanelCollapsed"];
 
 const FilePanel = (props) => {
 	const [isCollapsed, setIsCollapsed] = createSignal(getPreference(preferenceCollapseKeys));
+
+	// translation
+	const [T, setT] = createSignal(s => s);
+	createEffect(() => {
+		const newT = (s) => Dict[s] && Dict[s][props.language()] ? Dict[s][props.language()] : s;
+		setT(() => newT);
+	});
+
 	createEffect(() => setPreference(preferenceCollapseKeys, isCollapsed()));
 
 	const getFileMetaValue = (key) => props.fileMeta()[key]
@@ -37,11 +46,11 @@ const FilePanel = (props) => {
 
 	return (
 		<Panel
-			title="File"
+			title={T()("file")}
 			isCollapsed={isCollapsed}
 			setIsCollapsed={setIsCollapsed}>
 			<div class="flex-row left">
-				<p>title:</p>
+				<p>{T()("title")}:</p>
 				<input
 					type="text"
 					value={getFileMetaValue("file_title")}
@@ -49,7 +58,7 @@ const FilePanel = (props) => {
 				/>
 			</div>
 			<div class="flex-row left">
-				<p>author:</p>
+				<p>{T()("author")}:</p>
 				<input
 					type="text"
 					value={getFileMetaValue("file_author")}
@@ -57,11 +66,11 @@ const FilePanel = (props) => {
 				/>
 			</div>
 			<div class="flex-row left">
-				<p>class: <b>{props.fileFrames().length === 1
+				<p>{T()("class")}: <b>{props.fileFrames().length === 1
 					? "single model"
 					: "diagrams"}</b></p>
 			</div>
-			<p>description:</p>
+			<p>{T()("description")}:</p>
 				<textarea
 					rows="2"
 					value={getFileMetaValue("file_description")}

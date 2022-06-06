@@ -8,12 +8,20 @@ import {
 	getPreference,
 	setPreference,
 } from "../../LocalStorage";
+import Dict from "../../Localization/dictionary.json";
 
 const preferenceCollapseKeys = ["panels", "diagramPanelCollapsed"];
 
 const DiagramPanel = (props) => {
 	const [isCollapsed, setIsCollapsed] = createSignal(getPreference(preferenceCollapseKeys));
 	createEffect(() => setPreference(preferenceCollapseKeys, isCollapsed()));
+
+	// translation
+	const [T, setT] = createSignal(s => s);
+	createEffect(() => {
+		const newT = (s) => Dict[s] && Dict[s][props.language()] ? Dict[s][props.language()] : s;
+		setT(() => newT);
+	});
 
 	const getDiagramInstructionString = (cp) => {
 		if (cp.diagram_instruction) {
@@ -81,11 +89,11 @@ const DiagramPanel = (props) => {
 
 	return (
 		<Panel
-			title="Diagrams"
+			title={T()("diagram")}
 			isCollapsed={isCollapsed}
 			setIsCollapsed={setIsCollapsed}>
 			<div class={Style.DiagramPanel}>
-				<p>step {props.fileFrameIndex() + 1}</p>
+				<p>{T()("step")} {props.fileFrameIndex() + 1}</p>
 				<div class="flex-row">
 					<button
 						class={`${Style.ControlButton} ${Style.backwards}`}
@@ -105,7 +113,7 @@ const DiagramPanel = (props) => {
 						onclick={() => advanceStep(+1)}></button>
 				</div>
 				<div class="flex-row">
-					<p>create step:</p>
+					<p>{T()("new")} {T()("step")}:</p>
 					<button onclick={insertStep}>here</button>
 					<button onclick={appendStep}>end</button>
 				</div>
@@ -125,7 +133,7 @@ const DiagramPanel = (props) => {
 				<p><b>{getDiagramInstructionString(props.cp())}</b></p>
 				<hr />
 				<div class="flex-row">
-					<p>creases ({countDiagramCreases(props.cp())})</p>
+					<p>{T()("creases")} ({countDiagramCreases(props.cp())})</p>
 					<button class="square"><img src={Plus} /></button>
 					<button class="square"><img src={Minus} /></button>
 				</div>
@@ -142,7 +150,7 @@ const DiagramPanel = (props) => {
 				</table>
 				<hr />
 				<div class="flex-row">
-					<p>arrows ({countDiagramArrows(props.cp())})</p>
+					<p>{T()("arrows")} ({countDiagramArrows(props.cp())})</p>
 					<button class="square"><img src={Plus} /></button>
 					<button class="square"><img src={Minus} /></button>
 				</div>

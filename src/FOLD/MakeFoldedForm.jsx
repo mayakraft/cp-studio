@@ -6,6 +6,9 @@ const MakeFoldedForm = (cp) => {
 	if (!cp.vertices_coords || !cp.edges_vertices) { return cp; }
 	// we need:
 	// vertices_coords, edges_vertices, edges_foldAngle, edges_assignment, faces_vertices, faces_faces
+	if (!cp.edges_foldAngle || !cp.edges_assignment || !cp.faces_vertices || !cp.faces_faces) {
+		ear.graph.populate(cp);
+	}
 	const vertices_coords = cp.vertices_folded_coords
 		? cp.vertices_folded_coords
 		: ear.graph.make_vertices_coords_flat_folded(cp, face);

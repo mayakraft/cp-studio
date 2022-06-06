@@ -32,6 +32,7 @@ const Panels = (props) => {
 				/>
 			</Show>
 			<FilePanel
+				language={props.language}
 				fileMeta={props.fileMeta}
 				setFileMeta={props.setFileMeta}
 				fileFrames={props.fileFrames}
@@ -40,6 +41,7 @@ const Panels = (props) => {
 				<ToolPanel
 					tool={props.tool}
 					cp={props.cp}
+					language={props.language}
 					cpPointer={props.cpPointer}
 					cpPresses={props.cpPresses}
 					cpReleases={props.cpReleases}
@@ -89,6 +91,7 @@ const Panels = (props) => {
 			<Show when={props.views().includes("simulator")}>
 				<SimulatorPanel
 					tool={props.tool}
+					language={props.language}
 					simulatorOn={props.simulatorOn}
 					setSimulatorOn={props.setSimulatorOn}
 					simulatorStrain={props.simulatorStrain}
@@ -106,6 +109,7 @@ const Panels = (props) => {
 					// isCollapsed={props.diagramPanelCollapsed}
 					// setIsCollapsed={props.setDiagramPanelCollapsed}
 					tool={props.tool}
+					language={props.language}
 					showDiagramInstructions={props.showDiagramInstructions}
 					setShowDiagramInstructions={props.setShowDiagramInstructions}
 					// data

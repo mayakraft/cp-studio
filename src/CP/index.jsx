@@ -8,17 +8,12 @@ import SolutionLayer from "../SVG/Layers/SolutionLayer";
 import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
 // import SimulatorLayer from "./Layers/SimulatorLayer";
+import { appendNearest } from "../Helpers";
 
 const CP = (props) => {
 	let parentDiv;
 
 	const svg = ear.svg().setClass("creasePattern").scale(1, -1);
-	svg.onPress = props.onPress;
-	svg.onMove = props.onMove;
-	svg.onRelease = props.onRelease;
-	const onmouseleave = props.onLeave;
-	// "mouseenter", "mouseout", "mouseover"
-
 	const origamiLayer = OrigamiLayer(svg);
 	const paramLayer = ParamLayer(svg);
 	const solutionLayer = SolutionLayer(svg);
@@ -26,6 +21,33 @@ const CP = (props) => {
 	const debugLayer = DebugLayer(svg);
 	// const simulatorLayer = SimulatorLayer(svg);
 
+	// the SVG touch events
+	// each event calculates the nearest VEF components, updating the current pointer
+	// location, and pushes any press/release/drag event onto their arrays.
+	const onPress = (e) => {
+		const event = appendNearest(e, props.origami());
+		props.setPointer(event);
+		props.setPresses([...props.presses(), event]);
+	};
+	const onMove = (e) => {
+		const event = appendNearest(e, props.origami());
+		props.setPointer(event);
+		if (e.buttons) {
+			props.setDrags([...props.drags(), event]);
+		}
+	};
+	const onRelease = (e) => {
+		const event = appendNearest(e, props.origami());
+		props.setPointer(event);
+		props.setReleases([...props.releases(), event]);
+	};
+	const onLeave = (e) => {
+		// todo: e is wrong scale here.
+		props.setPointer(undefined);
+		if (e.buttons) {
+			props.setDrags([...props.drags(), appendNearest(e, props.origami())]);
+		}
+	};
 	const handleResize = () => {
 		parentDiv.removeChild(svg);
 		parentDiv.appendChild(svg);
@@ -33,8 +55,13 @@ const CP = (props) => {
 
 	onMount(() => {
 		parentDiv.appendChild(svg);
+
 		window.addEventListener("resize", handleResize);
-		svg.addEventListener("mouseleave", onmouseleave);
+		svg.onPress = onPress;
+		svg.onMove = onMove;
+		svg.onRelease = onRelease;
+		svg.addEventListener("mouseleave", onLeave);
+
 		createEffect(() => {
 			props.tool();
 			props.views();
@@ -72,9 +99,9 @@ const CP = (props) => {
 
 		// debug layer
 		createEffect(() => {
-			const presses = props.cpPresses();
-			const drags = props.cpDrags();
-			const releases = props.cpReleases();
+			const presses = props.presses();
+			const drags = props.drags();
+			const releases = props.releases();
 			const rect = props.rect();
 			debugLayer.onChange({ presses, drags, releases, rect });
 		});
@@ -87,7 +114,7 @@ const CP = (props) => {
 		// ruler layer
 		createEffect(() => {
 			const { Shift } = props.keyboardState();
-			const pointer = props.cpPointer();
+			const pointer = props.pointer();
 			rulerLayer.onChange({ Shift, pointer });
 		});
 
@@ -108,7 +135,10 @@ const CP = (props) => {
 
 	onCleanup(() => {
 		window.removeEventListener("resize", handleResize);
-		svg.removeEventListener("mouseleave", onmouseleave);
+		svg.onPress = undefined;
+		svg.onMove = undefined;
+		svg.onRelease = undefined;
+		svg.removeEventListener("mouseleave", onLeave);
 		parentDiv.removeChild(svg);
 	});
 
