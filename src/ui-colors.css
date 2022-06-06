@@ -30,7 +30,7 @@
 	color: var(--darkmode-white);
 	background-color: var(--darkmode-gray-2);
 }
-.light-mode textarea { outline-color: black; }
+.light-mode textarea { outline-color: transparent; }
 .dark-mode textarea { outline-color: var(--darkmode-gray-3); }
 .light-mode textarea:focus { outline-color: #fb4; }
 .dark-mode textarea:focus { outline-color: var(--darkmode-blue); }
@@ -40,7 +40,7 @@
 
 .light-mode input[type=text] {
 	color: black;
-	background-color: white;
+	background-color: #eee;
 }
 .dark-mode input[type=text] {
 	color: var(--darkmode-white);

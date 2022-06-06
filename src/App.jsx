@@ -4,7 +4,7 @@ import Style from "./App.module.css";
 import "./SVG/svg.css";
 import Menubar from "./Menubar";
 import Toolbar from "./Toolbar";
-import PanelGroup from "./Panels/PanelGroup";
+import Panels from "./Panels";
 import Terminal from "./Terminal";
 import CP from "./CP";
 import Diagram from "./Diagram";
@@ -108,8 +108,10 @@ const App = () => {
 	// tool settings
 	const [vertexSnapping, setVertexSnapping] = createSignal(true); // boolean
 	const [toolAssignmentDirection, setToolAssignmentDirection] = createSignal("mountain-valley"); // string
-	// todo: get rid of eventually
-	const [showDebugLayer, setShowDebugLayer] = createSignal(false); // boolean
+	// todo: remove in production probably
+	const [showDebugSVGLayer, setShowDebugSVGLayer] = createSignal(preferences.debug.showSVGLayer); // boolean
+	const [showDebugPanel, setShowDebugPanel] = createSignal(preferences.debug.showPanel); // boolean
+
 
 	/**
 	 * @description open the new file dialog which will subsequently call loadFile()
@@ -371,6 +373,9 @@ const App = () => {
 				saveFile={saveFile}
 				mobileLayout={mobileLayout}
 				setErrorMessage={setErrorMessage}
+				// debug
+				showDebugPanel={showDebugPanel}
+				setShowDebugPanel={setShowDebugPanel}
 			/>
 			<Toolbar
 				tool={tool}
@@ -404,7 +409,7 @@ const App = () => {
 							// tool settings
 							vertexSnapping={vertexSnapping}
 							// remove
-							showDebugLayer={showDebugLayer}
+							showDebugSVGLayer={showDebugSVGLayer}
 						/>
 					</Show>
 					<Show when={views().includes("diagram")}>
@@ -432,7 +437,7 @@ const App = () => {
 							// tool settings
 							vertexSnapping={vertexSnapping}
 							// remove
-							showDebugLayer={showDebugLayer}
+							showDebugSVGLayer={showDebugSVGLayer}
 						/>
 					</Show>
 					<Show when={views().includes("simulator")}>
@@ -457,7 +462,7 @@ const App = () => {
 				{/* panels */}
 				<div class={Style.FloatingPanelContainer}>
 					<Show when={showPanels()}>
-						<PanelGroup
+						<Panels
 							tool={tool}
 							views={views}
 							cp={cp}
@@ -472,6 +477,8 @@ const App = () => {
 							setShowPanels={setShowPanels}
 							showDiagramInstructions={showDiagramInstructions}
 							setShowDiagramInstructions={setShowDiagramInstructions}
+							// debug
+							showDebugPanel={showDebugPanel}
 							// simulator
 							simulatorOn={simulatorOn}
 							setSimulatorOn={setSimulatorOn}
@@ -502,8 +509,8 @@ const App = () => {
 							cpSolutions={cpSolutions}
 							diagramSolutions={diagramSolutions}
 							// remove
-							showDebugLayer={showDebugLayer}
-							setShowDebugLayer={setShowDebugLayer}
+							showDebugSVGLayer={showDebugSVGLayer}
+							setShowDebugSVGLayer={setShowDebugSVGLayer}
 							// tool settings
 							toolAssignmentDirection={toolAssignmentDirection}
 							setToolAssignmentDirection={setToolAssignmentDirection}

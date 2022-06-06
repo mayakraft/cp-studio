@@ -6,6 +6,13 @@ import PopupWindow from "./PopupWindow";
  * props.header
  * props.body
  */
+const BuildBody = (props) => {
+	switch (typeof props.body) {
+		case "object": return props.body;
+		case "string": return <p>{props.body}</p>;
+		default: return <></>;
+	}
+};
 const ErrorPopup = (props) => {
 	return (<Popup clickOff={props.clickOff}>
 		<PopupWindow title={props.title ? props.title : "error"}>
@@ -13,7 +20,7 @@ const ErrorPopup = (props) => {
 				<h4>{props.header}</h4>
 			</Show>
 			<Show when={props.body}>
-				<p>{props.body}</p>
+				<BuildBody body={props.body}/>
 			</Show>
 		</PopupWindow>
 	</Popup>);

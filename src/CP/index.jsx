@@ -79,7 +79,7 @@ const CP = (props) => {
 			debugLayer.onChange({ presses, drags, releases, rect });
 		});
 		createEffect(() => {
-			const showDebug = props.showDebugLayer();
+			const showDebug = props.showDebugSVGLayer();
 			if (showDebug) { debugLayer.removeAttribute("display"); }
 			else { debugLayer.setAttribute("display", "none"); }
 		});

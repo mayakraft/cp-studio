@@ -8,6 +8,9 @@ import {
 import Inspect from "./Inspect";
 import Pleat from "./Pleat";
 import Assignment from "./Assignment";
+import Scribble from "./Scribble";
+import Transform from "./Transform";
+import Zoom from "./Zoom";
 import StepsText from "./StepsText.json";
 import { ToolTouchSteps } from "./Shared";
 
@@ -58,6 +61,31 @@ const ToolPanel = (props) => {
 							toolAssignmentDirection={props.toolAssignmentDirection}
 							setToolAssignmentDirection={props.setToolAssignmentDirection}
 						/>
+					</Match>
+					<Match when={props.tool() === "scribble"}>
+						<Scribble
+							// vertexSnapping={props.vertexSnapping}
+							// setVertexSnapping={props.setVertexSnapping}
+							// newCreaseAssignment={props.newCreaseAssignment}
+							// setNewCreaseAssignment={props.setNewCreaseAssignment}
+						/>
+					</Match>
+					<Match when={props.tool() === "transform"}>
+						<Transform
+							// transformType={transformType}
+							// setTransformType={setTransformType}
+							// transformOrigin={props.transformOrigin}
+							// transformTranslate={props.transformTranslate}
+							// transformRotate={props.transformRotate}
+							// transformScale={props.transformScale}
+							// setTransformOrigin={props.setTransformOrigin}
+							// setTransformTranslate={props.setTransformTranslate}
+							// setTransformRotate={props.setTransformRotate}
+							// setTransformScale={props.setTransformScale}
+						/>
+					</Match>
+					<Match when={props.tool() === "zoom"}>
+						<Zoom />
 					</Match>
 				</Switch>
 			</div>

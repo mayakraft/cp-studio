@@ -63,6 +63,10 @@ const Navbar = (props) => <ul>
 				onClick={() => props.setDarkMode(!props.darkMode())}
 				highlighted={props.darkMode().toString()}
 			>{T("dark mode")}</li>
+			<li
+				onClick={() => props.setShowDebugPanel(!props.showDebugPanel())}
+				highlighted={props.showDebugPanel().toString()}
+			>{T("debug panel")}</li>
 		</ul>
 	</li>
 	<li>{T(Endonyms[props.language()])}
@@ -91,8 +95,8 @@ const Menubar = (props) => {
 		}
 	};
 
-	const fileDialogDidLoad = (string) => {
-		const result = ParseFileString(string);
+	const fileDialogDidLoad = (string, filename, mimeType) => {
+		const result = ParseFileString(string, filename, mimeType);
 		if (result.error) { return props.setErrorMessage(result.error); }
 		props.loadFile(result);
 	};
@@ -101,11 +105,14 @@ const Menubar = (props) => {
 		event.stopPropagation();
 		event.preventDefault();
 		// file reader and its callbacks
+		let filename, mimeType;
 		const reader = new FileReader();
-		reader.onerror = error => console.warn("FileReader error", error);
-		reader.onabort = abort => console.warn("FileReader abort", abort);
-		reader.onload = loadEvent => fileDialogDidLoad(loadEvent.target.result);
+		// reader.onerror = error => console.warn("FileReader error", error);
+		// reader.onabort = abort => console.warn("FileReader abort", abort);
+		reader.onload = loadEvent => fileDialogDidLoad(loadEvent.target.result, filename, mimeType);
 		if (event.target.files.length) {
+			mimeType = event.target.files[0].type;
+			filename = event.target.files[0].name;
 			return reader.readAsText(event.target.files[0]);
 		}
 		console.warn("FileReader no file selected");
@@ -124,6 +131,9 @@ const Menubar = (props) => {
 		showTerminal={props.showTerminal}
 		setShowTerminal={props.setShowTerminal}
 		onClickView={onClickView}
+		// debug
+		showDebugPanel={props.showDebugPanel}
+		setShowDebugPanel={props.setShowDebugPanel}
 	/>;
 
 	return (<>

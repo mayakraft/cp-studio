@@ -90,23 +90,35 @@ export const loadFOLDMetaAndFrames = (fold) => {
  * @description given a crase pattern or a sequence (FOLD format), this will
  * return a sequence, or an error if there was an issue loading
  */
-export const ParseFileString = (string) => {
+export const ParseFileString = (string, filename = "", mimeType = "") => {
+  const matches = filename.match(/\.[0-9a-z]+$/i);
+  const extension = matches == null ? undefined : matches[0];
 	// check if the crease pattern is a SET OF CPs (diagram), or a single fold crease pattern.
 	try {
 		return JSON.parse(string);
 	} catch (error) {
+		const title = "load file";
 		if (error.message.includes("JSON")) {
-			return {
-				error: {
-					title: "file load error",
-					header: "issue parsing JSON",
-					body: "This application supports FOLD file format (JSON-based). There was an error parsing the file. Either the file is the wrong format entirely, or there is a bad character in the file.",
-				}
-			};
+			let header = "";
+			let body = "";
+			if (extension === undefined) {
+				header = "error parsing JSON";
+				body = <p><a href="https://github.com/edemaine/fold" target="_blank">FOLD file format</a> expected. Either the file is the wrong format or the file is corrupt.</p>;
+			}
+			else if (extension === ".fold" || extension === ".json") {
+				header = "error parsing JSON";
+				body = <p>It looks like there is a JSON parsing error. Try an online <a href="https://jsonformatter.curiousconcept.com/#" target="_blank">JSON validator</a>.</p>;
+			}
+			else {
+				header = `${extension} is not supported`;
+				body = <><p>This application currently only supports .fold files.</p><p><a href="https://github.com/edemaine/fold" target="_blank">more information on FOLD format</a></p></>;
+			}
+			return { error: { title, header, body } };
 		}
 		return {
 			error: {
-				header: "unknown",
+				title,
+				header: "unknown error",
 				body: "JSON parse successfull, unknown error.",
 			}
 		};

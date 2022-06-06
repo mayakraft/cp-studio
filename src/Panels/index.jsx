@@ -6,29 +6,31 @@ import SimulatorPanel from "./SimulatorPanel";
 import DiagramPanel from "./DiagramPanel";
 import FilePanel from "./FilePanel";
 import DebugPanel from "./DebugPanel";
-import Style from "./PanelGroup.module.css";
+import Style from "./Panels.module.css";
 
-const PanelGroup = (props) => {
+const Panels = (props) => {
 
 	return (
-		<div class={Style.PanelGroup}>
-			<DebugPanel
-				tool={props.tool}
-				simulatorMove={props.simulatorMove}
-				keyboardState={props.keyboardState}
-				cpPointer={props.cpPointer}
-				cpPresses={props.cpPresses}
-				cpDrags={props.cpDrags}
-				cpReleases={props.cpReleases}
-				diagramPointer={props.diagramPointer}
-				diagramPresses={props.diagramPresses}
-				diagramDrags={props.diagramDrags}
-				diagramReleases={props.diagramReleases}
-				simulatorPointers={props.simulatorPointers}
-				// remove
-				showDebugLayer={props.showDebugLayer}
-				setShowDebugLayer={props.setShowDebugLayer}
-			/>
+		<div class={Style.Panels}>
+			<Show when={props.showDebugPanel()}>
+				<DebugPanel
+					tool={props.tool}
+					simulatorMove={props.simulatorMove}
+					keyboardState={props.keyboardState}
+					cpPointer={props.cpPointer}
+					cpPresses={props.cpPresses}
+					cpDrags={props.cpDrags}
+					cpReleases={props.cpReleases}
+					diagramPointer={props.diagramPointer}
+					diagramPresses={props.diagramPresses}
+					diagramDrags={props.diagramDrags}
+					diagramReleases={props.diagramReleases}
+					simulatorPointers={props.simulatorPointers}
+					// remove
+					showDebugSVGLayer={props.showDebugSVGLayer}
+					setShowDebugSVGLayer={props.setShowDebugSVGLayer}
+				/>
+			</Show>
 			<FilePanel
 				fileMeta={props.fileMeta}
 				setFileMeta={props.setFileMeta}
@@ -127,4 +129,4 @@ const PanelGroup = (props) => {
 	);
 };
 
-export default PanelGroup;
+export default Panels;

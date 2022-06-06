@@ -56,17 +56,17 @@ const FilePanel = (props) => {
 					oninput={e => modifyFileMeta("file_author", e.target.value)}
 				/>
 			</div>
+			<div class="flex-row left">
+				<p>class: <b>{props.fileFrames().length === 1
+					? "single model"
+					: "diagrams"}</b></p>
+			</div>
 			<p>description:</p>
 				<textarea
 					rows="2"
 					value={getFileMetaValue("file_description")}
 					oninput={e => modifyFileMeta("file_description", e.target.value)}
 				/>
-			<div class="flex-row left">
-				<p>kind: <b>{props.fileFrames().length === 1
-					? "single model"
-					: "diagrams"}</b></p>
-			</div>
 		</Panel>
 	);
 };

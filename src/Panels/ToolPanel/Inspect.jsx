@@ -66,10 +66,16 @@ const VEF = (props) => (<>
 		</Show>
 		<Show when={props.params[0].vertex_coords}>
 			<p>vertex (<b>{props.params[0].vertex}</b>/{ear.graph.count.vertices(props.cp())})</p>
-			<ul>
+			<div class="flex-row">
+				<p>x:&nbsp;</p><input type="text" placeholder="x" value={props.params[0].vertex_coords[0]} />
+			</div>
+			<div class="flex-row">
+				<p>y:&nbsp;</p><input type="text" placeholder="y" value={props.params[0].vertex_coords[1]} />
+			</div>
+			{/*<ul>
 				<li>x: <b>{props.params[0].vertex_coords[0]}</b></li>
 				<li>y: <b>{props.params[0].vertex_coords[1]}</b></li>
-			</ul>
+			</ul>*/}
 			{/*<p><b>({stringifyPoint(props.pointer.nearest.vertex_coords, 4, ", ")})</b></p>*/}
 		</Show>
 	</Show>

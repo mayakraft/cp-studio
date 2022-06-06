@@ -69,14 +69,15 @@ const DebugPanel = (props) => {
 				<input
 					type="checkbox"
 					id="checkbox-show-debug-layer"
-					checked={props.showDebugLayer()}
-					oninput={e => props.setShowDebugLayer(e.target.checked)}
-				/><label for="checkbox-show-debug-layer">show debug layer</label>
+					checked={props.showDebugSVGLayer()}
+					oninput={e => props.setShowDebugSVGLayer(e.target.checked)}
+				/><label for="checkbox-show-debug-layer">show SVG touches</label>
 			</div>
 
-			<button>repair cp</button>
 		</Panel>
 	);
 };
+
+			// <button>repair cp</button>
 
 export default DebugPanel;

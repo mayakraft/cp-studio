@@ -1,4 +1,4 @@
-.PanelGroup {
+.Panels {
 	overflow-y: auto;
 	height: 100%;
 	flex-shrink: 0;
@@ -16,32 +16,32 @@
 
 /* COLORS */
 
-:global(.light-mode) .PanelGroup {
+:global(.light-mode) .Panels {
 	background-color: #158;
 }
-:global(.dark-mode) .PanelGroup {
+:global(.dark-mode) .Panels {
 	background-color: var(--darkmode-gray-1);
 }
 
-:global(.light-mode) .PanelGroup .button {
+:global(.light-mode) .Panels .button {
 	background-color: #269;
 }
-:global(.dark-mode) .PanelGroup .button {
+:global(.dark-mode) .Panels .button {
 	color: var(--darkmode-gray-8);
 	background-color: var(--darkmode-gray-4);
 	opacity: 1;
 }
-:global(.light-mode) .PanelGroup .button[highlighted="true"] {
+:global(.light-mode) .Panels .button[highlighted="true"] {
 	background-color: #e53;
 }
-:global(.dark-mode) .PanelGroup .button[highlighted="true"] {
+:global(.dark-mode) .Panels .button[highlighted="true"] {
 	background-color: var(--darkmode-pink);
 	color: black;
 }
-:global(.light-mode) .PanelGroup .button:hover {
+:global(.light-mode) .Panels .button:hover {
 	background-color: #fb4;
 }
-:global(.dark-mode) .PanelGroup .button:hover {
+:global(.dark-mode) .Panels .button:hover {
 	background-color: var(--darkmode-pink-light);
 	color: black;
 }
@@ -50,11 +50,11 @@
 
 
 @media not all and (hover), (max-aspect-ratio: 1/1) {
-	.PanelGroup {
+	.Panels {
 		display: inline;
 		float: right;
 	}
-/*	.PanelGroup {
+/*	.Panels {
 		height: 100vh;
 		z-index: 2;
 		position: absolute;
@@ -63,7 +63,7 @@
 	.CollapseButton {
 		display: initial;
 	}
-	/*.PanelGroup {
+	/*.Panels {
 		min-width: 0;
 		flex: 0 1 30vh;
 		display: flex;

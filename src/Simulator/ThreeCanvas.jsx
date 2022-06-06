@@ -25,10 +25,11 @@ const ThreeCanvas = (props) => {
 	 * otherwise, this will still set the distance away from the camera, but along the existing axis.
 	 */
 	const setupCamera = (vmax = 1, reset = true) => {
+		const scale = 1.25;
 		// the distance the camera should be to nicely fit the object (of size vmax)
 		const fitLength = camera.aspect > 1
-			? vmax * 1.3333
-			: vmax * 1.3333 * (1 / camera.aspect);
+			? vmax * scale
+			: vmax * scale * (1 / camera.aspect);
 		if (reset) {
 			camera.position.set(0, 0, fitLength);
 			camera.up = new THREE.Vector3(0, 1, 0);
