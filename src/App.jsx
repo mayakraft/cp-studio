@@ -111,8 +111,6 @@ const App = () => {
 	// todo: remove in production probably
 	const [showDebugSVGLayer, setShowDebugSVGLayer] = createSignal(preferences.debug.showSVGLayer); // boolean
 	const [showDebugPanel, setShowDebugPanel] = createSignal(preferences.debug.showPanel); // boolean
-
-
 	/**
 	 * @description open the new file dialog which will subsequently call loadFile()
 	 */
@@ -309,7 +307,7 @@ const App = () => {
 		setCPParams([]);
 		setCPSolutions([]);
 		// "success" is a code for "tool is done. clear touches but don't cache the history"
-		if (entry === "success") { return; }
+		if (entry === "success" || entry === "rejected") { return; }
 		// modify FOLD object (modify the current index in fileFrames)
 		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
 		setHistoryText(newHistory);

@@ -5,7 +5,7 @@ const Inspect = ({ pointer, presses, releases, solutions }) => {
 		case "1 1":
 		case "2 1": return [1, 2];
 		case "2 2": return [2, 2];
-		default: return [0, 2];
+		default: return [-1, -1];
 	}
 };
 
@@ -14,7 +14,7 @@ const PressAndRelease = ({ pointer, presses, releases, solutions }) => {
 		case "0 0": return [0, 2];
 		case "1 0": return [1, 2];
 		case "1 1": return [2, 2];
-		default: return [0, 2];
+		default: return [-1, -1];
 	}
 };
 
@@ -25,7 +25,7 @@ const Axiom3 = ({ pointer, presses, releases, solutions }) => {
 		case "1 1": return solutions.length === 2 ? [2, 3] : [2, 2];
 		case "2 1": return [2, 3];
 		case "2 2": return [3, 3];
-		default: return [0, 3];
+		default: return [-1, -1];
 	}
 };
 

@@ -34,7 +34,9 @@ const SingleLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 const PointToPoint = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return pointer && pointer.nearest ? [toVector(pointer, vertexSnapping)] : [];
-		case "1 0": return [toVector(presses[0], vertexSnapping), toVector(pointer, vertexSnapping)];
+		case "1 0": return pointer && pointer.nearest
+			? [toVector(presses[0], vertexSnapping), toVector(pointer, vertexSnapping)]
+			: [];
 		case "1 1": return [toVector(presses[0], vertexSnapping), toVector(releases[0], vertexSnapping)];
 		default: return [];
 	}
@@ -43,7 +45,9 @@ const PointToPoint = ({ pointer, presses, drags, releases, vertexSnapping }) => 
 const LineToLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return pointer && pointer.nearest ? [toSegment(pointer.nearest.edge_coords)] : [];
-		case "1 0": return [toSegment(presses[0].nearest.edge_coords), toSegment(pointer.nearest.edge_coords)];
+		case "1 0": return pointer && pointer.nearest
+			? [toSegment(presses[0].nearest.edge_coords), toSegment(pointer.nearest.edge_coords)]
+			: [];
 		case "1 1":
 		case "2 1":
 		case "2 2": return [toSegment(presses[0].nearest.edge_coords), toSegment(releases[0].nearest.edge_coords)];
@@ -54,7 +58,9 @@ const LineToLine = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 const Perpendicular = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return pointer && pointer.nearest ? [toSegment(pointer.nearest.edge_coords)] : [];
-		case "1 0": return [toSegment(presses[0].nearest.edge_coords), toVector(pointer, vertexSnapping)];
+		case "1 0": return pointer && pointer.nearest
+			? [toSegment(presses[0].nearest.edge_coords), toVector(pointer, vertexSnapping)]
+			: [];
 		case "1 1": return [toSegment(presses[0].nearest.edge_coords), toVector(releases[0], vertexSnapping)];
 		default: return [];
 	}

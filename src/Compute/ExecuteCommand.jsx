@@ -32,6 +32,7 @@ const ExecuteCommand = ({ tool, params, solutions, toolStep }) => {
 	if (toolStep[0] === undefined || toolStep[0] === 0 || toolStep[0] !== toolStep[1]) {
 		return;
 	}
+	if (toolStep[0] === -1) { return "rejected"; }
 	switch (tool) {
 		case "inspect": return "success";
 		// case "remove": break;
