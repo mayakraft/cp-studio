@@ -7,7 +7,7 @@ import ParamLayer from "../SVG/Layers/ParamLayer";
 import SolutionLayer from "../SVG/Layers/SolutionLayer";
 import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
-// import SimulatorLayer from "./Layers/SimulatorLayer";
+import SimulatorLayer from "../SVG/Layers/SimulatorLayer";
 import { appendNearest } from "../Helpers";
 
 const CP = (props) => {
@@ -19,7 +19,7 @@ const CP = (props) => {
 	const solutionLayer = SolutionLayer(svg);
 	const rulerLayer = RulerLayer(svg);
 	const debugLayer = DebugLayer(svg);
-	// const simulatorLayer = SimulatorLayer(svg);
+	const simulatorLayer = SimulatorLayer(svg);
 
 	// the SVG touch events
 	// each event calculates the nearest VEF components, updating the current pointer
@@ -42,7 +42,6 @@ const CP = (props) => {
 		props.setReleases([...props.releases(), event]);
 	};
 	const onLeave = (e) => {
-		// todo: e is wrong scale here.
 		props.setPointer(undefined);
 		if (e.buttons) {
 			props.setDrags([...props.drags(), appendNearest(e, props.origami())]);
@@ -60,7 +59,7 @@ const CP = (props) => {
 		svg.onPress = onPress;
 		svg.onMove = onMove;
 		svg.onRelease = onRelease;
-		svg.addEventListener("mouseleave", onLeave);
+		svg.onLeave = onLeave;
 
 		createEffect(() => {
 			props.tool();
@@ -118,18 +117,14 @@ const CP = (props) => {
 			rulerLayer.onChange({ Shift, pointer });
 		});
 
-		// // simulator layer
-		// createEffect(() => {
-		// 	const origami = props.origami();
-		// 	const darkMode = props.darkMode();
-		// 	const simulatorMove = props.simulatorMove();
-		// 	const cpTouchState = props.cpTouchState();
-		// 	const highlight = props.simulatorShowHighlights()
-		// 	// debugLayer.clear();
-		// 	rulerLayer.clear();
-		// 	// toolLayer.clear();
-		// 	simulatorLayer.onChange({ origami, darkMode, simulatorMove, cpTouchState, highlight });
-		// });
+		// simulator layer
+		createEffect(() => {
+			const origami = props.origami();
+			const simulatorPointers = props.simulatorPointers();
+			const showTouches = props.simulatorShowTouches();
+			const rect = props.rect();
+			simulatorLayer.onChange({ origami, rect, simulatorPointers, showTouches });
+		});
 
 	});
 
@@ -138,7 +133,7 @@ const CP = (props) => {
 		svg.onPress = undefined;
 		svg.onMove = undefined;
 		svg.onRelease = undefined;
-		svg.removeEventListener("mouseleave", onLeave);
+		svg.onLeave = undefined;
 		parentDiv.removeChild(svg);
 	});
 

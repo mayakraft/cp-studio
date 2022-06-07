@@ -352,6 +352,8 @@ const App = () => {
 							setDrags={setCPDrags}
 							setReleases={setCPReleases}
 							keyboardState={keyboardState}
+							simulatorPointers={simulatorPointers}
+							simulatorShowTouches={simulatorShowTouches}
 							// calculations
 							cpParams={cpParams}
 							cpSolutions={cpSolutions}
@@ -384,6 +386,7 @@ const App = () => {
 							diagramParams={diagramParams}
 							diagramSolutions={diagramSolutions}
 							// tool settings
+							showDiagramInstructions={showDiagramInstructions}
 							vertexSnapping={vertexSnapping}
 							// remove
 							showDebugSVGLayer={showDebugSVGLayer}

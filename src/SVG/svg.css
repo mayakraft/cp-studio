@@ -52,6 +52,22 @@
 .dark-mode .ruler-layer .ruler-225 { stroke: #333; }
 .dark-mode .ruler-layer .ruler-axes { stroke: #555; }
 
+/* diagram layer */
+/*.light-mode .diagram-layer .mountain { stroke: black; }
+.light-mode .diagram-layer .valley { stroke: black; }
+.dark-mode .diagram-layer .mountain { stroke: black; }
+.dark-mode .diagram-layer .valley { stroke: black; }
+*/
+
+/* simulator layer */
+.light-mode .simulator-layer .simulator-polygon { fill: #fb4; stroke: none; }
+.light-mode .simulator-layer .simulator-circle { fill: black; }
+.light-mode .simulator-layer .simulator-vertex { fill: black; }
+/*.dark-mode .simulator-layer .simulator-polygon { fill: #626; stroke: none; }*/
+.dark-mode .simulator-layer .simulator-polygon { fill: #333; stroke: none; }
+.dark-mode .simulator-layer .simulator-circle { fill: #999; }
+.dark-mode .simulator-layer .simulator-vertex { fill: #fb4; }
+
 /* debug layer */
 .light-mode .debug-layer .drag-line { stroke: black; fill: none; }
 .dark-mode .debug-layer .drag-line { stroke: #ccc; fill: none; }

@@ -25,26 +25,26 @@ svg.foldedForm { stroke-width: 0.005; }
 	fill: none;
 }
 
-svg.foldedForm .diagram-instructions { stroke-linecap: round; }
-svg.foldedForm .diagram-instructions .mountain { stroke-dasharray: 0.02 0.035 0.001 0.035; }
-svg.foldedForm .diagram-instructions .valley { stroke-dasharray: 0.02 0.035; }
-svg.foldedForm .diagram-instructions .flat { stroke-dasharray: 0.02 0.035; }
+svg.foldedForm .diagram-layer { stroke-linecap: round; }
+svg.foldedForm .diagram-layer .mountain { stroke-dasharray: 0.02 0.035 0.001 0.035; }
+svg.foldedForm .diagram-layer .valley { stroke-dasharray: 0.02 0.035; }
+svg.foldedForm .diagram-layer .flat { stroke-dasharray: 0.02 0.035; }
 
-.light-mode svg.foldedForm .diagram-instructions { stroke: #666; }
-.light-mode svg.foldedForm .diagram-instructions .mountain { stroke: #666; }
-.light-mode svg.foldedForm .diagram-instructions .valley { stroke: #666; }
-.light-mode svg.foldedForm .diagram-instructions .flat { stroke: #666; }
+.light-mode svg.foldedForm .diagram-layer { stroke: black; }
+.light-mode svg.foldedForm .diagram-layer .mountain { stroke: black; }
+.light-mode svg.foldedForm .diagram-layer .valley { stroke: black; }
+.light-mode svg.foldedForm .diagram-layer .flat { stroke: black; }
 
-.dark-mode svg.foldedForm .diagram-instructions { stroke: var(--darkmode-gray-8); }
-.dark-mode svg.foldedForm .diagram-instructions .mountain { stroke: var(--darkmode-gray-8); }
-.dark-mode svg.foldedForm .diagram-instructions .valley { stroke: var(--darkmode-gray-8); }
-.dark-mode svg.foldedForm .diagram-instructions .flat { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-layer { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-layer .mountain { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-layer .valley { stroke: var(--darkmode-gray-8); }
+.dark-mode svg.foldedForm .diagram-layer .flat { stroke: var(--darkmode-gray-8); }
 
-.light-mode svg.foldedForm .diagram-instructions .arrow {
+.light-mode svg.foldedForm .diagram-layer .arrow {
 	stroke: black;
 	fill: black;
 }
-.dark-mode svg.foldedForm .diagram-instructions .arrow {
+.dark-mode svg.foldedForm .diagram-layer .arrow {
 	stroke: var(--darkmode-gray-6);
 	fill: var(--darkmode-gray-6);
 }

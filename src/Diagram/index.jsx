@@ -7,7 +7,7 @@ import ParamLayer from "../SVG/Layers/ParamLayer";
 import SolutionLayer from "../SVG/Layers/SolutionLayer";
 import RulerLayer from "../SVG/Layers/RulerLayer";
 import DebugLayer from "../SVG/Layers/DebugLayer";
-// import DiagramLayer from "../SVG/Layers/DiagramLayer";
+import DiagramLayer from "../SVG/Layers/DiagramLayer";
 import { appendNearest } from "../Helpers";
 
 const Diagram = (props) => {
@@ -15,11 +15,11 @@ const Diagram = (props) => {
 
 	const svg = ear.svg().setClass("foldedForm").scale(1, -1);
 	const origamiLayer = OrigamiLayer(svg);
+	const diagramLayer = DiagramLayer(svg);
 	const paramLayer = ParamLayer(svg);
 	const solutionLayer = SolutionLayer(svg);
-	const debugLayer = DebugLayer(svg);
 	const rulerLayer = RulerLayer(svg);
-	// const diagramLayer = DiagramLayer(svg);
+	const debugLayer = DebugLayer(svg);
 
 	// the SVG touch events
 	// each event calculates the nearest VEF components, updating the current pointer
@@ -42,25 +42,11 @@ const Diagram = (props) => {
 		props.setReleases([...props.releases(), event]);
 	};
 	const onLeave = (e) => {
-		// todo: e is wrong scale here.
 		props.setPointer(undefined);
 		if (e.buttons) {
 			props.setDrags([...props.drags(), appendNearest(e, props.origami())]);
 		}
 	};
-
-	// origami layer
-	createEffect(() => {
-		const origami = props.origami();
-		// this will also set the SVG viewBox
-		origamiLayer.onChange({ origami });
-		// get the newly calculated strokeWidth, populate it to other layers
-		const strokeWidth = svg.getAttribute("stroke-width");
-		paramLayer.strokeWidth(strokeWidth * 2);
-		solutionLayer.strokeWidth(strokeWidth * 2)
-			.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
-	});
-
 	const handleResize = () => {
 		parentDiv.removeChild(svg);
 		parentDiv.appendChild(svg);
@@ -73,13 +59,26 @@ const Diagram = (props) => {
 		svg.onPress = onPress;
 		svg.onMove = onMove;
 		svg.onRelease = onRelease;
-		svg.addEventListener("mouseleave", onLeave);
+		svg.onLeave = onLeave;
 
 		createEffect(() => {
 			props.tool();
 			props.views();
 			props.showPanels();
 			handleResize();
+		});
+
+		// origami layer
+		createEffect(() => {
+			const origami = props.origami();
+			// this will also set the SVG viewBox
+			origamiLayer.onChange({ origami });
+			// get the newly calculated strokeWidth, populate it to other layers
+			const strokeWidth = svg.getAttribute("stroke-width");
+			paramLayer.strokeWidth(strokeWidth * 2);
+			diagramLayer.strokeWidth(strokeWidth * 2);
+			solutionLayer.strokeWidth(strokeWidth * 2)
+				.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
 		});
 
 		// param layer
@@ -117,31 +116,24 @@ const Diagram = (props) => {
 			rulerLayer.onChange({ Shift, pointer });
 		});
 
-		// // diagram layer and diagram instructions
-		// createEffect(() => {
-		// 	const origami = props.origami();
-		// 	const tool = props.tool();
-		// 	const cpTouchState = props.cpTouchState();
-		// 	const diagramTouchState = props.diagramTouchState();
-		// 	const showDiagramInstructions = props.showDiagramInstructions();
-		// 	const diagramSolutions = props.diagramSolutions();
-		// 	const vertexSnapping = props.vertexSnapping();
-		// 	diagramLayer.onChange({
-		// 		origami,
-		// 		tool,
-		// 		cpTouchState,
-		// 		diagramTouchState,
-		// 		showDiagramInstructions,
-		// 		diagramSolutions,
-		// 		vertexSnapping,
-		// 	});
-		// });
+		// diagram layer and diagram instructions
+		createEffect(() => {
+			const origami = props.origami();
+			const showDiagramInstructions = props.showDiagramInstructions();
+			diagramLayer.onChange({
+				origami,
+				showDiagramInstructions,
+			});
+		});
 
 	});
 
 	onCleanup(() => {
 		window.removeEventListener("resize", handleResize);
-		svg.removeEventListener("mouseleave", onLeave);
+		svg.onPress = undefined;
+		svg.onMove = undefined;
+		svg.onRelease = undefined;
+		svg.onLeave = undefined;
 		parentDiv.removeChild(svg);
 	});
 
@@ -153,21 +145,3 @@ const Diagram = (props) => {
 };
 
 export default Diagram;
-
-	// // tool layer and crease pattern modification
-	// createEffect(() => {
-	// 	const origami = props.origami();
-	// 	const tool = props.tool();
-	// 	const vertexSnapping = props.vertexSnapping();
-	// 	const cpTouchState = props.cpTouchState();
-	// 	const diagramTouchState = props.diagramTouchState();
-	// 	const diagramSolutions = props.diagramSolutions();
-	// 	toolLayer.onChange({
-	// 		origami,
-	// 		tool,
-	// 		cpTouchState,
-	// 		diagramTouchState,
-	// 		diagramSolutions,
-	// 		vertexSnapping,
-	// 	});
-	// });
