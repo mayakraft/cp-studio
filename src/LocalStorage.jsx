@@ -11,7 +11,7 @@
 // window.localStorage.clear();
 // window.localStorage.key();
 
-export const localStorageVersion = 0.14;
+export const localStorageVersion = 0.15;
 
 // get user's device settings
 const deviceDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -25,7 +25,7 @@ export const emptyPreferences = () => ({
 	// on the contents being the same, so we must replace (intelligently) the old prefs.
 	version: localStorageVersion,
 	language: "en",
-	views: ["crease pattern", "simulator", "diagram"],
+	views: ["crease pattern", "simulator"],
 	darkMode: deviceDarkMode,
 	pleatCount: 8,
 	newCreaseAssignment: "F",

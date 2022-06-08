@@ -1,5 +1,18 @@
 import ear from "rabbit-ear";
 
+const assignNearestLine = (lines, pointer) => {
+	if (!pointer) { return; }
+	const point = [pointer.x, pointer.y];
+	const points = lines.map(line => line.nearestPoint(point));
+	const distances = points.map(pt => ear.math.distance2(pt, point));
+	const nearest = distances.map((d, i) => ({ d, i }))
+		.sort((a, b) => a.d - b.d)
+		.map(el => el.i)
+		.shift();
+	// console.log("nearest", nearest);
+	lines[nearest].classList = ["nearest"];
+};
+
 const LineBetweenPoints = (params) => {
 	switch (params.length) {
 		case 2: return [ear.line.fromPoints(...params)];
@@ -24,9 +37,13 @@ const Axiom2 = (params) => {
 		default: return [];
 	}
 };
-const Axiom3 = (params) => {
+const Axiom3 = (params, pointer) => {
 	switch (params.length) {
-		case 2: return ear.axiom(3, { lines: params.map(pts => ear.line.fromPoints(pts)) });
+		case 2: {
+			const solutions = ear.axiom(3, { lines: params.map(pts => ear.line.fromPoints(pts)) });
+			if (solutions.length === 2) { assignNearestLine(solutions, pointer); }
+			return solutions;
+		}
 		default: return [];
 	}
 };
@@ -48,19 +65,19 @@ const Scribble = (params) => {
 // 		default: return [];
 // 	}
 // };
-const MakeSolutions = ({ tool, params, toolStep }) => {
+const MakeSolutions = ({ tool, params, pointer }) => {
 	switch (tool) {
 		case "inspect": return undefined;
 		// case "remove": break;
-		case "line": return LineBetweenPoints(params, toolStep);
-		case "ray": return RayBetweenPoints(params, toolStep);
-		case "segment": return SegmentBetweenPoints(params, toolStep);
-		case "point-to-point": return Axiom2(params, toolStep);
-		case "line-to-line": return Axiom3(params, toolStep);
-		case "perpendicular": return Axiom4(params, toolStep);
-		case "scribble": return Scribble(params, toolStep);
-		// case "pleat": return LineToLine(params, toolStep);
-		// case "assignment": return SingleLine(params, toolStep);
+		case "line": return LineBetweenPoints(params, pointer);
+		case "ray": return RayBetweenPoints(params, pointer);
+		case "segment": return SegmentBetweenPoints(params, pointer);
+		case "point-to-point": return Axiom2(params, pointer);
+		case "line-to-line": return Axiom3(params, pointer);
+		case "perpendicular": return Axiom4(params, pointer);
+		case "scribble": return Scribble(params, pointer);
+		// case "pleat": return LineToLine(params, pointer);
+		// case "assignment": return SingleLine(params, pointer);
 		// case "transform": break;
 		// case "zoom": break;
 		default: return [];

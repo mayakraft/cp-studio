@@ -45,6 +45,8 @@
 .solution-layer { stroke-linecap: round; fill: none; }
 .light-mode .solution-layer { stroke: black; }
 .dark-mode .solution-layer { stroke: #fb4; }
+.light-mode .solution-layer .nearest { stroke: #e53; }
+.dark-mode .solution-layer .nearest { stroke: white; }
 
 /* ruler layer */
 .light-mode .ruler-layer .ruler-225 { stroke: #ccc; }
@@ -60,11 +62,12 @@
 */
 
 /* simulator layer */
-.light-mode .simulator-layer .simulator-polygon { fill: #fb4; stroke: none; }
+.simulator-layer { stroke: none; }
+.light-mode .simulator-layer .simulator-polygon { fill: #fb4; }
 .light-mode .simulator-layer .simulator-circle { fill: black; }
 .light-mode .simulator-layer .simulator-vertex { fill: black; }
-/*.dark-mode .simulator-layer .simulator-polygon { fill: #626; stroke: none; }*/
-.dark-mode .simulator-layer .simulator-polygon { fill: #333; stroke: none; }
+/*.dark-mode .simulator-layer .simulator-polygon { fill: #626; }*/
+.dark-mode .simulator-layer .simulator-polygon { fill: #333; }
 .dark-mode .simulator-layer .simulator-circle { fill: #999; }
 .dark-mode .simulator-layer .simulator-vertex { fill: #fb4; }
 

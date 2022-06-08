@@ -209,10 +209,12 @@ const App = () => {
 	createEffect(() => setCPSolutions(MakeSolutions({
 		tool: tool(),
 		params: cpParams(),
+		pointer: cpPointer(),
 	})));
 	createEffect(() => setDiagramSolutions(MakeSolutions({
 		tool: tool(),
 		params: diagramParams(),
+		pointer: diagramPointer(),
 	})));
 	// from the set of SVG press/release events, determine which input step the user is
 	// currently, the operation will not fully execute until the last step is reached.
@@ -363,6 +365,23 @@ const App = () => {
 							showDebugSVGLayer={showDebugSVGLayer}
 						/>
 					</Show>
+					<Show when={views().includes("simulator")}>
+						<Simulator
+							cp={cp}
+							tool={tool}
+							views={views}
+							darkMode={darkMode}
+							showPanels={showPanels}
+							// simulator
+							simulatorOn={simulatorOn}
+							simulatorShowTouches={simulatorShowTouches}
+							simulatorStrain={simulatorStrain}
+							simulatorFoldAmount={simulatorFoldAmount}
+							simulatorShowShadows={simulatorShowShadows}
+							// events
+							setSimulatorPointers={setSimulatorPointers}
+						/>
+					</Show>
 					<Show when={views().includes("diagram")}>
 						<Diagram
 							tool={tool}
@@ -390,23 +409,6 @@ const App = () => {
 							vertexSnapping={vertexSnapping}
 							// remove
 							showDebugSVGLayer={showDebugSVGLayer}
-						/>
-					</Show>
-					<Show when={views().includes("simulator")}>
-						<Simulator
-							cp={cp}
-							tool={tool}
-							views={views}
-							darkMode={darkMode}
-							showPanels={showPanels}
-							// simulator
-							simulatorOn={simulatorOn}
-							simulatorShowTouches={simulatorShowTouches}
-							simulatorStrain={simulatorStrain}
-							simulatorFoldAmount={simulatorFoldAmount}
-							simulatorShowShadows={simulatorShowShadows}
-							// events
-							setSimulatorPointers={setSimulatorPointers}
 						/>
 					</Show>
 				</div>

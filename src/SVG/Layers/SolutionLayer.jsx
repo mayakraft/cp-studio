@@ -6,12 +6,21 @@ const SolutionLayer = (svg) => {
 	layer.onChange = ({ solutions, rect }) => {
 		layer.removeChildren();
 		if (!solutions) { return; }
-		solutions
-			.filter(solution => solution instanceof ear.line
-				|| solution instanceof ear.ray)
-			.map(line => rect.clip(line))
-			.filter(a => a !== undefined)
-			.forEach(segment => layer.line(segment).setClass("solution-line"));
+		const lineRays = solutions
+			.filter(solution => solution instanceof ear.line || solution instanceof ear.ray);
+		const classes = lineRays.map(el => el.classList);
+		lineRays.forEach((line, i) => {
+			const segment = rect.clip(line);
+			if (!segment) { return; }
+			const classList = classes[i] == null ? ["solution-line"] : ["solution-line", ...classes[i]]
+			layer.line(segment).setClass(classList.join(" "));
+		});
+		// solutions
+		// 	.filter(solution => solution instanceof ear.line
+		// 		|| solution instanceof ear.ray)
+		// 	.map(line => rect.clip(line))
+		// 	.filter(a => a !== undefined)
+		// 	.forEach(segment => layer.line(segment).setClass("solution-line"));
 		solutions
 			.filter(solution => solution instanceof ear.segment)
 			.forEach(segment => layer.line(segment).setClass("solution-line"));
