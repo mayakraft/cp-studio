@@ -54,6 +54,31 @@ const Axiom4 = (params) => {
 		default: return [];
 	}
 };
+const Axiom5 = (params) => {
+	switch (params.length) {
+		// case 3: return ear.axiom(5, { points: [params[0], params[2]], lines: [ear.line.fromPoints(params[1])] });
+		case 3: return ear.axiom(5, { points: [params[2], params[0]], lines: [ear.line.fromPoints(params[1])] });
+		default: return [];
+	}
+};
+const Axiom6 = (params) => {
+	switch (params.length) {
+		case 4: return ear.axiom(6, {
+			points: [params[0], params[2]],
+			lines: [ear.line.fromPoints(params[1]), ear.line.fromPoints(params[3])],
+		});
+		default: return [];
+	}
+};
+const Axiom7 = (params) => {
+	switch (params.length) {
+		case 3: return ear.axiom(7, {
+			points: [params[0]],
+			lines: [ear.line.fromPoints(params[1]), ear.line.fromPoints(params[2])]
+		});
+		default: return [];
+	}
+};
 const Scribble = (params) => {
 	switch (params.length) {
 		case 1: return [...params];
@@ -76,6 +101,9 @@ const MakeSolutions = ({ tool, params, pointer }) => {
 		case "point-to-point": return Axiom2(params, pointer);
 		case "line-to-line": return Axiom3(params, pointer);
 		case "perpendicular": return Axiom4(params, pointer);
+		case "axiom-5": return Axiom5(params, pointer);
+		case "axiom-6": return Axiom6(params, pointer);
+		case "axiom-7": return Axiom7(params, pointer);
 		case "scribble": return Scribble(params, pointer);
 		// case "pleat": return LineToLine(params, pointer);
 		// case "assignment": return SingleLine(params, pointer);

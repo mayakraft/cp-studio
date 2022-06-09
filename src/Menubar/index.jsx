@@ -41,7 +41,7 @@ const Navbar = (props) => {
 	return <ul>
 		<li>{T()("file")}
 			<ul>
-				<li onClick={props.newFile}>{T()("new")}</li>
+				<li onClick={() => props.setShowNewPopup(true)}>{T()("new")}</li>
 				<li onClick={() => inputFileRef.click()}>{T()("open")}</li>
 				<li onClick={props.saveFile}>{T()("save")}</li>
 			</ul>
@@ -87,7 +87,14 @@ const Navbar = (props) => {
 				</For>
 			</ul>
 		</li>
-		<li onClick={() => {}}>{T()("about")}</li>
+
+		<li>{T()("help")}
+			<ul>
+				<li onClick={() => props.setShowExamplesPopup(true)}>{T()("examples")}</li>
+				<li onClick={() => {}}>{T()("about")}</li>
+			</ul>
+		</li>
+
 	</ul>;
 };
 
@@ -128,7 +135,8 @@ const Menubar = (props) => {
 	};
 
 	const Nav = () => <Navbar
-		newFile={props.newFile}
+		setShowNewPopup={props.setShowNewPopup}
+		setShowExamplesPopup={props.setShowExamplesPopup}
 		saveFile={props.saveFile}
 		views={props.views}
 		darkMode={props.darkMode}

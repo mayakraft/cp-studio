@@ -25,6 +25,15 @@ const Axiom4 = (params, solutions, toolStep) => {
 	const point = ptStr(params[1]);
 	return `ear.axiom(4, {points:[${point}], lines:[${line}]})`;
 };
+const Axiom5 = (params, solutions, toolStep) => {
+	return `ear.axiom(5, {points:[], lines:[]})`;
+};
+const Axiom6 = (params, solutions, toolStep) => {
+	return `ear.axiom(6, {points:[], lines:[]})`;
+};
+const Axiom7 = (params, solutions, toolStep) => {
+	return `ear.axiom(7, {points:[], lines:[]})`;
+};
 const Scribble = (params, solutions, toolStep) => {};
 const Zoom = (params, solutions, toolStep) => {};
 
@@ -42,6 +51,9 @@ const ExecuteCommand = ({ tool, params, solutions, toolStep }) => {
 		case "point-to-point": return Axiom2(params, solutions, toolStep);
 		case "line-to-line": return Axiom3(params, solutions, toolStep);
 		case "perpendicular": return Axiom4(params, solutions, toolStep);
+		case "axiom-5": return Axiom5(params, solutions, toolStep);
+		case "axiom-6": return Axiom6(params, solutions, toolStep);
+		case "axiom-7": return Axiom7(params, solutions, toolStep);
 		case "scribble": return Scribble(params, solutions, toolStep);
 		// case "pleat": return LineToLine(params, solutions, toolStep);
 		// case "assignment": return SingleLine(params, solutions, toolStep);

@@ -66,6 +66,35 @@ const Perpendicular = ({ pointer, presses, drags, releases, vertexSnapping }) =>
 	}
 };
 
+const Axiom5 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return pointer && pointer.nearest ? [toVector(pointer, vertexSnapping)] : [];
+		case "1 0": return pointer && pointer.nearest
+			? [toVector(presses[0], vertexSnapping), toSegment(pointer.nearest.edge_coords)]
+			: [];
+		case "1 1": return pointer && pointer.nearest ? [
+			toVector(presses[0], vertexSnapping),
+			toSegment(releases[0].nearest.edge_coords),
+			toVector(pointer, vertexSnapping)]
+			: [
+			toVector(presses[0], vertexSnapping),
+			toSegment(releases[0].nearest.edge_coords)];
+		case "2 1":
+		case "2 2": return [
+			toVector(presses[0], vertexSnapping),
+			toSegment(releases[0].nearest.edge_coords),
+			toVector(presses[1], vertexSnapping)];
+		default: return [];
+	}
+
+};
+const Axiom6 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
+	return [];
+};
+const Axiom7 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
+	return [];
+};
+
 const Scribble = ({ pointer, presses, drags, releases }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "1 0": return [ear.polyline([presses[0], ...drags])];
@@ -95,6 +124,9 @@ const MakeParams = ({ tool, pointer, presses, drags, releases, vertexSnapping })
 		case "point-to-point": return PointToPoint(params);
 		case "line-to-line": return LineToLine(params);
 		case "perpendicular": return Perpendicular(params);
+		case "axiom-5": return Axiom5(params);
+		case "axiom-6": return Axiom6(params);
+		case "axiom-7": return Axiom7(params);
 		case "scribble": return Scribble(params);
 		case "pleat": return LineToLine(params);
 		case "assignment": return SingleLine(params);

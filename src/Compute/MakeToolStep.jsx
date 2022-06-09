@@ -29,6 +29,33 @@ const Axiom3 = ({ pointer, presses, releases, solutions }) => {
 	}
 };
 
+const Axiom5 = ({ pointer, presses, releases, solutions }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return [0, 4];
+		case "1 0": return [1, 4];
+		case "1 1": return [2, 4];
+		case "2 1":
+		case "2 2": return solutions.length === 2 ? [3, 4] : [3, 3];
+		case "3 2": return [3, 4];
+		case "3 3": return [4, 4];
+		default: return [-1, -1];
+	}
+};
+
+const Axiom6 = ({ pointer, presses, releases, solutions }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return [0, 4];
+		default: return [-1, -1];
+	}
+};
+
+const Axiom7 = ({ pointer, presses, releases, solutions }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return [0, 4];
+		default: return [-1, -1];
+	}
+};
+
 const MakeToolStep = ({ tool, pointer, presses, releases, solutions }) => {
 	const params = { pointer, presses, releases, solutions };
 	switch (tool) {
@@ -40,6 +67,9 @@ const MakeToolStep = ({ tool, pointer, presses, releases, solutions }) => {
 		case "point-to-point": return PressAndRelease(params);
 		case "line-to-line": return Axiom3(params);
 		case "perpendicular": return PressAndRelease(params);
+		case "axiom-5": return Axiom5(params);
+		case "axiom-6": return Axiom6(params);
+		case "axiom-7": return Axiom7(params);
 		case "scribble": return [];
 		case "pleat": return PressAndRelease(params);
 		case "assignment": return [];

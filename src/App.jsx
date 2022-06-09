@@ -8,14 +8,11 @@ import Terminal from "./Terminal";
 import CP from "./CP";
 import Diagram from "./Diagram";
 import Simulator from "./Simulator";
-import NewFilePopup from "./Popups/NewFilePopup";
-import ErrorPopup from "./Popups/ErrorPopup";
-import DragAndDrop from "./FileManager/DragAndDrop";
-import MakeFoldedForm from "./FOLD/MakeFoldedForm";
-import MakeParams from "./Compute/MakeParams";
-import MakeSolutions from "./Compute/MakeSolutions";
-import MakeToolStep from "./Compute/MakeToolStep";
-import ExecuteCommand from "./Compute/ExecuteCommand";
+// popups
+import NewFile from "./Popups/NewFile";
+import Examples from "./Popups/Examples";
+import Error from "./Popups/Error";
+// file i/o
 import {
 	localStorageVersion,
 	emptyPreferences,
@@ -27,15 +24,25 @@ import {
 	downloadFile,
 	loadFOLDMetaAndFrames,
 } from "./FileManager";
+import DragAndDrop from "./FileManager/DragAndDrop";
+// graph modification
+import MakeFoldedForm from "./FOLD/MakeFoldedForm";
+// SVG touches turn into function parameters, solutions, commands
+import MakeParams from "./Compute/MakeParams";
+import MakeSolutions from "./Compute/MakeSolutions";
+import MakeToolStep from "./Compute/MakeToolStep";
+import ExecuteCommand from "./Compute/ExecuteCommand";
+// various
 import {
 	addKeySetTrue,
 	removeKey,
 	appendNearest,
 } from "./Helpers";
+// example files
 // import example from "./Files/square.fold?raw";
 // import example from "./Files/example-animal-base.fold?raw";
 import example from "./Files/example-sequence.fold?raw";
-
+// css style
 import "./SVG/cp.css";
 import "./SVG/diagram.css";
 import "./SVG/layers.css";
@@ -73,6 +80,7 @@ const App = () => {
 	// popups
 	const [errorMessage, setErrorMessage] = createSignal(); // object
 	const [showNewPopup, setShowNewPopup] = createSignal(false); // boolean
+	const [showExamplesPopup, setShowExamplesPopup] = createSignal(false);
 	// origami simulator
 	const [simulatorOn, setSimulatorOn] = createSignal(preferences.simulator.on); // boolean
 	const [simulatorShowTouches, setSimulatorShowTouches] = createSignal(preferences.simulator.showTouches); // boolean
@@ -114,10 +122,6 @@ const App = () => {
 	// todo: remove in production probably
 	const [showDebugSVGLayer, setShowDebugSVGLayer] = createSignal(preferences.debug.showSVGLayer); // boolean
 	const [showDebugPanel, setShowDebugPanel] = createSignal(preferences.debug.showPanel); // boolean
-	/**
-	 * @description open the new file dialog which will subsequently call loadFile()
-	 */
-	const newFile = () => setShowNewPopup(true);
 	/**
 	 * @description this will detect if the user has made a diagram (multiple frames)
 	 * or a single crease pattern, and export a file properly formatted as such.
@@ -202,6 +206,13 @@ const App = () => {
 		setDiagramDrags([]);
 		setDiagramReleases([]);
 		// setSimulatorPointers([]);
+	});
+	// when you move off of the simulator, but the simulator is still mirror-highlighting
+	// on the CP/diagram, clear the simulator highlights so things aren't too confusing.
+	createEffect(() => {
+		cpPointer();
+		diagramPointer();
+		setSimulatorPointers([]);
 	});
 	// SVG pointer/presses/drags/releases will create parameters for the upcoming operation
 	createEffect(() => setCPParams(MakeParams({
@@ -334,7 +345,8 @@ const App = () => {
 				setShowPanels={setShowPanels}
 				showTerminal={showTerminal}
 				setShowTerminal={setShowTerminal}
-				newFile={newFile}
+				setShowNewPopup={setShowNewPopup}
+				setShowExamplesPopup={setShowExamplesPopup}
 				loadFile={loadFile}
 				saveFile={saveFile}
 				mobileLayout={mobileLayout}
@@ -507,14 +519,21 @@ const App = () => {
 
 			{/* pop-ups */}
 			<Show when={showNewPopup()}>
-				<NewFilePopup
+				<NewFile
 					language={language}
 					loadFile={loadFile}
 					clickOff={() => setShowNewPopup(false)}
 				/>
 			</Show>
+			<Show when={showExamplesPopup()}>
+				<Examples
+					language={language}
+					loadFile={loadFile}
+					clickOff={() => setShowExamplesPopup(false)}
+				/>
+			</Show>
 			<Show when={errorMessage()}>
-				<ErrorPopup
+				<Error
 					language={language}
 					title={errorMessage().title}
 					header={errorMessage().header}

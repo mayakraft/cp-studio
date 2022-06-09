@@ -1,6 +1,6 @@
 import { createSignal, createEffect } from "solid-js";
 import ear from "rabbit-ear";
-import Style from "./NewFilePopup.module.css";
+import Style from "./NewFile.module.css";
 import Popup from "./Popup";
 import PopupWindow from "./PopupWindow";
 import Dict from "../Localization/dictionary.json";
@@ -25,11 +25,13 @@ const NewFilePopup = (props) => {
 	return (<Popup clickOff={props.clickOff}>
 		<PopupWindow title={T()("new file")}>
 			<div class="flex-row">
-				<button onclick={() => loadCP(ear.cp.triangle())}>triangle</button>
 				<button onclick={() => loadCP(ear.cp.unit_square())}>square</button>
+				<button onclick={() => { setShowRectangle(true); setShowPolygon(false); }}>rectangle</button>
+			</div>
+			<div class="flex-row">
+				<button onclick={() => loadCP(ear.cp.triangle())}>triangle</button>
 				<button onclick={() => loadCP(ear.cp.hexagon())}>hexagon</button>
 				<button onclick={() => { setShowPolygon(true); setShowRectangle(false); }}>polygon</button>
-				<button onclick={() => { setShowRectangle(true); setShowPolygon(false); }}>rectangle</button>
 			</div>
 
 			<Show when={showPolygon()}>

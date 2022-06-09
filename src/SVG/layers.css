@@ -3,7 +3,7 @@
 .light-mode .param-layer line { stroke-linecap: round; stroke: black; }
 .light-mode .param-layer polygon { stroke: none; fill: #fb4; }
 .light-mode .param-layer rect { stroke: none; fill: #fb4; opacity: 0.75; }
-.dark-mode .param-layer circle { stroke: none; fill: var(--darkmode-red); }
+.dark-mode .param-layer circle { stroke: none; fill: #fb4; } /*var(--darkmode-red);*/
 .dark-mode .param-layer line { stroke-linecap: round; stroke: #fb4; }
 .dark-mode .param-layer rect { stroke: none; fill: var(--darkmode-red); opacity: 0.75; }
 .dark-mode .creasePattern .param-layer polygon {
@@ -36,8 +36,7 @@
 .light-mode .simulator-layer .simulator-polygon { fill: #fb4; }
 .light-mode .simulator-layer .simulator-circle { fill: black; }
 .light-mode .simulator-layer .simulator-vertex { fill: black; }
-/*.dark-mode .simulator-layer .simulator-polygon { fill: #626; }*/
-.dark-mode .simulator-layer .simulator-polygon { fill: #333; }
+.dark-mode .simulator-layer .simulator-polygon { fill: #333; } /* #626; */
 .dark-mode .simulator-layer .simulator-circle { fill: #999; }
 .dark-mode .simulator-layer .simulator-vertex { fill: #fb4; }
 
