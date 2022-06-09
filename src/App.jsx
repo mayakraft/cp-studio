@@ -1,7 +1,6 @@
 import { createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import ear from "rabbit-ear";
 import Style from "./App.module.css";
-import "./SVG/svg.css";
 import Menubar from "./Menubar";
 import Toolbar from "./Toolbar";
 import Panels from "./Panels";
@@ -36,6 +35,10 @@ import {
 // import example from "./Files/square.fold?raw";
 // import example from "./Files/example-animal-base.fold?raw";
 import example from "./Files/example-sequence.fold?raw";
+
+import "./SVG/cp.css";
+import "./SVG/diagram.css";
+import "./SVG/layers.css";
 
 const App = () => {
 	// load preferences. these are used to populate the initial state of signals.
@@ -147,6 +150,9 @@ const App = () => {
 	//
 	// effect hooks
 	//
+	// todo: when the scene switches, clear touches from hidden scenes, so that other
+	// layers aren't showing reported touches from the hidden scene
+	//
 	// when a new file is loaded, or when the current diagram advances the index,
 	// set the cp and the folded form (make the folded form), re-calc bounding rects
 	createEffect(() => {
@@ -169,7 +175,16 @@ const App = () => {
 			switch (keyboard.event.key) {
 				case "\`": setShowTerminal(true); break;
 				case "Escape":
-					setShowTerminal(false);
+					if (showTerminal()) {
+						setShowTerminal(false);
+					} else {
+						setCPPresses([]);
+						setCPDrags([]);
+						setCPReleases([]);
+						setDiagramPresses([]);
+						setDiagramDrags([]);
+						setDiagramReleases([]);
+					}
 					// consider also hiding any visible popups...
 					break;
 				default: break;

@@ -1,4 +1,3 @@
-import "./CP.css";
 import ear from "rabbit-ear";
 import { onMount, onCleanup, createEffect } from "solid-js";
 import Style from "./CP.module.css";

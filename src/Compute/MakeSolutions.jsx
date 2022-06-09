@@ -10,6 +10,7 @@ const assignNearestLine = (lines, pointer) => {
 		.map(el => el.i)
 		.shift();
 	// console.log("nearest", nearest);
+	lines.forEach(el => { el.classList = ["far"]; });
 	lines[nearest].classList = ["nearest"];
 };
 
