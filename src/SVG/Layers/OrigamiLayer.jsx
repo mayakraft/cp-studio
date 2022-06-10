@@ -17,8 +17,7 @@ const OrigamiLayer = (svg) => {
 		// and use this value to update style on other layers too.
 		const strokeWidth = layer.getAttribute("stroke-width");
 		layer.removeAttribute("stroke-width");
-		svg.padding(strokeWidth * 5)
-			.strokeWidth(strokeWidth);
+		svg.strokeWidth(strokeWidth);
 	};
 	return layer;
 };

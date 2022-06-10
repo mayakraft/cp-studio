@@ -85,7 +85,9 @@ const ToolPanel = (props) => {
 						/>
 					</Match>
 					<Match when={props.tool() === "zoom"}>
-						<Zoom />
+						<Zoom
+							resetViewBox={props.resetViewBox}
+						/>
 					</Match>
 				</Switch>
 			</div>

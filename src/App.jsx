@@ -39,10 +39,9 @@ import {
 	removeKey,
 	appendNearest,
 } from "./Helpers";
-// example files
-// import example from "./Files/square.fold?raw";
-// import example from "./Files/example-animal-base.fold?raw";
-import example from "./Files/example-sequence.fold?raw";
+// starting FOLD file
+// import startFOLD from "./Files/square.fold?raw";
+import startFOLD from "./Files/example-sequence.fold?raw";
 // css style
 import "./SVG/cp.css";
 import "./SVG/diagram.css";
@@ -78,6 +77,8 @@ const App = () => {
 	const [showPanels, setShowPanels] = createSignal(true); // boolean
 	const [showTerminal, setShowTerminal] = createSignal(false); // boolean
 	const [showDiagramInstructions, setShowDiagramInstructions] = createSignal(preferences.showDiagramInstructions); // boolean
+	const [cpViewBox, setCPViewBox] = createSignal();
+	const [diagramViewBox, setDiagramViewBox] = createSignal();
 	// popups
 	const [errorMessage, setErrorMessage] = createSignal(); // object
 	const [showNewPopup, setShowNewPopup] = createSignal(false); // boolean
@@ -152,6 +153,11 @@ const App = () => {
 	// window events
 	// watch for a resize event, switch to mobile layout if width < height
 	const onresize = () => setMobileLayout(window.innerWidth < window.innerHeight);
+	// other
+	const resetViewBox = () => {
+		setCPViewBox(ear.graph.svg.getViewBox(cp()));
+		setDiagramViewBox(ear.graph.svg.getViewBox(foldedForm()));
+	};
 	//
 	// effect hooks
 	//
@@ -180,16 +186,13 @@ const App = () => {
 			switch (keyboard.event.key) {
 				case "\`": setShowTerminal(true); break;
 				case "Escape":
-					if (showTerminal()) {
-						setShowTerminal(false);
-					} else {
-						setCPPresses([]);
-						setCPDrags([]);
-						setCPReleases([]);
-						setDiagramPresses([]);
-						setDiagramDrags([]);
-						setDiagramReleases([]);
-					}
+					setShowTerminal(false);
+					setCPPresses([]);
+					setCPDrags([]);
+					setCPReleases([]);
+					setDiagramPresses([]);
+					setDiagramDrags([]);
+					setDiagramReleases([]);
 					// consider also hiding any visible popups...
 					break;
 				default: break;
@@ -216,6 +219,12 @@ const App = () => {
 		diagramPointer();
 		setSimulatorPointers([]);
 	});
+	// SVG touch events and modification of the crease pattern/folded form.
+	// 1. params: SVG pointer/presses/drags/releases will create function parameters (points, lines)
+	// 2. solutions: when params are available, run the operation to generate solutions
+	// 3. toolStep: step N out of Total #. when N == Total the operation is complete.
+	// 4. classify: classify multiple solutions (nearest to mouse) if multiple exist.
+	// 5. command: when the last step is reached, append the operation to the execution queue.
 	createEffect(() => {
 		const t = tool();
 		const pointer = cpPointer();
@@ -223,19 +232,11 @@ const App = () => {
 		const drags = cpDrags();
 		const releases = cpReleases();
 		const snap = vertexSnapping();
-		// SVG pointer/presses/drags/releases will create parameters for the upcoming operation
 		const params = MakeParams({tool: t, pointer, presses, drags, releases, vertexSnapping: snap });
-		// as soon as enough parameters are available, compute the current operation's solutions
 		const solutions = MakeSolutions({ tool: t, pointer, params });
-		// from the set of SVG press/release events, determine which input step the user is
-		// currently, the operation will not fully execute until the last step is reached.
 		const toolStep = MakeToolStep({ tool: t, pointer, presses, releases, solutions });
-		// when multiple solutions exist, classify them (highlight the nearest one for example)
-		// this requires "solutions" and "toolStep" for inputs
 		ClassifySolutions({ tool: t, pointer, solutions, toolStep })
-		// when the last step is reached, append the operation to the execution queue.
 		const command = ExecuteCommand({ which: "cp", tool: t, params, solutions, toolStep });
-		// set app-level signals
 		setCPParams(params);
 		setCPSolutions(solutions);
 		setCPToolStep(toolStep);
@@ -248,19 +249,11 @@ const App = () => {
 		const drags = diagramDrags();
 		const releases = diagramReleases();
 		const snap = vertexSnapping();
-		// SVG pointer/presses/drags/releases will create parameters for the upcoming operation
 		const params = MakeParams({tool: t, pointer, presses, drags, releases, vertexSnapping: snap });
-		// as soon as enough parameters are available, compute the current operation's solutions
 		const solutions = MakeSolutions({ tool: t, pointer, params });
-		// from the set of SVG press/release events, determine which input step the user is
-		// currently, the operation will not fully execute until the last step is reached.
 		const toolStep = MakeToolStep({ tool: t, pointer, presses, releases, solutions });
-		// when multiple solutions exist, classify them (highlight the nearest one for example)
-		// this requires "solutions" and "toolStep" for inputs
 		ClassifySolutions({ tool: t, pointer, solutions, toolStep })
-		// when the last step is reached, append the operation to the execution queue.
 		const command = ExecuteCommand({ which: "diagram", tool: t, params, solutions, toolStep });
-		// set app-level signals
 		setDiagramParams(params);
 		setDiagramSolutions(solutions);
 		setDiagramToolStep(toolStep);
@@ -281,8 +274,19 @@ const App = () => {
 		// "success" is a code for no-op. clear touches but don't cache the history
 		if (entry === "success" || entry === "rejected") { return; }
 		// modify FOLD object (modify the current index in fileFrames)
-		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
-		setHistoryText(newHistory);
+		if (typeof entry === "string") {
+			const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
+			setHistoryText(newHistory);
+		} else if (typeof entry === "object") {
+			const newHistory = [historyText(), entry.text].filter(a => a !== undefined).join("\n");
+			setHistoryText(newHistory);
+			if (entry.tool === "zoom") {
+				if (entry.viewBox) {
+					if (entry.viewBox === "reset") { resetViewBox(); }
+					else { setCPViewBox(entry.viewBox); }
+				}
+			}
+		}
 	});
 	createEffect(() => {
 		const entry = diagramCommandQueue();
@@ -298,8 +302,19 @@ const App = () => {
 		// "success" is a code for no-op. clear touches but don't cache the history
 		if (entry === "success" || entry === "rejected") { return; }
 		// modify FOLD object (modify the current index in fileFrames)
-		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
-		setHistoryText(newHistory);
+		if (typeof entry === "string") {
+			const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
+			setHistoryText(newHistory);
+		} else if (typeof entry === "object") {
+			const newHistory = [historyText(), entry.text].filter(a => a !== undefined).join("\n");
+			setHistoryText(newHistory);
+			if (entry.tool === "zoom") {
+				if (entry.viewBox) {
+					if (entry.viewBox === "reset") { resetViewBox(); }
+					else { setDiagramViewBox(entry.viewBox); }
+				}
+			}
+		}
 	});
 	// Local Storage
 	// when any of these change, write to the local storage immediately,
@@ -316,8 +331,8 @@ const App = () => {
 		window.addEventListener("resize", onresize);
 		window.addEventListener("keydown", onkeydown);
 		window.addEventListener("keyup", onkeyup);
-		// todo: temporary. load an example file.
-		loadFile(JSON.parse(example));
+		// on startup, load a file
+		loadFile(JSON.parse(startFOLD));
 	});
 	onCleanup(() => {
 		window.removeEventListener("resize", onresize);
@@ -364,6 +379,8 @@ const App = () => {
 							// data
 							origami={cp}
 							rect={cpRect}
+							cpViewBox={cpViewBox}
+							setCPViewBox={setCPViewBox}
 							// events
 							pointer={cpPointer}
 							presses={cpPresses}
@@ -411,6 +428,8 @@ const App = () => {
 							// data
 							origami={foldedForm}
 							rect={foldedFormRect}
+							diagramViewBox={diagramViewBox}
+							setDiagramViewBox={setDiagramViewBox}
 							// events
 							pointer={diagramPointer}
 							presses={diagramPresses}
@@ -489,6 +508,8 @@ const App = () => {
 							// tool settings
 							toolAssignmentDirection={toolAssignmentDirection}
 							setToolAssignmentDirection={setToolAssignmentDirection}
+							// zoom
+							resetViewBox={resetViewBox}
 						/>
 					</Show>
 					<div

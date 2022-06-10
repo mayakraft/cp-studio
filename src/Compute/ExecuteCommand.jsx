@@ -34,8 +34,14 @@ const Axiom6 = (params, solutions, toolStep) => {
 const Axiom7 = (params, solutions, toolStep) => {
 	return `ear.axiom(7, {points:[], lines:[]})`;
 };
-const Scribble = (params, solutions, toolStep) => {};
-const Zoom = (params, solutions, toolStep) => {};
+const Scribble = (params, solutions, toolStep) => {
+	return "";
+};
+const Zoom = (params, solutions, toolStep) => {
+	return solutions.length
+		? ({ viewBox: `${solutions[0].x} ${solutions[0].y} ${solutions[0].width} ${solutions[0].height}`, tool: "zoom", text: "zoom()" })
+		: ({ viewBox: "reset", tool: "zoom", text: "zoom()" });
+};
 
 const ExecuteCommand = ({ tool, params, solutions, toolStep }) => {
 	if (toolStep[0] === undefined || toolStep[0] === 0 || toolStep[0] !== toolStep[1]) {
@@ -58,7 +64,7 @@ const ExecuteCommand = ({ tool, params, solutions, toolStep }) => {
 		// case "pleat": return LineToLine(params, solutions, toolStep);
 		// case "assignment": return SingleLine(params, solutions, toolStep);
 		// case "transform": break;
-		// case "zoom": break;
+		case "zoom": return Zoom(params, solutions, toolStep);
 		default: return undefined;
 	}
 };

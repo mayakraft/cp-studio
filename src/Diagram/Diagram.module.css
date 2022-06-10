@@ -2,11 +2,15 @@
 	display: flex;
 	justify-content: center;
 	flex-grow: 1;
+	overflow: hidden;
 }
 .Top { align-items: flex-start; }
 .Center { align-items: center; }
 
-.Diagram svg { max-height: calc(100vh - var(--menubar-height)); }
+.Diagram svg {
+	max-height: calc(100vh - var(--menubar-height));
+	overflow: visible;
+}
 
 @media not all and (hover), (max-aspect-ratio: 1/1) {
 	:global(.View-Items-0) .Diagram svg { max-height: 100vh; }
@@ -16,5 +20,3 @@
 	/* mobile layout overwrites this feature - move up when terminal opens */
 	.Top { align-items: center; }
 }
-
-

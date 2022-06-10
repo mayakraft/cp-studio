@@ -60,18 +60,21 @@ const Axiom7 = (params) => {
 		default: return [];
 	}
 };
+
 const Scribble = (params) => {
 	switch (params.length) {
 		case 1: return [...params];
 		default: return [];
 	}
 };
-// const Zoom = (params) => {
-// 	switch (params.length) {
-// 		case 2: return ear.axiom(4, { points: [params[1]], lines: [ear.line.fromPoints(params[0])] });
-// 		default: return [];
-// 	}
-// };
+
+const Zoom = (params) => {
+	switch (params.length) {
+		case 1: return [...params];
+		default: return [];
+	}
+};
+
 const MakeSolutions = ({ tool, params, pointer }) => {
 	switch (tool) {
 		case "inspect": return undefined;
@@ -89,7 +92,7 @@ const MakeSolutions = ({ tool, params, pointer }) => {
 		// case "pleat": return LineToLine(params, pointer);
 		// case "assignment": return SingleLine(params, pointer);
 		// case "transform": break;
-		// case "zoom": break;
+		case "zoom": return Zoom(params, pointer);
 		default: return [];
 	}
 };

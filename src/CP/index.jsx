@@ -77,11 +77,24 @@ const CP = (props) => {
 			paramLayer.strokeWidth(strokeWidth * 2);
 			solutionLayer.strokeWidth(strokeWidth * 2)
 				.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
+			props.setCPViewBox(svg.getAttribute("viewBox"));
+		});
+
+		// set the viewBox from an app-level signal
+		createEffect(() => {
+			const viewBox = props.cpViewBox();
+			if (!viewBox) { return; }
+			const bounds = viewBox.split(" ").map(n => parseFloat(n));
+			const vmax = Math.max(bounds[2], bounds[3]);
+			svg.setAttribute("viewBox", props.cpViewBox());
+			svg.padding(vmax * (1/200) * 5);
+			// const strokeWidth = svg.getAttribute("stroke-width");
+			// svg.padding(strokeWidth * 5);
 		});
 
 		// param layer
 		createEffect(() => {
-			props.origami(); // to clear after reload
+			props.origami(); // when origami reloads, param layer clears
 			const params = props.cpParams();
 			const rect = props.rect();
 			paramLayer.onChange({ params, rect });
@@ -89,7 +102,7 @@ const CP = (props) => {
 
 		// solution layer
 		createEffect(() => {
-			props.origami(); // to clear after reload
+			props.origami(); // when origami reloads, param layer clears
 			const solutions = props.cpSolutions();
 			const rect = props.rect();
 			solutionLayer.onChange({ solutions, rect });

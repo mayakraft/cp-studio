@@ -163,7 +163,9 @@ const Zoom = ({ pointer, presses, drags, releases }) => {
 		case "1 0": return pointer && pointer.nearest
 			? [ear.rect.fromPoints(toVector(presses[0]), toVector(pointer))]
 			: [];
-		case "1 1": return [ear.rect.fromPoints(toVector(presses[0]), toVector(releases[0]))];
+		case "1 1": return drags.length > 5
+			? [ear.rect.fromPoints(toVector(presses[0]), toVector(releases[0]))]
+			: [];
 		default: return [];
 	}
 };

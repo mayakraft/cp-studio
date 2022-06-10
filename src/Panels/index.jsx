@@ -55,6 +55,8 @@ const Panels = (props) => {
 					// tool settings
 					toolAssignmentDirection={props.toolAssignmentDirection}
 					setToolAssignmentDirection={props.setToolAssignmentDirection}
+					// zoom
+					resetViewBox={props.resetViewBox}
 				/>
 			</Show>
 			{/*<Show when={props.views().includes("crease pattern")}>

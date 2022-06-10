@@ -3,7 +3,7 @@ const Zoom = (props) => (<>
 		<p>zoom level 1:</p><input type="text" value="1" />
 	</div>
 	<div class="button-row">
-		<button>reset zoom</button>
+		<button onclick={() => props.resetViewBox()}>reset zoom</button>
 	</div>
 </>);
 

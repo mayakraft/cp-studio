@@ -66,6 +66,15 @@ const Axiom7 = ({ pointer, presses, releases, solutions }) => {
 	}
 };
 
+const Zoom = ({ presses, releases }) => {
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return [0, 1];
+		case "1 0": return [0, 1];
+		case "1 1": return [1, 1];
+		default: return [-1, -1];
+	}
+};
+
 const MakeToolStep = ({ tool, pointer, presses, releases, solutions }) => {
 	const params = { pointer, presses, releases, solutions };
 	switch (tool) {
@@ -84,7 +93,7 @@ const MakeToolStep = ({ tool, pointer, presses, releases, solutions }) => {
 		case "pleat": return PressAndRelease(params);
 		case "assignment": return [];
 		// case "transform": break;
-		case "zoom": return [];
+		case "zoom": return Zoom(params);
 		default: return [];
 	}
 };
