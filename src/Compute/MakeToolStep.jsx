@@ -21,8 +21,8 @@ const PressAndRelease = ({ pointer, presses, releases, solutions }) => {
 const Axiom3 = ({ pointer, presses, releases, solutions }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return [0, 3];
-		case "1 0": return solutions.length === 2 ? [1, 3] : [1, 2];
-		case "1 1": return solutions.length === 2 ? [2, 3] : [2, 2];
+		case "1 0": return solutions.length > 1 ? [1, 3] : [1, 2];
+		case "1 1": return solutions.length > 1 ? [2, 3] : [2, 2];
 		case "2 1": return [2, 3];
 		case "2 2": return [3, 3];
 		default: return [-1, -1];
@@ -35,7 +35,7 @@ const Axiom5 = ({ pointer, presses, releases, solutions }) => {
 		case "1 0": return [1, 4];
 		case "1 1": return [2, 4];
 		case "2 1":
-		case "2 2": return solutions.length === 2 ? [3, 4] : [3, 3];
+		case "2 2": return solutions.length > 1 ? [3, 4] : [3, 3];
 		case "3 2": return [3, 4];
 		case "3 3": return [4, 4];
 		default: return [-1, -1];
@@ -44,14 +44,24 @@ const Axiom5 = ({ pointer, presses, releases, solutions }) => {
 
 const Axiom6 = ({ pointer, presses, releases, solutions }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return [0, 4];
+		case "0 0": return [0, 5];
+		case "1 0": return [1, 5];
+		case "1 1": return [2, 5];
+		case "2 1": return [3, 5];
+		case "2 2": return solutions.length > 1 ? [4, 5] : [4, 4];
+		case "3 2": return [4, 5];
+		case "3 3": return [5, 5];
 		default: return [-1, -1];
 	}
 };
 
 const Axiom7 = ({ pointer, presses, releases, solutions }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return [0, 4];
+		case "0 0": return [0, 3];
+		case "1 0": return [1, 3];
+		case "1 1":
+		case "2 1": return [2, 3];
+		case "2 2": return [3, 3];
 		default: return [-1, -1];
 	}
 };

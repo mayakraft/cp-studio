@@ -68,17 +68,20 @@ const Perpendicular = ({ pointer, presses, drags, releases, vertexSnapping }) =>
 
 const Axiom5 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
-		case "0 0": return pointer && pointer.nearest ? [toVector(pointer, vertexSnapping)] : [];
+		case "0 0": return pointer && pointer.nearest
+			? [toVector(pointer, vertexSnapping)]
+			: [];
 		case "1 0": return pointer && pointer.nearest
 			? [toVector(presses[0], vertexSnapping), toSegment(pointer.nearest.edge_coords)]
 			: [];
-		case "1 1": return pointer && pointer.nearest ? [
-			toVector(presses[0], vertexSnapping),
-			toSegment(releases[0].nearest.edge_coords),
-			toVector(pointer, vertexSnapping)]
+		case "1 1": return pointer && pointer.nearest
+			? [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords),
+				toVector(pointer, vertexSnapping)]
 			: [
-			toVector(presses[0], vertexSnapping),
-			toSegment(releases[0].nearest.edge_coords)];
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords)];
 		case "2 1":
 		case "2 2": return [
 			toVector(presses[0], vertexSnapping),
@@ -86,13 +89,65 @@ const Axiom5 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 			toVector(presses[1], vertexSnapping)];
 		default: return [];
 	}
-
 };
+
 const Axiom6 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
-	return [];
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return pointer && pointer.nearest
+			? [toVector(pointer, vertexSnapping)]
+			: [];
+		case "1 0": return pointer && pointer.nearest
+			? [toVector(presses[0], vertexSnapping), toSegment(pointer.nearest.edge_coords)]
+			: [];
+		case "1 1": return pointer && pointer.nearest
+			? [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords),
+				toVector(pointer, vertexSnapping)]
+			: [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords)];
+		case "2 1": return pointer && pointer.nearest
+			? [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords),
+				toVector(presses[1], vertexSnapping),
+				toSegment(pointer.nearest.edge_coords)]
+			: [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords),
+				toVector(presses[1], vertexSnapping)];
+		case "2 2": return [
+			toVector(presses[0], vertexSnapping),
+			toSegment(releases[0].nearest.edge_coords),
+			toVector(presses[1], vertexSnapping),
+			toSegment(releases[1].nearest.edge_coords)];
+		default: return [];
+	}
 };
 const Axiom7 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
-	return [];
+	switch (`${presses.length} ${releases.length}`) {
+		case "0 0": return pointer && pointer.nearest
+			? [toVector(pointer, vertexSnapping)]
+			: [];
+		case "1 0": return pointer && pointer.nearest
+			? [toVector(presses[0], vertexSnapping), toSegment(pointer.nearest.edge_coords)]
+			: [];
+		case "1 1": return pointer && pointer.nearest
+			? [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords),
+				toSegment(pointer.nearest.edge_coords)]
+			: [
+				toVector(presses[0], vertexSnapping),
+				toSegment(releases[0].nearest.edge_coords)];
+		case "2 1":
+		case "2 2": return [
+			toVector(presses[0], vertexSnapping),
+			toSegment(releases[0].nearest.edge_coords),
+			toSegment(presses[1].nearest.edge_coords)];
+		default: return [];
+	}
 };
 
 const Scribble = ({ pointer, presses, drags, releases }) => {

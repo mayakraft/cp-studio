@@ -31,6 +31,7 @@ import MakeFoldedForm from "./FOLD/MakeFoldedForm";
 import MakeParams from "./Compute/MakeParams";
 import MakeSolutions from "./Compute/MakeSolutions";
 import MakeToolStep from "./Compute/MakeToolStep";
+import ClassifySolutions from "./Compute/ClassifySolutions";
 import ExecuteCommand from "./Compute/ExecuteCommand";
 // various
 import {
@@ -195,6 +196,7 @@ const App = () => {
 			}
 		}
 	});
+	// if the tool (and only the tool) changes, reset all touch parameters
 	// todo: oh no, this needs to fire before the ExecuteCommand effect.
 	// running axiom 3 (non-parallel), switching to axiom 1/2/4 executes the new tool with old params.
 	createEffect(() => {
@@ -214,66 +216,57 @@ const App = () => {
 		diagramPointer();
 		setSimulatorPointers([]);
 	});
-	// SVG pointer/presses/drags/releases will create parameters for the upcoming operation
-	createEffect(() => setCPParams(MakeParams({
-		tool: tool(),
-		pointer: cpPointer(),
-		presses: cpPresses(),
-		drags: cpDrags(),
-		releases: cpReleases(),
-		vertexSnapping: vertexSnapping(),
-	})));
-	createEffect(() => setDiagramParams(MakeParams({
-		tool: tool(),
-		pointer: diagramPointer(),
-		presses: diagramPresses(),
-		drags: diagramDrags(),
-		releases: diagramReleases(),
-		vertexSnapping: vertexSnapping(),
-	})));
-	// as soon as enough parameters are available, compute the current operation's solutions
-	createEffect(() => setCPSolutions(MakeSolutions({
-		tool: tool(),
-		params: cpParams(),
-		pointer: cpPointer(),
-	})));
-	createEffect(() => setDiagramSolutions(MakeSolutions({
-		tool: tool(),
-		params: diagramParams(),
-		pointer: diagramPointer(),
-	})));
-	// from the set of SVG press/release events, determine which input step the user is
-	// currently, the operation will not fully execute until the last step is reached.
-	createEffect(() => setCPToolStep(MakeToolStep({
-		tool: tool(),
-		pointer: cpPointer(),
-		presses: cpPresses(),
-		releases: cpReleases(),
-		solutions: cpSolutions(),
-	})));
-	createEffect(() => setDiagramToolStep(MakeToolStep({
-		tool: tool(),
-		pointer: diagramPointer(),
-		presses: diagramPresses(),
-		releases: diagramReleases(),
-		solutions: diagramSolutions(),
-	})));
-	// when the last step is reached, append the operation to the execution queue.
-	createEffect(() => setCPCommandQueue(ExecuteCommand({
-		which: "cp",
-		tool: tool(),
-		params: cpParams(),
-		solutions: cpSolutions(),
-		toolStep: cpToolStep(),
-	})));
-	createEffect(() => setDiagramCommandQueue(ExecuteCommand({
-		which: "diagram",
-		tool: tool(),
-		params: diagramParams(),
-		solutions: diagramSolutions(),
-		toolStep: diagramToolStep(),
-	})));
-	// when a command is available on the queue, modify the FOLD object.
+	createEffect(() => {
+		const t = tool();
+		const pointer = cpPointer();
+		const presses = cpPresses();
+		const drags = cpDrags();
+		const releases = cpReleases();
+		const snap = vertexSnapping();
+		// SVG pointer/presses/drags/releases will create parameters for the upcoming operation
+		const params = MakeParams({tool: t, pointer, presses, drags, releases, vertexSnapping: snap });
+		// as soon as enough parameters are available, compute the current operation's solutions
+		const solutions = MakeSolutions({ tool: t, pointer, params });
+		// from the set of SVG press/release events, determine which input step the user is
+		// currently, the operation will not fully execute until the last step is reached.
+		const toolStep = MakeToolStep({ tool: t, pointer, presses, releases, solutions });
+		// when multiple solutions exist, classify them (highlight the nearest one for example)
+		// this requires "solutions" and "toolStep" for inputs
+		ClassifySolutions({ tool: t, pointer, solutions, toolStep })
+		// when the last step is reached, append the operation to the execution queue.
+		const command = ExecuteCommand({ which: "cp", tool: t, params, solutions, toolStep });
+		// set app-level signals
+		setCPParams(params);
+		setCPSolutions(solutions);
+		setCPToolStep(toolStep);
+		setCPCommandQueue(command);
+	});
+	createEffect(() => {
+		const t = tool();
+		const pointer = diagramPointer();
+		const presses = diagramPresses();
+		const drags = diagramDrags();
+		const releases = diagramReleases();
+		const snap = vertexSnapping();
+		// SVG pointer/presses/drags/releases will create parameters for the upcoming operation
+		const params = MakeParams({tool: t, pointer, presses, drags, releases, vertexSnapping: snap });
+		// as soon as enough parameters are available, compute the current operation's solutions
+		const solutions = MakeSolutions({ tool: t, pointer, params });
+		// from the set of SVG press/release events, determine which input step the user is
+		// currently, the operation will not fully execute until the last step is reached.
+		const toolStep = MakeToolStep({ tool: t, pointer, presses, releases, solutions });
+		// when multiple solutions exist, classify them (highlight the nearest one for example)
+		// this requires "solutions" and "toolStep" for inputs
+		ClassifySolutions({ tool: t, pointer, solutions, toolStep })
+		// when the last step is reached, append the operation to the execution queue.
+		const command = ExecuteCommand({ which: "diagram", tool: t, params, solutions, toolStep });
+		// set app-level signals
+		setDiagramParams(params);
+		setDiagramSolutions(solutions);
+		setDiagramToolStep(toolStep);
+		setDiagramCommandQueue(command);
+	});
+	// when a command is available on the queue, modify the FOLD object, clear touches.
 	createEffect(() => {
 		const entry = cpCommandQueue();
 		if (!entry) { return; }
@@ -285,7 +278,7 @@ const App = () => {
 		setCPToolStep([]);
 		setCPParams([]);
 		setCPSolutions([]);
-		// "success" is a code for "tool is done. clear touches but don't cache the history"
+		// "success" is a code for no-op. clear touches but don't cache the history
 		if (entry === "success" || entry === "rejected") { return; }
 		// modify FOLD object (modify the current index in fileFrames)
 		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
@@ -302,8 +295,8 @@ const App = () => {
 		setDiagramToolStep([]);
 		setDiagramParams([]);
 		setDiagramSolutions([]);
-		// "success" is a code for "tool is done. clear touches but don't cache the history"
-		if (entry === "success") { return; }
+		// "success" is a code for no-op. clear touches but don't cache the history
+		if (entry === "success" || entry === "rejected") { return; }
 		// modify FOLD object (modify the current index in fileFrames)
 		const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
 		setHistoryText(newHistory);

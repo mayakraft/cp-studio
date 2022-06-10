@@ -24,6 +24,24 @@
 		"press on a line",
 		"release on a point"
 	],
+	"axiom-5": [
+		"press on a point",
+		"release on a line",
+		"press on a point",
+		"choose one"
+	],
+	"axiom-6": [
+		"press on a point",
+		"release on a line",
+		"press on a point",
+		"release on a line",
+		"choose one"
+	],
+	"axiom-7": [
+		"press on a point",
+		"release on a line",
+		"press on a line"
+	],
 	"pleat": [
 		"press on a line",
 		"release on a line"

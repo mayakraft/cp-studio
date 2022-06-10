@@ -1,19 +1,5 @@
 import ear from "rabbit-ear";
 
-const assignNearestLine = (lines, pointer) => {
-	if (!pointer) { return; }
-	const point = [pointer.x, pointer.y];
-	const points = lines.map(line => line.nearestPoint(point));
-	const distances = points.map(pt => ear.math.distance2(pt, point));
-	const nearest = distances.map((d, i) => ({ d, i }))
-		.sort((a, b) => a.d - b.d)
-		.map(el => el.i)
-		.shift();
-	// console.log("nearest", nearest);
-	lines.forEach(el => { el.classList = ["far"]; });
-	lines[nearest].classList = ["nearest"];
-};
-
 const LineBetweenPoints = (params) => {
 	switch (params.length) {
 		case 2: return [ear.line.fromPoints(...params)];
@@ -40,11 +26,7 @@ const Axiom2 = (params) => {
 };
 const Axiom3 = (params, pointer) => {
 	switch (params.length) {
-		case 2: {
-			const solutions = ear.axiom(3, { lines: params.map(pts => ear.line.fromPoints(pts)) });
-			if (solutions.length === 2) { assignNearestLine(solutions, pointer); }
-			return solutions;
-		}
+		case 2: return ear.axiom(3, { lines: params.map(pts => ear.line.fromPoints(pts)) });
 		default: return [];
 	}
 };
@@ -54,9 +36,8 @@ const Axiom4 = (params) => {
 		default: return [];
 	}
 };
-const Axiom5 = (params) => {
+const Axiom5 = (params, pointer) => {
 	switch (params.length) {
-		// case 3: return ear.axiom(5, { points: [params[0], params[2]], lines: [ear.line.fromPoints(params[1])] });
 		case 3: return ear.axiom(5, { points: [params[2], params[0]], lines: [ear.line.fromPoints(params[1])] });
 		default: return [];
 	}
@@ -74,7 +55,7 @@ const Axiom7 = (params) => {
 	switch (params.length) {
 		case 3: return ear.axiom(7, {
 			points: [params[0]],
-			lines: [ear.line.fromPoints(params[1]), ear.line.fromPoints(params[2])]
+			lines: [ear.line.fromPoints(params[2]), ear.line.fromPoints(params[1])]
 		});
 		default: return [];
 	}
