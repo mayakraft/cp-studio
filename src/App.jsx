@@ -32,6 +32,7 @@ import MakeParams from "./Compute/MakeParams";
 import MakeSolutions from "./Compute/MakeSolutions";
 import MakeToolStep from "./Compute/MakeToolStep";
 import ClassifySolutions from "./Compute/ClassifySolutions";
+import MakeCommand from "./Compute/MakeCommand";
 import ExecuteCommand from "./Compute/ExecuteCommand";
 // various
 import {
@@ -200,7 +201,7 @@ const App = () => {
 		}
 	});
 	// if the tool (and only the tool) changes, reset all touch parameters
-	// todo: oh no, this needs to fire before the ExecuteCommand effect.
+	// todo: oh no, this needs to fire before the MakeCommand effect.
 	// running axiom 3 (non-parallel), switching to axiom 1/2/4 executes the new tool with old params.
 	createEffect(() => {
 		tool();
@@ -210,6 +211,20 @@ const App = () => {
 		setDiagramPresses([]);
 		setDiagramDrags([]);
 		setDiagramReleases([]);
+		setCPCommandQueue();
+		setCPPresses([]);
+		setCPDrags([]);
+		setCPReleases([]);
+		setCPToolStep([]);
+		setCPParams([]);
+		setCPSolutions([]);
+		setDiagramCommandQueue();
+		setDiagramPresses([]);
+		setDiagramDrags([]);
+		setDiagramReleases([]);
+		setDiagramToolStep([]);
+		setDiagramParams([]);
+		setDiagramSolutions([]);
 		// setSimulatorPointers([]);
 	});
 	// when you move off of the simulator, but the simulator is still mirror-highlighting
@@ -236,7 +251,7 @@ const App = () => {
 		const solutions = MakeSolutions({ tool: t, pointer, params });
 		const toolStep = MakeToolStep({ tool: t, pointer, presses, releases, solutions });
 		ClassifySolutions({ tool: t, pointer, solutions, toolStep })
-		const command = ExecuteCommand({ which: "cp", tool: t, params, solutions, toolStep });
+		const command = MakeCommand({ which: "cp", tool: t, params, solutions, toolStep });
 		setCPParams(params);
 		setCPSolutions(solutions);
 		setCPToolStep(toolStep);
@@ -253,7 +268,7 @@ const App = () => {
 		const solutions = MakeSolutions({ tool: t, pointer, params });
 		const toolStep = MakeToolStep({ tool: t, pointer, presses, releases, solutions });
 		ClassifySolutions({ tool: t, pointer, solutions, toolStep })
-		const command = ExecuteCommand({ which: "diagram", tool: t, params, solutions, toolStep });
+		const command = MakeCommand({ which: "diagram", tool: t, params, solutions, toolStep });
 		setDiagramParams(params);
 		setDiagramSolutions(solutions);
 		setDiagramToolStep(toolStep);
@@ -271,22 +286,11 @@ const App = () => {
 		setCPToolStep([]);
 		setCPParams([]);
 		setCPSolutions([]);
-		// "success" is a code for no-op. clear touches but don't cache the history
-		if (entry === "success" || entry === "rejected") { return; }
-		// modify FOLD object (modify the current index in fileFrames)
-		if (typeof entry === "string") {
-			const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
-			setHistoryText(newHistory);
-		} else if (typeof entry === "object") {
-			const newHistory = [historyText(), entry.text].filter(a => a !== undefined).join("\n");
-			setHistoryText(newHistory);
-			if (entry.tool === "zoom") {
-				if (entry.viewBox) {
-					if (entry.viewBox === "reset") { resetViewBox(); }
-					else { setCPViewBox(entry.viewBox); }
-				}
-			}
-		}
+		const text = ExecuteCommand(entry, {
+			setViewBox: setCPViewBox,
+			resetViewBox,
+		});
+		if (text) { setHistoryText([historyText(), text].join("\n")); }
 	});
 	createEffect(() => {
 		const entry = diagramCommandQueue();
@@ -299,22 +303,11 @@ const App = () => {
 		setDiagramToolStep([]);
 		setDiagramParams([]);
 		setDiagramSolutions([]);
-		// "success" is a code for no-op. clear touches but don't cache the history
-		if (entry === "success" || entry === "rejected") { return; }
-		// modify FOLD object (modify the current index in fileFrames)
-		if (typeof entry === "string") {
-			const newHistory = [historyText(), entry].filter(a => a !== undefined).join("\n");
-			setHistoryText(newHistory);
-		} else if (typeof entry === "object") {
-			const newHistory = [historyText(), entry.text].filter(a => a !== undefined).join("\n");
-			setHistoryText(newHistory);
-			if (entry.tool === "zoom") {
-				if (entry.viewBox) {
-					if (entry.viewBox === "reset") { resetViewBox(); }
-					else { setDiagramViewBox(entry.viewBox); }
-				}
-			}
-		}
+		const text = ExecuteCommand(entry, {
+			setViewBox: setDiagramViewBox,
+			resetViewBox,
+		});
+		if (text) { setHistoryText([historyText(), text].join("\n")); }
 	});
 	// Local Storage
 	// when any of these change, write to the local storage immediately,

@@ -125,6 +125,7 @@ const Axiom6 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 		default: return [];
 	}
 };
+
 const Axiom7 = ({ pointer, presses, drags, releases, vertexSnapping }) => {
 	switch (`${presses.length} ${releases.length}`) {
 		case "0 0": return pointer && pointer.nearest
