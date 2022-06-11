@@ -78,7 +78,6 @@ const Diagram = (props) => {
 			diagramLayer.strokeWidth(strokeWidth * 2);
 			solutionLayer.strokeWidth(strokeWidth * 2)
 				.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
-			props.setDiagramViewBox(svg.getAttribute("viewBox"));
 		});
 
 		createEffect(() => {
@@ -88,8 +87,6 @@ const Diagram = (props) => {
 			const vmax = Math.max(bounds[2], bounds[3]);
 			svg.setAttribute("viewBox", props.diagramViewBox());
 			svg.padding(vmax * (1/200) * 5);
-			// const strokeWidth = svg.getAttribute("stroke-width");
-			// svg.padding(strokeWidth * 5);
 		});
 
 		// param layer

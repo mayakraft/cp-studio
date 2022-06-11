@@ -2,7 +2,7 @@ import ear from "rabbit-ear";
 
 const options = {
 	vertices: false,
-	viewBox: true,
+	// viewBox: true,
 	strokeWidth: 1/200,
 };
 
@@ -10,7 +10,6 @@ const OrigamiLayer = (svg) => {
 	const layer = svg.g().setClass("origami-layer");
 
 	layer.onChange = ({ origami }) => {
-		// this will also set the SVG viewBox
 		layer.removeChildren();
 		ear.graph.svg.drawInto(layer, origami, options);
 		// move the calculated stroke width to the top SVG element

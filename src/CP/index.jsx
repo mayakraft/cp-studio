@@ -77,7 +77,6 @@ const CP = (props) => {
 			paramLayer.strokeWidth(strokeWidth * 2);
 			solutionLayer.strokeWidth(strokeWidth * 2)
 				.strokeDasharray(`${strokeWidth * 2 * 1.25} ${strokeWidth * 2 * 2.5}`);
-			props.setCPViewBox(svg.getAttribute("viewBox"));
 		});
 
 		// set the viewBox from an app-level signal
@@ -86,10 +85,8 @@ const CP = (props) => {
 			if (!viewBox) { return; }
 			const bounds = viewBox.split(" ").map(n => parseFloat(n));
 			const vmax = Math.max(bounds[2], bounds[3]);
-			svg.setAttribute("viewBox", props.cpViewBox());
+			svg.setAttribute("viewBox", viewBox);
 			svg.padding(vmax * (1/200) * 5);
-			// const strokeWidth = svg.getAttribute("stroke-width");
-			// svg.padding(strokeWidth * 5);
 		});
 
 		// param layer

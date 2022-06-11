@@ -173,11 +173,13 @@ const App = () => {
 		if (index < frames.length) {
 			const cp = frames[index];
 			const foldedForm = MakeFoldedForm(cp);
-			setCP(cp);
 			// todo: errors if something goes wrong
+			setCP(cp);
 			setFoldedForm(foldedForm);
 			setCPRect(ear.rect.fromPoints(cp.vertices_coords));
 			setFoldedFormRect(ear.rect.fromPoints(foldedForm.vertices_coords));
+			setCPViewBox(ear.graph.svg.getViewBox(cp));
+			setDiagramViewBox(ear.graph.svg.getViewBox(foldedForm));
 		}
 	});
 	// watch the keyboard for changes, select by "up" "down" events and the key involved:
@@ -276,8 +278,8 @@ const App = () => {
 	});
 	// when a command is available on the queue, modify the FOLD object, clear touches.
 	createEffect(() => {
-		const entry = cpCommandQueue();
-		if (!entry) { return; }
+		const command = cpCommandQueue();
+		if (!command) { return; }
 		// clear touches
 		setCPCommandQueue();
 		setCPPresses([]);
@@ -286,15 +288,15 @@ const App = () => {
 		setCPToolStep([]);
 		setCPParams([]);
 		setCPSolutions([]);
-		const text = ExecuteCommand(entry, {
+		const text = ExecuteCommand(command, {
 			setViewBox: setCPViewBox,
 			resetViewBox,
 		});
 		if (text) { setHistoryText([historyText(), text].join("\n")); }
 	});
 	createEffect(() => {
-		const entry = diagramCommandQueue();
-		if (!entry) { return; }
+		const command = diagramCommandQueue();
+		if (!command) { return; }
 		// clear touches
 		setDiagramCommandQueue();
 		setDiagramPresses([]);
@@ -303,7 +305,7 @@ const App = () => {
 		setDiagramToolStep([]);
 		setDiagramParams([]);
 		setDiagramSolutions([]);
-		const text = ExecuteCommand(entry, {
+		const text = ExecuteCommand(command, {
 			setViewBox: setDiagramViewBox,
 			resetViewBox,
 		});
