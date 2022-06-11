@@ -2,9 +2,10 @@ import Style from "./ThreeCanvas.module.css";
 import * as THREE from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
 import { createEffect, onMount, onCleanup } from "solid-js";
-
 /**
- * requirement (for now): implement props.requestResize()
+ * requirement (for now), implement:
+ * - props.requestResize() // any
+ * - props.trackballEnabled() // bool
  */
 const ThreeCanvas = (props) => {
 	let renderer, scene, camera, trackballControls;
@@ -68,7 +69,7 @@ const ThreeCanvas = (props) => {
 	const setupLoop = () => {
 		const animate = () => {
 			animationID = window.requestAnimationFrame(animate);
-			trackballControls.update();
+			if (props.trackballEnabled()) { trackballControls.update(); }
 			// animate is called right before the scene is rendered
 			if (props.animate) { props.animate(); }
 			renderer.render(scene, camera);
@@ -93,9 +94,9 @@ const ThreeCanvas = (props) => {
 			handleResize();
 		});
 
-		createEffect(() => {
-			setupCamera(props.cameraRadius(), false);
-		});
+		createEffect(() => { trackballControls.enabled = props.trackballEnabled(); });
+
+		createEffect(() => setupCamera(props.cameraRadius(), false));
 
 		if (props.didMount) {
 			props.didMount(renderer, scene, camera);

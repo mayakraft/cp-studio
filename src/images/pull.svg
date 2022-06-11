@@ -1,0 +1,26 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 27 27" fill="white">
+	<defs>
+		<code>
+			<![CDATA[
+// var svg = ear.svg();
+svg.size(-5, -5, 27, 27).fill("white");
+
+var x = 6;
+var b = -1.5;
+
+svg.polygon(x+2, 2, x+2, 16, x+7+b, 13,
+  x+10+b,19, x+12+b,18, x+9+b,12,
+  x+12, 12);
+
+svg.wedge(7.25, 0.5, 3, 1.55, 0.7);
+svg.circle(1.5, 5, 3).opacity(0.666);
+svg.circle(-1, 12, 3).opacity(0.333);
+
+]]>
+		</code>
+	</defs>
+	<polygon points="8,2 8,16 11.5,13 14.5,19 16.5,18 13.5,12 18,12"/>
+	<path d="M 7.25,0.5 l 0.06238448340927728,2.999351292568071 a  3 3 0 1 1 2.232142078444188 -1.066698230854998 Z"/>
+	<circle cx="1.5" cy="5" r="3" opacity="0.666"/>
+	<circle cx="-1" cy="12" r="3" opacity="0.333"/>
+</svg>

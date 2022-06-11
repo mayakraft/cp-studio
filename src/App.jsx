@@ -162,9 +162,6 @@ const App = () => {
 	//
 	// effect hooks
 	//
-	// todo: when the scene switches, clear touches from hidden scenes, so that other
-	// layers aren't showing reported touches from the hidden scene
-	//
 	// when a new file is loaded, or when the current diagram advances the index,
 	// set the cp and the folded form (make the folded form), re-calc bounding rects
 	createEffect(() => {
@@ -175,10 +172,10 @@ const App = () => {
 			const foldedForm = MakeFoldedForm(cp);
 			// todo: errors if something goes wrong
 			setCP(cp);
+			setCPRect(ear.rect.fromPoints(cp.vertices_coords)); // todo: redundant
+			setCPViewBox(ear.graph.svg.getViewBox(cp));         // todo: redundant
 			setFoldedForm(foldedForm);
-			setCPRect(ear.rect.fromPoints(cp.vertices_coords));
 			setFoldedFormRect(ear.rect.fromPoints(foldedForm.vertices_coords));
-			setCPViewBox(ear.graph.svg.getViewBox(cp));
 			setDiagramViewBox(ear.graph.svg.getViewBox(foldedForm));
 		}
 	});

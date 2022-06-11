@@ -12,6 +12,7 @@
 	height: var(--toolbar-button-width);
 }
 .inspect { background-image: url("../images/inspect.svg"); }
+.pull { background-image: url("../images/pull.svg"); }
 .remove { background-image: url("../images/remove.svg"); }
 .line { background-image: url("../images/line.svg"); }
 .ray { background-image: url("../images/ray.svg"); }

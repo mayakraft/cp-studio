@@ -25,12 +25,12 @@ const lightVertices = [
 ];
 
 const Simulator = (props) => {
-
 	const [foldAmount, setFoldAmount] = createSignal(0.5);
 	const [strain, setStrain] = createSignal(false);
 	const [isActive, setIsActive] = createSignal(true);
 	const [cameraRadius, setCameraRadius] = createSignal(1);
-
+	const [trackballEnabled, setTrackballEnabled] = createSignal(true);
+	const [pullNodesEnabled, setPullNodesEnabled] = createSignal(false);
 	const [requestResize, setRequestResize] = createSignal();
 
 	// three js
@@ -38,12 +38,13 @@ const Simulator = (props) => {
 	// lighting
 	let lights, lightsRadius = 1;
 	// origami simulator
-	let simulator, raycaster, raycasterPlane;
-	// visualizations due to raycaster
+	let simulator, raycaster;
+	// for the pull-vertex tool. "raycasterPullVertex" is the currently moving vertex
+	let raycasterPlane, raycasterPullVertex;
+	// visualize the raycaster
 	let raycasterPoint, raycasterVertex, raycasterFace;
 	// todo: idea- duplicate highlighted vertex, one obeys depthTest with full
 	// opacity, the other is always visible with half opacity.
-
 
 	const updateViewDistance = () => {
 		const vmax = getVMax(props.cp());
@@ -56,7 +57,6 @@ const Simulator = (props) => {
 		cameraRadius();
 		setRequestResize(Math.random());
 	});
-
 	/**
 	 * note, this is not Solid-JS's onMount function, but it functions as the same
 	 */
@@ -86,6 +86,14 @@ const Simulator = (props) => {
 			props.showPanels();
 			updateViewDistance();
 			setRequestResize(Math.random());
+			raycasterPullVertex = undefined;
+		});
+		createEffect(() => {
+			setTrackballEnabled(props.tool() !== "pull");
+			setPullNodesEnabled(props.tool() === "pull");
+			// this.simulator.strain = this.state.strain;
+			// this.rotateControls.enabled = this.state.tool === "rotate"
+			// this.dragControls.enabled = this.state.tool === "grab";
 		});
 		createEffect(() => updateStyle(props.darkMode()));
 		createEffect(() => props.simulatorOn() ? simulator.start() : simulator.stop());
@@ -100,24 +108,39 @@ const Simulator = (props) => {
 			lights[3].castShadow = shadows;
 			lights[4].castShadow = shadows;
 		});
+		renderer.domElement.addEventListener("mousedown", raycasterPressHandler, false);
+		renderer.domElement.addEventListener("mouseup", raycasterReleaseHandler, false);
+		renderer.domElement.addEventListener("mousemove", raycasterMoveHandler, false);
 	};
 
 	onCleanup(() => {
+		renderer.domElement.removeEventListener("mousedown", raycasterPressHandler, false);
+		renderer.domElement.removeEventListener("mouseup", raycasterReleaseHandler, false);
+		renderer.domElement.removeEventListener("mousemove", raycasterMoveHandler, false);
 		simulator.dealloc();
 	});
 
 	const animate = () => {
+		// highlighting is already happening in the moveHandler, but
 		// if the simulator is on (more precisely, the fold percentage
 		// is changing), we need to update the highlighted vertices/faces.
+		// also, only do this when the pull tool is not pulling
 		if (simulator && simulator.isOn) {
-			highlightTouch(calculateTouches(simulator.model, raycaster)[0]);
+			const isPulling = pullNodesEnabled() && raycasterPullVertex !== undefined;
+			const touch = isPulling ? undefined : calculateTouches(simulator.model, raycaster)[0];
+			highlightTouch(touch);
+			// if the user is pulling on a node, manually move the node to the raycaster's
+			// new intersection with the raycaster plane.
+			if (isPulling) {
+				const node = simulator.model.nodes[raycasterPullVertex];
+				if (!node) { return; }
+				let intersection = new THREE.Vector3();
+				raycaster.ray.intersectPlane(raycasterPlane, intersection);
+				node.moveManually(intersection);
+				simulator.modelDidChange();
+			}
 		}
-		// if (camera) { updateLightsPosition(); }
-		// dragControls.nodePositionsDidChange = () => {
-		// 	simulator.modelDidChange();
-		// };
 	};
-
 	/**
 	 * all initialize methods are intended to only be called once. onMount
 	 */
@@ -157,8 +180,27 @@ const Simulator = (props) => {
 		raycasterFace = new THREE.Mesh(raycasterFaceBuffer,
 			[new THREE.MeshBasicMaterial(), new THREE.MeshBasicMaterial()]);
 		scene.add(raycasterFace);
+	};
 
-		renderer.domElement.addEventListener("mousemove", raycasterMoveHandler, false);
+	// for the pull-vertex tool.
+	// orient the raycaster plane towards the camera and move it to the selected FOLD vertex.
+	const raycasterPressHandler = (event) => {
+		const firstTouch = calculateTouches(simulator.model, raycaster)[0];
+		if (!firstTouch || firstTouch.vertex === undefined) { return; }
+		raycasterPullVertex = firstTouch.vertex;
+		const position = new THREE.Vector3(
+			simulator.model.positions[firstTouch.vertex * 3 + 0],
+			simulator.model.positions[firstTouch.vertex * 3 + 1],
+			simulator.model.positions[firstTouch.vertex * 3 + 2]
+		);
+		let cameraOrientation = new THREE.Vector3();
+		camera.getWorldDirection(cameraOrientation);
+		const dist = position.dot(cameraOrientation);
+		raycasterPlane.set(cameraOrientation, -dist);
+	};
+	// for the pull-vertex tool. disable the pull motion when mouseup
+	const raycasterReleaseHandler = (event) => {
+		raycasterPullVertex = undefined;
 	};
 
 	const raycasterMoveHandler = (event) => {
@@ -169,7 +211,7 @@ const Simulator = (props) => {
 		);
 		raycaster.setFromCamera(mouse, camera);
 		const touches = calculateTouches(simulator.model, raycaster);
-		highlightTouch(touches[0]);
+		if (!simulator.isOn) { highlightTouch(touches[0]); }
 		props.setSimulatorPointers(touches);
 	};
 
@@ -177,7 +219,7 @@ const Simulator = (props) => {
 		let matrix = new THREE.Matrix4();
 		if (camera) {
 			matrix = camera.matrixWorldInverse.clone();
-			matrix.setPosition(0,0,0);
+			matrix.setPosition(0, 0, 0);
 		}
 		lights.forEach((light, i) => {
 			light.position.set(...lightVertices[i % lightVertices.length]);
@@ -262,6 +304,7 @@ const Simulator = (props) => {
 	return (<>
 		<div class={Style.Simulator}>
 			<ThreeCanvas
+				trackballEnabled={trackballEnabled}
 				didMount={onMount}
 				requestResize={requestResize}
 				animate={animate}

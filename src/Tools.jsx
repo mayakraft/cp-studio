@@ -1,5 +1,6 @@
 export const toolViews = {
 	"inspect": { "crease pattern": true, "diagram": true, "simulator": true },
+	"pull": { "crease pattern": true, "diagram": true, "simulator": true },
 	"remove": { "crease pattern": true },
 	"line": { "crease pattern": true, "diagram": true },
 	"ray": { "crease pattern": true },
@@ -20,6 +21,7 @@ export const toolViews = {
 
 export const toolNames = [
 	"inspect",
+	"pull",
 	"remove",
 	"line",
 	"ray",
