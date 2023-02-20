@@ -1,19 +1,18 @@
-# crease pattern studio
+# Crease Pattern Studio
 
-a tool for designing origami which features:
+a tool for designing origami crease patterns.
 
-- drawing crease lines on a 2D vector crease-pattern canvas
+## features
+
+- fold-line vector drawing, much like a typical vector based drawing tool
 - folded state rendering
-- incorporate [origami simulator](https://origamisimulator.org/)
-- make diagrams, which is a sequence of folded states with decorators (arrows, lines, text)
+- [origami simulator](https://origamisimulator.org/) built in
 
 ## developers
-
-> this current development version is using a nightly build of Rabbit Ear. notice the package.json references a local file. for now, you will have to download and place [this file](https://github.com/robbykraft/Origami/blob/master/rabbit-ear.js) locally.
-
-This app is made using solid-js/vite. To install and run, clone this repo, run in terminal:
 
 ```bash
 npm i
 npm run dev
 ```
+
+This app requires the nightly build of Rabbit Ear. This is found on the ["dev" branch](https://github.com/robbykraft/Origami/tree/dev). Download and place "rabbit-ear.js" according to the path location in "package.json".

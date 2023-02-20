@@ -1,0 +1,37 @@
+:root {
+	--app-font-size: 1.2rem;
+	--menubar-height: calc(var(--app-font-size) * 1.5);
+	--menubar-border-width: 3px;
+	--toolbar-button-width: 2.5rem;
+
+	--darkmode-black: #0F0F10;  /* --darkmode-black */
+	--darkmode-gray-0: #191A1F; /* --darkmode-gray */
+	--darkmode-gray-1: #1B1C21; /* --darkmode-1-gray */
+	--darkmode-gray-2: #25262B; /* --darkmode-2-gray */
+	--darkmode-gray-3: #2E2F33; /* --darkmode-3-gray */
+	--darkmode-gray-4: #393A3F; /* --darkmode-4-gray */
+	--darkmode-gray-5: #5E5F62; /* --darkmode-0-lightgray */
+	--darkmode-gray-6: #9F9FA0; /* --darkmode-1-lightgray */
+	--darkmode-gray-7: #AAAAAD; /* --darkmode-2-lightgray */
+	--darkmode-gray-8: #BABABE; /* --darkmode-3-lightgray */
+	--darkmode-gray-9: #CCC;     /* --darkmode-3-white */
+	--darkmode-gray-10: #D3D3D5; /* --darkmode-2-white */
+	--darkmode-gray-11: #E1E2E5; /* --darkmode-1-white */
+	--darkmode-white: #F0F0F1;   /* --darkmode-0-white */
+
+	--darkmode-darkblue: #113959;
+	--darkmode-blue-dark: #2D39C0;
+	--darkmode-blue: #414FF1;
+	--darkmode-purple-dark: #624C82;
+	--darkmode-purple: #B388F5;
+	--darkmode-pink-dark: #626;
+	--darkmode-pink-medium: #A130A3;
+	--darkmode-pink-dark-2: #A63BA8;
+	--darkmode-pink: #E150E3;
+	--darkmode-pink-light: #EC66F3;
+	--darkmode-pink-very-light: #f0a4f5;
+	/*--darkmode-pink-dark-1: #7E2D7F;*/
+	--darkmode-green: #63D7C6;
+	--darkmode-yellow: #EDAB46;
+	--darkmode-red: #B00020;
+}

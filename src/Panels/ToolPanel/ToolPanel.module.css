@@ -1,9 +1,0 @@
-.PanelTool {}
-
-:global(.light-mode) .Completed { color: #ccc; }
-:global(.light-mode) .Current { color: #e53; font-weight: bold; }
-:global(.light-mode) .Todo {}
-
-:global(.dark-mode) .Completed { color: var(--darkmode-gray-4); }
-:global(.dark-mode) .Current { color: var(--darkmode-pink); font-weight: bold; }
-:global(.dark-mode) .Todo {}

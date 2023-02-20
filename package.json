@@ -1,24 +1,26 @@
 {
   "name": "crease-pattern-studio",
+  "private": true,
   "version": "0.0.0",
-  "description": "a tool for designing origami",
+  "type": "module",
   "scripts": {
-    "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
-  "license": "MIT",
   "devDependencies": {
-    "vite": "^2.9.9",
-    "vite-plugin-solid": "^2.2.6"
+    "@sveltejs/vite-plugin-svelte": "^2.0.2",
+    "@tsconfig/svelte": "^3.0.0",
+    "svelte": "^3.55.1",
+    "svelte-check": "^2.10.3",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
   },
   "dependencies": {
-    "@xmldom/xmldom": "^0.8.2",
+    "rabbit-ear": "file:../../Origami/",
     "earcut": "^2.2.3",
-    "numeric": "^1.2.6",
-    "rabbit-ear": "file:../../Origami",
-    "solid-js": "^1.4.2",
     "three": "^0.139.2"
   }
 }

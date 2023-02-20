@@ -1,0 +1,114 @@
+{
+	"inspect": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true,
+			"simulator": true
+		}
+	},
+	"pull": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true,
+			"simulator": true
+		}
+	},
+	"remove": {
+		"views": {
+			"crease pattern": true
+		}
+	},
+	"line": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"ray": {
+		"views": {
+			"crease pattern": true
+		}
+	},
+	"segment": {
+		"views": {
+			"crease pattern": true
+		}
+	},
+	"axiom-2": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"axiom-3": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"axiom-4": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"axiom-5": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"axiom-6": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"axiom-7": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"scribble": {
+		"views": {
+			"crease pattern": true
+		}
+	},
+	"pleat": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+		
+	},
+	"assignment": {
+		"views": {
+			"crease pattern": true,
+			"simulator": true
+		}
+	},
+	"flatten": {
+		"views": {
+			"crease pattern": true,
+			"simulator": true
+		}
+	},
+	"transform": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"zoom": {
+		"views": {
+			"crease pattern": true,
+			"diagram": true
+		}
+	},
+	"arrows": {
+		"views": {
+			"diagram": true
+		}
+	}
+}

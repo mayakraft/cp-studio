@@ -1,0 +1,23 @@
+{
+	"de": {
+		"name": "Deutsch"
+	},
+	"en": {
+		"name": "English"
+	},
+	"es": {
+		"name": "Español"
+	},
+	"jp": {
+		"name": "日本語"
+	},
+	"ko": {
+		"name": "한국어"
+	},
+	"vi": {
+		"name": "Việtnam"
+	},
+	"zh": {
+		"name": "中文"
+	}
+}
