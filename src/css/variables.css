@@ -4,20 +4,20 @@
 	--menubar-border-width: 3px;
 	--toolbar-button-width: 2.5rem;
 
-	--darkmode-black: #0F0F10;  /* --darkmode-black */
-	--darkmode-gray-0: #191A1F; /* --darkmode-gray */
-	--darkmode-gray-1: #1B1C21; /* --darkmode-1-gray */
-	--darkmode-gray-2: #25262B; /* --darkmode-2-gray */
-	--darkmode-gray-3: #2E2F33; /* --darkmode-3-gray */
-	--darkmode-gray-4: #393A3F; /* --darkmode-4-gray */
-	--darkmode-gray-5: #5E5F62; /* --darkmode-0-lightgray */
-	--darkmode-gray-6: #9F9FA0; /* --darkmode-1-lightgray */
-	--darkmode-gray-7: #AAAAAD; /* --darkmode-2-lightgray */
-	--darkmode-gray-8: #BABABE; /* --darkmode-3-lightgray */
-	--darkmode-gray-9: #CCC;     /* --darkmode-3-white */
-	--darkmode-gray-10: #D3D3D5; /* --darkmode-2-white */
-	--darkmode-gray-11: #E1E2E5; /* --darkmode-1-white */
-	--darkmode-white: #F0F0F1;   /* --darkmode-0-white */
+	--darkmode-black: #0F0F10;
+	--darkmode-gray-0: #191A1F;
+	--darkmode-gray-1: #1B1C21;
+	--darkmode-gray-2: #25262B;
+	--darkmode-gray-3: #2E2F33;
+	--darkmode-gray-4: #393A3F;
+	--darkmode-gray-5: #5E5F62;
+	--darkmode-gray-6: #9F9FA0;
+	--darkmode-gray-7: #AAAAAD;
+	--darkmode-gray-8: #BABABE;
+	--darkmode-gray-9: #CCC;
+	--darkmode-gray-10: #D3D3D5;
+	--darkmode-gray-11: #E1E2E5;
+	--darkmode-white: #F0F0F1;
 
 	--darkmode-darkblue: #113959;
 	--darkmode-blue-dark: #2D39C0;

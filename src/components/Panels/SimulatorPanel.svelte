@@ -69,43 +69,49 @@
 		<div>
 			<input
 				type="text"
+				id="text-input-damping-ratio"
 				bind:value={$dampingRatio}>
-				<label>damping ratio</label>
+				<label for="text-input-damping-ratio">damping ratio</label>
 		</div>
 
 		<div>
 			<input
 				type="text"
+				id="text-input-axial-stiffness"
 				bind:value={$axialStiffness}>
-				<label>axial stiffness</label>
+				<label for="text-input-axial-stiffness">axial stiffness</label>
 		</div>
 
 		<div>
 			<input
 				type="text"
+				id="text-input-face-stiffness"
 				bind:value={$faceStiffness}>
-				<label>face stiffness</label>
+				<label for="text-input-face-stiffness">face stiffness</label>
 		</div>
 
 		<div>
 			<input
 				type="text"
+				id="text-input-crease-stiffness"
 				bind:value={$creaseStiffness}>
-				<label>crease stiffness</label>
+				<label for="text-input-crease-stiffness">crease stiffness</label>
 		</div>
 
 		<div>
 			<input
 				type="text"
+				id="text-input-join-stiffness"
 				bind:value={$joinStiffness}>
-				<label>join stiffness</label>
+				<label for="text-input-join-stiffness">join stiffness</label>
 		</div>
 
 		<div>
 			<input
 				type="text"
+				id="simulator-error-text"
 				bind:value={$error}>
-				<label>error</label>
+				<label for="simulator-error-text">error</label>
 		</div>
 
 		<div>

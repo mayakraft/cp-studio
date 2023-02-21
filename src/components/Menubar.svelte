@@ -26,56 +26,59 @@
 		<ul>
 			<li>file
 				<ul>
-					<li on:click={() => setShowNewPopup(true)}>new</li>
+<!--
+ 					<li on:click={() => setShowNewPopup(true)}>new</li>
 					<li on:click={() => {}}>open</li>
 					<li on:click={saveFile}>save</li>
+ -->
+					<li><button on:click={() => setShowNewPopup(true)}>new</button></li>
+					<li><button on:click={() => {}}>open</button></li>
+					<li><button on:click={saveFile}>save</button></li>
 				</ul>
 			</li>
 			<li>view
 				<ul>
 					{#each allViews as view}
-						<li
-							class={`menu-view-${view}`}
-							highlighted={views.includes(view)}
-							on:click={() => onClickView(view)}>{view}</li>
+						<li class={`menu-view-${view}`} highlighted={views.includes(view)}>
+							<button on:click={() => onClickView(view)}>{view}</button>
+						</li>
 					{/each}
 					<hr />
-					<li
-						on:click={() => { showTerminal = !showTerminal; }}
-						highlighted={showTerminal}
-					>show terminal</li>
-					<li
-						on:click={() => { showPanels = !showPanels; }}
-						highlighted={showPanels}
-					>show panels</li>
+					<li highlighted={showTerminal}>
+						<button on:click={() => { showTerminal = !showTerminal; }}>show terminal</button>
+					</li>
+					<li highlighted={showPanels}>
+						<button on:click={() => { showPanels = !showPanels; }}>show panels</button>
+					</li>
 				</ul>
 			</li>
 			<li>preferences
 				<ul>
-					<li
-						on:click={() => { darkMode = !darkMode; }}
-						highlighted={darkMode}
-					>dark mode</li>
-					<li
-						on:click={() => { showDebugPanel = !showDebugPanel; }}
-						highlighted={showDebugPanel}
-					>debug panel</li>
+					<li highlighted={darkMode}>
+						<button on:click={() => { darkMode = !darkMode; }}>dark mode</button>
+					</li>
+					<li highlighted={showDebugPanel}>
+						<button on:click={() => { showDebugPanel = !showDebugPanel; }}>debug panel</button>
+					</li>
 				</ul>
 			</li>
 			<li>language
 				<ul>
 					{#each languages as lang}
-						<li
-							on:click={() => language = lang}
-							highlighted={lang === language}
-						>{lang}</li>
+						<li highlighted={lang === language}>
+							<button on:click={() => language = lang}>{lang}</button>
+						</li>
 					{/each}
 				</ul>
 			</li>
 			<li>help
 				<ul>
-					<li on:click={() => setShowExamplesPopup(true)}>examples</li>
-					<li on:click={() => {}}>about</li>
+					<li>
+						<button on:click={() => setShowExamplesPopup(true)}>examples</button>
+					</li>
+					<li>
+						<button on:click={() => {}}>about</button>
+					</li>
 				</ul>
 			</li>
 		</ul>
@@ -97,6 +100,12 @@
 		--menu-shadow-color: black;
 		--menu-highlight-color: var(--darkmode-blue);
 		--menu-select-color: var(--darkmode-blue-dark);
+	}
+	button {
+		all: unset;
+		margin: 0;
+		padding: 0;
+		border: 0;
 	}
 	nav {
 		font-weight: 700;
@@ -163,9 +172,9 @@
 		display: block;
 	}
 	/*file open hidden input dialog trigger*/
-	nav input {
+	/*nav input {
 		display: none;
-	}
+	}*/
 	nav li[highlighted=true] {
 		background-color: var(--menu-highlight-color);
 		color: white;

@@ -9,13 +9,13 @@
 	<div class="Panel">
 		<div class="Titlebar">
 			<p>{title}</p>
-			<div
+			<button
 				on:click={() => { isCollapsed = !isCollapsed; }}
 				class="CollapseButton">
 				<img
 					src={isCollapsed ? Plus : Minus}
 					alt="toggle collapse" />
-			</div>
+			</button>
 		</div>
 		{#if !isCollapsed}
 			<div class="Body">
@@ -64,6 +64,7 @@
 		flex: 1;
 	}
 	.CollapseButton {
+		all: unset;
 		width: var(--menubar-height);
 		height: var(--menubar-height);
 		display: flex;
@@ -75,6 +76,8 @@
 		width: 1rem;
 		height: 1rem;
 	}
+
+/*
 	.Panel textarea {
 		resize: vertical;
 	}
@@ -84,6 +87,7 @@
 	.Panel ul li {
 		margin-left: calc(var(--app-font-size) * 0.5);
 	}
+*/
 
 	/* COLORS */
 	:global(.light-mode) .CollapseButton { background-color: #fb4; }
