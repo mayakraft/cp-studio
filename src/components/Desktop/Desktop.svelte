@@ -2,19 +2,35 @@
 	import CreasePattern from "./CreasePattern/CreasePattern.svelte";
 	import FoldedForm from "./FoldedForm/FoldedForm.svelte";
 	import Simulator from "./Simulator/Simulator.svelte";
-	// "crease pattern", "simulator", "folded form"
+
+	export let creasePattern = {};
+	export let foldedForm = {};
+
+	export let darkMode = false;
 	export let views = [];
+
+	// export let simulatorError;
 </script>
 
 <div class={`grid-${views.length}`}>
 	{#if views.includes("crease pattern")}
-		<CreasePattern />
+		<CreasePattern
+			{creasePattern}
+		/>
 	{/if}
 	{#if views.includes("folded form")}
-		<FoldedForm />
+		<FoldedForm
+			{foldedForm}
+		/>
 	{/if}
 	{#if views.includes("simulator")}
-		<Simulator />
+		<Simulator
+			origami={creasePattern}
+			backgroundColor={darkMode ? "#0f0f10" : "#eee"}
+			frontColor={darkMode ? "#2d39c0" : "#ec008b"}
+			backColor={darkMode ? "#28292b" : "white"}
+			lineOpacity={darkMode ? 1 : 0.5}
+		/>
 	{/if}
 </div>
 

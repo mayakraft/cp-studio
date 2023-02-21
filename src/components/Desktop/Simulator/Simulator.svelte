@@ -21,34 +21,36 @@
 <script>
 	import { onDestroy } from "svelte";
 	import * as THREE from "three";
-	import TrackballView from "./WebGL/TrackballView.svelte";
+	import TrackballView from "./ThreeJS/TrackballView.svelte";
 	import OrigamiSimulator from "../../../lib/OrigamiSimulator/index.js";
 	import Highlights from "../../../lib/OrigamiSimulator/touches/highlights.js";
 	import Raycasters from "../../../lib/OrigamiSimulator/touches/raycasters.js";
 	import boundingBox from "../../../lib/OrigamiSimulator/fold/boundingBox.js";
+	import {
+		active,
+		foldAmount,
+		strain,
+		showTouches,
+		showShadows,
+		tool,
+		integration,
+		axialStiffness,
+		faceStiffness,
+		joinStiffness,
+		creaseStiffness,
+		dampingRatio,
+		error,
+		reset,
+	} from "../../../stores/Simulator.js";
 
-	import craneCP from "../../../examples/crane-cp.fold?raw";
+	export let origami = {};
 
-	export let origami = JSON.parse(craneCP);
-	export let active = false;
-	export let foldAmount = 0.0;
-	export let strain;
-	export let tool = "trackball";
-	export let showTouches = true;
-	export let showShadows = false;
-	export let backgroundColor;
-	export let frontColor;
-	export let backColor;
-	export let lineColor;
+	export let backgroundColor = "#eee";
+	export let frontColor = "#ec008b";
+	export let backColor = "white";
+	export let lineColor = "black";
 	export let lineOpacity = 0.5;
-	export let integration;
-	export let axialStiffness;
-	export let faceStiffness;
-	export let joinStiffness;
-	export let creaseStiffness;
-	export let dampingRatio;
-	export let error;
-	export let reset;
+	// export let reset;
 	export let exportModel;
 	// intensity of point lights for light and dark mode
 	const lightIntensityLightMode = 0.45;
@@ -69,20 +71,16 @@
 	// model size will update the position of the lights, camera, and
 	// trackball controlls, allowing for models to be of vastly different scales
 	let modelSize = 1;
-	// the following are mutually exclusive, and activated/deactivated
-	// based on which UI tool is currently selected.
-	let trackballEnabled = true;
-	let pullNodesEnabled = false;
 	// "touches" are the current position of the cursor and where the raycaster
 	// has intersected the origami mesh, nearest vertex/face, etc..
 	let touches = [];
 	// origami simulator
-	let simulator;
+	let simulator = OrigamiSimulator();
 	// all raycaster methods for the user interface
 	let raycasters;
 	// highlighted geometry indicating the selected vertex/face
-	let highlights;
-	//
+	let highlights = Highlights({ simulator });
+	// three.js
 	let scene;
 	let camera;
 	// three.js lights for this scene
@@ -102,11 +100,11 @@
 	 * to the window.requestAnimationFrame and will fire at the end of every loop
 	 */
 	const onCompute = (props) => {
-		error = props.error;
+		error.set(props.error);
 		// The raycaster will update on a mousemove event, but if the origami is
 		// in a folding animation, the raycaster will not update and the visuals
 		// will mismatch, hence, the raycaster can fire on a frame update if needed
-		raycasters.animate({ pullEnabled: pullNodesEnabled });
+		raycasters.animate({ pullEnabled: $tool === "pull" });
 	};
 	/**
 	 * @description This is the callback from ThreeView after three.js has
@@ -116,8 +114,11 @@
 		scene = _scene;
 		camera = _camera;
 		// initialize origami simulator
-		simulator = OrigamiSimulator({ scene, onCompute });
-		highlights = Highlights({ scene, simulator });
+		// simulator = OrigamiSimulator({ scene, onCompute });
+		// highlights = Highlights({ scene, simulator });
+		simulator.setScene(scene);
+		simulator.setOnCompute(onCompute);
+		highlights.setScene(scene);
 		raycasters = Raycasters({
 			renderer,
 			camera,
@@ -129,7 +130,7 @@
 	};
 
 	// load a new origami model. thrown errors are because of a bad file format
-	$: if (simulator) {
+	$: {
 		try {
 			simulator.load(origami);
 			const box = boundingBox(origami);
@@ -165,69 +166,56 @@
 			light.shadow.camera.far = radius * 10; // 500 default
 		});
 	}
-	// tool -> what happens when cursor is pressed
-	$: {
-		trackballEnabled = (tool !== "pull");
-		pullNodesEnabled = (tool === "pull");
-	}
-	// forward these props to settings of origami simulator
-	$: if (simulator) { simulator.setActive(active); }
-	$: if (simulator) { simulator.setStrain(strain); }
-	$: if (simulator) { simulator.setFoldAmount(foldAmount); }
-	$: if (scene) { scene.background = new THREE.Color(backgroundColor); }
-	$: if (simulator) { simulator.setFrontColor(frontColor); }
-	$: if (simulator) { simulator.setBackColor(backColor); }
-	$: if (simulator) { simulator.setLineColor(lineColor); }
-	// $: if (simulator) { simulator.materials.line.opacity = lineOpacity; }
-	$: if (simulator) { simulator.getMaterials().line.opacity = lineOpacity; }
-	$: if (simulator) { simulator.setIntegration(integration); }
-	$: if (simulator) { simulator.setAxialStiffness(axialStiffness); }
-	$: if (simulator) { simulator.setFaceStiffness(faceStiffness); }
-	$: if (simulator) { simulator.setJoinStiffness(joinStiffness); }
-	$: if (simulator) { simulator.setCreaseStiffness(creaseStiffness); }
-	$: if (simulator) { simulator.setDampingRatio(dampingRatio); }
-	// nitpicky. upon tool change we need raycasterPullVertex to be undefined
-	$: if (raycasters) { raycasters.raycasterReleaseHandler(pullNodesEnabled); }
-	// deliver the touch data from the raycaster to be highlighted
-	$: if (highlights && showTouches) { highlights.highlightTouch(touches[0]); }
-	$: if (highlights && !showTouches) { highlights.clear(); }
+	$: reset.set(simulator.reset);	
+	/**
+	 * origami simulator settings from the Svelte store
+	 */
+	$: simulator.setActive($active);
+	$: simulator.setFoldAmount($foldAmount);
+	$: simulator.setStrain($strain);
+	$: simulator.setIntegration($integration);
+	$: simulator.setAxialStiffness($axialStiffness);
+	$: simulator.setFaceStiffness($faceStiffness);
+	$: simulator.setJoinStiffness($joinStiffness);
+	$: simulator.setCreaseStiffness($creaseStiffness);
+	$: simulator.setDampingRatio($dampingRatio);
 	// shadows
-	$: if (simulator) {
-		// todo: why does Svelte have an issue with the simulator getters defined
-		// properties? querying simulator.active or simulator.materials causes reload
-		// simulator.shadows = showShadows;
-		simulator.setShadows(showShadows);
-		[0, 3, 4, 7].forEach(i => {
-			lights[i % lights.length].castShadow = showShadows;
-		});
-	}
-	// upstream
-	$: if (simulator) { reset = simulator.reset; }
+	$: simulator.setShadows($showShadows);
+	$: [0, 3, 4, 7].forEach(i => {
+		lights[i % lights.length].castShadow = $showShadows
+	});
+	// deliver the touch data from the raycaster to be highlighted
+	$: $showTouches
+		? highlights.highlightTouch(touches[0])
+		: highlights.clear();
+	/**
+	 * origami simulator settings from the component props
+	 */
+	$: simulator.setFrontColor(frontColor);
+	$: simulator.setBackColor(backColor);
+	$: simulator.setLineColor(lineColor);
+	// $: simulator.materials.line.opacity = lineOpacity;
+	$: simulator.getMaterials().line.opacity = lineOpacity;
+	$: if (scene) { scene.background = new THREE.Color(backgroundColor); }
+	// nitpicky. upon tool change we need raycasterPullVertex to be undefined
+	$: if (raycasters) { raycasters.raycasterReleaseHandler($tool); }
 	/**
 	 * @description cleanup all memory associated with origami simulator
 	 */
 	onDestroy(() => {
 		if (raycasters) { raycasters.dealloc(); }
 		if (simulator) { simulator.dealloc(); }
+		// needs highlights dealloc
 	});
 </script>
 
-<div class="simulator">
-	<TrackballView
-		enabled={trackballEnabled}
-		maxDistance={modelSize * 30}
-		minDistance={modelSize * 0.1}
-		panSpeed={1}
-		rotateSpeed={4}
-		zoomSpeed={16}
-		dynamicDampingFactor={1}
-		didMount={didMount}
-	/>
-</div>
-
-<style>
-	.simulator {
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<TrackballView
+	enabled={$tool !== "pull"}
+	maxDistance={modelSize * 30}
+	minDistance={modelSize * 0.1}
+	panSpeed={1}
+	rotateSpeed={4}
+	zoomSpeed={16}
+	dynamicDampingFactor={1}
+	didMount={didMount}
+/>

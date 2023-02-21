@@ -63,7 +63,6 @@ const Highlights = ({ scene, simulator }) => {
 	raycasterPointBuffer.setAttribute("position", raycasterPointPositionAttr);
 	point = new THREE.Points(raycasterPointBuffer, Materials.point);
 	point.renderOrder = 1000;
-	scene.add(point);
 
 	// setup highlighted vertex. does not adhere to depthTest
 	const raycasterVertexPositionAttr = new THREE.BufferAttribute(new Float32Array([0, 0, 0]), 3);
@@ -72,7 +71,6 @@ const Highlights = ({ scene, simulator }) => {
 	raycasterVertexBuffer.setAttribute("position", raycasterVertexPositionAttr);
 	vertex = new THREE.Points(raycasterVertexBuffer, Materials.vertex);
 	vertex.renderOrder = 1001;
-	scene.add(vertex);
 
 	// setup highlighted face. two triangle faces, three vertices with x, y, z
 	const raycasterFacePositionBuffer = new Float32Array(Array(2 * 3 * 3).fill(0.0));
@@ -86,12 +84,27 @@ const Highlights = ({ scene, simulator }) => {
 		raycasterFaceBuffer,
 		[Materials.frontFace, Materials.backFace],
 	);
-	scene.add(face);
+
+	const setScene = (scene) => {
+		// remove from previous scene
+		point.removeFromParent();
+		vertex.removeFromParent();
+		face.removeFromParent();
+		// add to new scene
+		if (scene) {
+			scene.add(point);
+			scene.add(vertex);
+			scene.add(face);
+		}
+	};
+
+	setScene(scene);
 
 	return {
 		point,
 		vertex,
 		face,
+		setScene,
 		highlightTouch,
 		highlightPoint,
 		highlightVertex,

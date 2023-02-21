@@ -7,6 +7,13 @@
 	import Terminal from "./components/Terminal/Terminal.svelte";
 	import Shell from "./lib/Shell.svelte";
 
+	import craneCP from "./examples/crane-cp.fold?raw";
+
+	// origami model. FOLD is the raw FOLD file with all the frames
+	let FOLD = {};
+	let creasePattern = JSON.parse(craneCP);
+	let foldedForm = {};
+
 	let tool = "inspect";
 	let views = ["crease pattern", "simulator"];
 	let exec;
@@ -33,10 +40,14 @@
 		<div class="center-row">
 			<Toolbar bind:tool={tool} {views} />
 			<Desktop
+				{creasePattern}
+				{foldedForm}
+				{darkMode}
 				{views}
 			/>
 			{#if showPanels}
-				<Panels />
+				<Panels
+				/>
 			{/if}
 		</div>
 		<div class="timeline-row">

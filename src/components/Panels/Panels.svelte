@@ -1,4 +1,9 @@
+<script lang="ts">
+	import SimulatorPanel from "./SimulatorPanel.svelte";
+</script>
+
 <div>
+	<SimulatorPanel />
 </div>
 
 <style>

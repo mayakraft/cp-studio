@@ -141,6 +141,8 @@ const OrigamiSimulator = ({ scene, onCompute } = {}) => {
 		export: () => model.export(),
 		model,
 		reset,
+		setScene: (newScene) => model.setScene(newScene),
+		setOnCompute: (handler) => { onCompute = handler; },
 		dealloc,
 		nodeDidMove,
 		setActive,
